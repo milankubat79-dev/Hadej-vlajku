@@ -1,0 +1,26 @@
+{
+  "name": "Hádej Vlajku!",
+  "short_name": "Hádej Vlajku",
+  "description": "Poznáš vlajky zemí světa? Fotbalové kvízy, loga klubů a více!",
+  "start_url": "/Hadej-vlajku/",
+  "scope": "/Hadej-vlajku/",
+  "display": "standalone",
+  "background_color": "#0d1b2e",
+  "theme_color": "#0d1b2e",
+  "orientation": "portrait",
+  "lang": "cs",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
