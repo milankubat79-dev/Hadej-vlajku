@@ -3765,7 +3765,12 @@ function snd(t){
 let _czVoice=null;
 function _initVoice(){
   const vs=speechSynthesis.getVoices();
-  _czVoice=vs.find(v=>v.lang.startsWith('cs'))||vs.find(v=>v.lang.startsWith('sk'))||null;
+  const czVs=vs.filter(v=>v.lang.startsWith('cs')||v.lang.startsWith('sk'));
+  _czVoice=czVs.find(v=>/zuzana|female|woman|iveta|lucie|jana|hana/i.test(v.name))
+    ||czVs.find(v=>!/male|man\b/i.test(v.name))
+    ||czVs[0]
+    ||vs.find(v=>/zuzana|female|woman/i.test(v.name))
+    ||null;
 }
 if(typeof speechSynthesis!=='undefined'&&speechSynthesis.onvoiceschanged!==undefined)
   speechSynthesis.onvoiceschanged=_initVoice;
