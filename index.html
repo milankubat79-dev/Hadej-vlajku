@@ -55,6 +55,8 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#1a1a2e,#
 .mode-football.sel{background:rgba(34,197,94,.22);border-color:#22c55e;color:#fff;box-shadow:0 0 20px rgba(34,197,94,.3);}
 .mode-logo{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.2);color:#fbbf24;}
 .mode-logo.sel{background:rgba(245,158,11,.22);border-color:#f59e0b;color:#fff;box-shadow:0 0 20px rgba(245,158,11,.3);}
+.mode-car{background:rgba(168,85,247,.1);border-color:rgba(168,85,247,.2);color:#c084fc;}
+.mode-car.sel{background:rgba(168,85,247,.22);border-color:#a855f7;color:#fff;box-shadow:0 0 20px rgba(168,85,247,.3);}
 
 /* ══ GAME ══ */
 #sg{justify-content:flex-start;padding:0;}
@@ -377,6 +379,7 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#1a1a2e,#
       <div style="display:flex;gap:8px;">
         <button class="mode-btn mode-football" id="mode-football-btn" onclick="selectMode('football')" style="flex:1;">⚽ Fotbalový Speciál</button>
         <button class="mode-btn mode-logo" id="mode-logo-btn" onclick="selectMode('logoclub')" style="flex:1;">🏆 Loga klubů</button>
+        <button class="mode-btn mode-car" id="mode-car-btn" onclick="selectMode('logocar')" style="flex:1;">🚗 Loga aut</button>
       </div>
     </div>
   </div>
@@ -699,7 +702,7 @@ async function fbSaveGame(gameData) {
   const key = nickKey(gameData.nickname);
   try {
     await db.collection('games').add({ ...gameData, nicknameKey: key, playedAt: firebase.firestore.FieldValue.serverTimestamp() });
-    const modeField = gameData.blitz?'bestScoreBlitz':gameData.mode==='football'?'bestScoreFootball':gameData.mode==='logoclub'?'bestScoreLogo':'bestScoreFlag';
+    const modeField = gameData.blitz?'bestScoreBlitz':gameData.mode==='football'?'bestScoreFootball':(gameData.mode==='logoclub'||gameData.mode==='logocar')?'bestScoreLogo':'bestScoreFlag';
     const ref = db.collection('players').doc(key);
     const snap = await ref.get();
     const upd = { totalGames: firebase.firestore.FieldValue.increment(1), totalScore: firebase.firestore.FieldValue.increment(gameData.score), totalPlaySec: firebase.firestore.FieldValue.increment(gameData.elapsedSec||0), lastPlayed: firebase.firestore.FieldValue.serverTimestamp() };
@@ -848,7 +851,7 @@ async function showPassport(){
 
 async function fbLeaderboard(mode) {
   const db = fbDb(); if (!db) return [];
-  const modeField = mode==='football'?'bestScoreFootball':mode==='logoclub'?'bestScoreLogo':'bestScoreFlag';
+  const modeField = mode==='football'?'bestScoreFootball':(mode==='logoclub'||mode==='logocar')?'bestScoreLogo':'bestScoreFlag';
   try {
     const snap = await db.collection('players').orderBy(modeField,'desc').limit(10).get();
     return snap.docs.map(d => ({ ...d.data(), _key: d.id }));
@@ -1360,6 +1363,194 @@ const FD = [
 ];
 
 /* ═══════════════════════════════
+   CAR LOGO DATA (LCD_CAR)
+═══════════════════════════════ */
+const LCD_CAR = [
+  {n:"Volkswagen",wiki:"Volkswagen",slug:"volkswagen",d:"easy"},
+  {n:"BMW",wiki:"BMW",slug:"bmw",d:"easy"},
+  {n:"Mercedes-Benz",wiki:"Mercedes-Benz",slug:"mercedes-benz",d:"easy"},
+  {n:"Audi",wiki:"Audi",slug:"audi",d:"easy"},
+  {n:"Porsche",wiki:"Porsche",slug:"porsche",d:"easy"},
+  {n:"Opel",wiki:"Opel",slug:"opel",d:"easy"},
+  {n:"Smart",wiki:"Smart automobile brand",slug:"smart",d:"med"},
+  {n:"Maybach",wiki:"Mercedes-Maybach",slug:"maybach",d:"hard"},
+  {n:"Alpina",wiki:"Alpina automobile manufacturer",slug:"alpina",d:"hard"},
+  {n:"Brabus",wiki:"Brabus",slug:"brabus",d:"hard"},
+  {n:"Trabant",wiki:"Trabant",slug:"trabant",d:"hard"},
+  {n:"Borgward",wiki:"Borgward",slug:"borgward",d:"hard"},
+  {n:"Wiesmann",wiki:"Wiesmann",slug:"wiesmann",d:"hard"},
+  {n:"NSU",wiki:"NSU Motorenwerke AG",slug:"nsu",d:"hard"},
+  {n:"Gumpert",wiki:"Gumpert Sportwagenmanufaktur",slug:"gumpert",d:"hard"},
+  {n:"RUF",wiki:"RUF Automobile",slug:"ruf",d:"hard"},
+  {n:"Ferrari",wiki:"Ferrari",slug:"ferrari",d:"easy"},
+  {n:"Lamborghini",wiki:"Lamborghini",slug:"lamborghini",d:"easy"},
+  {n:"Maserati",wiki:"Maserati",slug:"maserati",d:"med"},
+  {n:"Alfa Romeo",wiki:"Alfa Romeo",slug:"alfa-romeo",d:"med"},
+  {n:"Fiat",wiki:"Fiat Automobiles",slug:"fiat",d:"easy"},
+  {n:"Lancia",wiki:"Lancia",slug:"lancia",d:"med"},
+  {n:"Pagani",wiki:"Pagani",slug:"pagani",d:"med"},
+  {n:"Abarth",wiki:"Abarth",slug:"abarth",d:"hard"},
+  {n:"De Tomaso",wiki:"De Tomaso",slug:"de-tomaso",d:"hard"},
+  {n:"Pininfarina",wiki:"Pininfarina",slug:"pininfarina",d:"hard"},
+  {n:"Autobianchi",wiki:"Autobianchi",slug:"autobianchi",d:"hard"},
+  {n:"Bizzarrini",wiki:"Bizzarrini",slug:"bizzarrini",d:"hard"},
+  {n:"Iso",wiki:"Iso Rivolta",slug:"iso",d:"hard"},
+  {n:"Aston Martin",wiki:"Aston Martin",slug:"aston-martin",d:"med"},
+  {n:"Bentley",wiki:"Bentley Motors",slug:"bentley",d:"med"},
+  {n:"Rolls-Royce",wiki:"Rolls-Royce Motor Cars",slug:"rolls-royce",d:"med"},
+  {n:"Land Rover",wiki:"Land Rover",slug:"land-rover",d:"med"},
+  {n:"Jaguar",wiki:"Jaguar Cars",slug:"jaguar",d:"med"},
+  {n:"Mini",wiki:"Mini marque",slug:"mini",d:"med"},
+  {n:"Lotus",wiki:"Lotus Cars",slug:"lotus",d:"med"},
+  {n:"McLaren",wiki:"McLaren Automotive",slug:"mclaren",d:"med"},
+  {n:"TVR",wiki:"TVR",slug:"tvr",d:"hard"},
+  {n:"Morgan",wiki:"Morgan Motor Company",slug:"morgan",d:"hard"},
+  {n:"Caterham",wiki:"Caterham Cars",slug:"caterham",d:"hard"},
+  {n:"Ineos",wiki:"Ineos Automotive",slug:"ineos",d:"hard"},
+  {n:"Noble",wiki:"Noble car",slug:"noble",d:"hard"},
+  {n:"Vauxhall",wiki:"Vauxhall Motors",slug:"vauxhall",d:"hard"},
+  {n:"Austin",wiki:"Austin Motor Company",slug:"austin",d:"hard"},
+  {n:"Triumph",wiki:"Triumph Motor Company",slug:"triumph",d:"hard"},
+  {n:"Rover",wiki:"Rover Company",slug:"rover",d:"hard"},
+  {n:"Ariel",wiki:"Ariel Motor Company",slug:"ariel",d:"hard"},
+  {n:"BAC",wiki:"Briggs Automotive Company",slug:"bac",d:"hard"},
+  {n:"Peugeot",wiki:"Peugeot",slug:"peugeot",d:"easy"},
+  {n:"Citroen",wiki:"Citroen",slug:"citroen",d:"med"},
+  {n:"Renault",wiki:"Renault",slug:"renault",d:"easy"},
+  {n:"DS",wiki:"DS Automobiles",slug:"ds",d:"med"},
+  {n:"Alpine",wiki:"Alpine automobile",slug:"alpine",d:"med"},
+  {n:"Bugatti",wiki:"Bugatti",slug:"bugatti",d:"med"},
+  {n:"Panhard",wiki:"Panhard",slug:"panhard",d:"hard"},
+  {n:"Simca",wiki:"Simca",slug:"simca",d:"hard"},
+  {n:"Matra",wiki:"Matra company",slug:"matra",d:"hard"},
+  {n:"Talbot",wiki:"Talbot",slug:"talbot",d:"hard"},
+  {n:"Volvo",wiki:"Volvo Cars",slug:"volvo",d:"easy"},
+  {n:"Saab",wiki:"Saab Automobile",slug:"saab",d:"med"},
+  {n:"Koenigsegg",wiki:"Koenigsegg",slug:"koenigsegg",d:"med"},
+  {n:"Polestar",wiki:"Polestar company",slug:"polestar",d:"med"},
+  {n:"SEAT",wiki:"SEAT",slug:"seat",d:"easy"},
+  {n:"Cupra",wiki:"Cupra automobile brand",slug:"cupra",d:"med"},
+  {n:"Hispano-Suiza",wiki:"Hispano-Suiza Cars",slug:"hispano-suiza",d:"hard"},
+  {n:"Skoda",wiki:"Skoda Auto",slug:"skoda",d:"easy"},
+  {n:"Tatra",wiki:"Tatra company",slug:"tatra",d:"hard"},
+  {n:"Dacia",wiki:"Dacia brand",slug:"dacia",d:"med"},
+  {n:"Spyker",wiki:"Spyker",slug:"spyker",d:"hard"},
+  {n:"Donkervoort",wiki:"Donkervoort",slug:"donkervoort",d:"hard"},
+  {n:"Rimac",wiki:"Rimac Automobili",slug:"rimac",d:"med"},
+  {n:"Zenvo",wiki:"Zenvo Automotive",slug:"zenvo",d:"hard"},
+  {n:"Zastava",wiki:"Zastava Cars",slug:"zastava",d:"hard"},
+  {n:"FSO",wiki:"Fabryka Samochodow Osobowych",slug:"fso",d:"hard"},
+  {n:"ZAZ",wiki:"ZAZ",slug:"zaz",d:"hard"},
+  {n:"Toyota",wiki:"Toyota",slug:"toyota",d:"easy"},
+  {n:"Honda",wiki:"Honda",slug:"honda",d:"easy"},
+  {n:"Nissan",wiki:"Nissan",slug:"nissan",d:"med"},
+  {n:"Mazda",wiki:"Mazda",slug:"mazda",d:"easy"},
+  {n:"Mitsubishi",wiki:"Mitsubishi Motors",slug:"mitsubishi",d:"easy"},
+  {n:"Subaru",wiki:"Subaru",slug:"subaru",d:"easy"},
+  {n:"Suzuki",wiki:"Suzuki",slug:"suzuki",d:"easy"},
+  {n:"Lexus",wiki:"Lexus",slug:"lexus",d:"easy"},
+  {n:"Daihatsu",wiki:"Daihatsu",slug:"daihatsu",d:"med"},
+  {n:"Isuzu",wiki:"Isuzu Motors",slug:"isuzu",d:"med"},
+  {n:"Infiniti",wiki:"Infiniti",slug:"infiniti",d:"med"},
+  {n:"Acura",wiki:"Acura",slug:"acura",d:"med"},
+  {n:"Yamaha",wiki:"Yamaha Motor Company",slug:"yamaha",d:"hard"},
+  {n:"Mitsuoka",wiki:"Mitsuoka Motor",slug:"mitsuoka",d:"hard"},
+  {n:"Ford",wiki:"Ford Motor Company",slug:"ford",d:"easy"},
+  {n:"Chevrolet",wiki:"Chevrolet",slug:"chevrolet",d:"easy"},
+  {n:"Dodge",wiki:"Dodge",slug:"dodge",d:"easy"},
+  {n:"Jeep",wiki:"Jeep",slug:"jeep",d:"easy"},
+  {n:"Tesla",wiki:"Tesla Inc.",slug:"tesla",d:"easy"},
+  {n:"Cadillac",wiki:"Cadillac",slug:"cadillac",d:"easy"},
+  {n:"Buick",wiki:"Buick",slug:"buick",d:"med"},
+  {n:"Lincoln",wiki:"Lincoln Motor Company",slug:"lincoln",d:"easy"},
+  {n:"Chrysler",wiki:"Chrysler",slug:"chrysler",d:"med"},
+  {n:"GMC",wiki:"GMC automobile",slug:"gmc",d:"med"},
+  {n:"RAM",wiki:"Ram Trucks",slug:"ram",d:"med"},
+  {n:"Hummer",wiki:"Hummer",slug:"hummer",d:"hard"},
+  {n:"Pontiac",wiki:"Pontiac automobile",slug:"pontiac",d:"hard"},
+  {n:"Oldsmobile",wiki:"Oldsmobile",slug:"oldsmobile",d:"hard"},
+  {n:"Mercury",wiki:"Mercury automobile",slug:"mercury",d:"hard"},
+  {n:"Plymouth",wiki:"Plymouth automobile brand",slug:"plymouth",d:"hard"},
+  {n:"Saturn",wiki:"Saturn Corporation",slug:"saturn",d:"hard"},
+  {n:"Shelby",wiki:"Shelby car manufacturer",slug:"shelby",d:"hard"},
+  {n:"DeLorean",wiki:"DeLorean Motor Company",slug:"delorean",d:"hard"},
+  {n:"Rivian",wiki:"Rivian",slug:"rivian",d:"hard"},
+  {n:"Lucid",wiki:"Lucid Motors",slug:"lucid",d:"hard"},
+  {n:"Fisker",wiki:"Fisker Inc.",slug:"fisker",d:"med"},
+  {n:"AMC",wiki:"American Motors Corporation",slug:"amc",d:"hard"},
+  {n:"Karma",wiki:"Karma Automotive",slug:"karma",d:"hard"},
+  {n:"Packard",wiki:"Packard",slug:"packard",d:"hard"},
+  {n:"Studebaker",wiki:"Studebaker",slug:"studebaker",d:"hard"},
+  {n:"Hudson",wiki:"Hudson Motor Car Company",slug:"hudson",d:"hard"},
+  {n:"Nash",wiki:"Nash Motors",slug:"nash",d:"hard"},
+  {n:"Edsel",wiki:"Edsel",slug:"edsel",d:"hard"},
+  {n:"Kaiser",wiki:"Kaiser automobile",slug:"kaiser",d:"hard"},
+  {n:"Hyundai",wiki:"Hyundai Motor Company",slug:"hyundai",d:"easy"},
+  {n:"Kia",wiki:"Kia Corporation",slug:"kia",d:"easy"},
+  {n:"Genesis",wiki:"Genesis automobile",slug:"genesis",d:"med"},
+  {n:"SsangYong",wiki:"SsangYong Motor",slug:"ssangyong",d:"med"},
+  {n:"Daewoo",wiki:"Daewoo Motors",slug:"daewoo",d:"hard"},
+  {n:"Samsung",wiki:"Renault Korea Motors",slug:"samsung-cars",d:"hard"},
+  {n:"BYD",wiki:"BYD Auto",slug:"byd",d:"med"},
+  {n:"NIO",wiki:"Nio Inc.",slug:"nio",d:"med"},
+  {n:"MG",wiki:"MG marque",slug:"mg",d:"med"},
+  {n:"Geely",wiki:"Geely",slug:"geely",d:"med"},
+  {n:"Great Wall",wiki:"Great Wall Motor",slug:"great-wall",d:"med"},
+  {n:"Li Auto",wiki:"Li Auto",slug:"li-auto",d:"hard"},
+  {n:"Xpeng",wiki:"Xpeng",slug:"xpeng",d:"hard"},
+  {n:"Chery",wiki:"Chery",slug:"chery",d:"med"},
+  {n:"GAC",wiki:"GAC Group",slug:"gac",d:"hard"},
+  {n:"Hongqi",wiki:"Hongqi automobile",slug:"hongqi",d:"hard"},
+  {n:"Haval",wiki:"Haval",slug:"haval",d:"med"},
+  {n:"Zeekr",wiki:"Zeekr",slug:"zeekr",d:"hard"},
+  {n:"Lynk & Co",wiki:"Lynk and Co",slug:"lynk-co",d:"med"},
+  {n:"ORA",wiki:"Ora automobile",slug:"ora",d:"hard"},
+  {n:"Changan",wiki:"Changan Automobile",slug:"changan",d:"hard"},
+  {n:"Dongfeng",wiki:"Dongfeng Motor",slug:"dongfeng",d:"hard"},
+  {n:"FAW",wiki:"FAW Group",slug:"faw",d:"hard"},
+  {n:"Wuling",wiki:"SGMW",slug:"wuling",d:"hard"},
+  {n:"Baojun",wiki:"Baojun",slug:"baojun",d:"hard"},
+  {n:"Roewe",wiki:"Roewe",slug:"roewe",d:"hard"},
+  {n:"Voyah",wiki:"Voyah",slug:"voyah",d:"hard"},
+  {n:"Denza",wiki:"Denza",slug:"denza",d:"hard"},
+  {n:"Neta",wiki:"Neta Auto",slug:"neta",d:"hard"},
+  {n:"Leapmotor",wiki:"Leapmotor",slug:"leapmotor",d:"hard"},
+  {n:"Tank",wiki:"Tank automobile brand",slug:"tank",d:"hard"},
+  {n:"Deepal",wiki:"Deepal",slug:"deepal",d:"hard"},
+  {n:"Zhiji",wiki:"Zhiji Motor",slug:"zhiji",d:"hard"},
+  {n:"Avatr",wiki:"Avatr",slug:"avatr",d:"hard"},
+  {n:"Brilliance",wiki:"Brilliance China Automotive",slug:"brilliance",d:"hard"},
+  {n:"JAC",wiki:"JAC Motors",slug:"jac",d:"hard"},
+  {n:"BAIC",wiki:"BAIC Group",slug:"baic",d:"hard"},
+  {n:"AITO",wiki:"Aito",slug:"aito",d:"hard"},
+  {n:"Yangwang",wiki:"Yangwang",slug:"yangwang",d:"hard"},
+  {n:"SAIC",wiki:"SAIC Motor",slug:"saic",d:"hard"},
+  {n:"Tata",wiki:"Tata Motors",slug:"tata",d:"hard"},
+  {n:"Mahindra",wiki:"Mahindra and Mahindra",slug:"mahindra",d:"hard"},
+  {n:"Maruti Suzuki",wiki:"Maruti Suzuki",slug:"maruti-suzuki",d:"hard"},
+  {n:"Force Motors",wiki:"Force Motors",slug:"force-motors",d:"hard"},
+  {n:"Hindustan",wiki:"Hindustan Motors",slug:"hindustan",d:"hard"},
+  {n:"Lada",wiki:"Lada",slug:"lada",d:"hard"},
+  {n:"UAZ",wiki:"UAZ",slug:"uaz",d:"hard"},
+  {n:"GAZ",wiki:"GAZ",slug:"gaz",d:"hard"},
+  {n:"Moskvich",wiki:"Moskvich",slug:"moskvich",d:"hard"},
+  {n:"Aurus",wiki:"Aurus automobile",slug:"aurus",d:"hard"},
+  {n:"Proton",wiki:"Proton automobile manufacturer",slug:"proton",d:"med"},
+  {n:"Perodua",wiki:"Perodua",slug:"perodua",d:"med"},
+  {n:"TOGG",wiki:"TOGG",slug:"togg",d:"hard"},
+  {n:"Tofas",wiki:"Tofas",slug:"tofas",d:"hard"},
+  {n:"Karsan",wiki:"Karsan",slug:"karsan",d:"hard"},
+  {n:"IKCO",wiki:"Iran Khodro",slug:"ikco",d:"hard"},
+  {n:"Holden",wiki:"Holden",slug:"holden",d:"hard"},
+  {n:"HSV",wiki:"Holden Special Vehicles",slug:"hsv",d:"hard"},
+  {n:"Bolwell",wiki:"Bolwell",slug:"bolwell",d:"hard"},
+  {n:"Troller",wiki:"Troller",slug:"troller",d:"hard"},
+  {n:"Agrale",wiki:"Agrale",slug:"agrale",d:"hard"},
+  {n:"Mastretta",wiki:"Mastretta",slug:"mastretta",d:"hard"},
+  {n:"W Motors",wiki:"W Motors",slug:"w-motors",d:"hard"},
+];
+
+/* ═══════════════════════════════
    LOGO CLUB DATA (LCD)
 ═══════════════════════════════ */
 const LCD = [
@@ -1851,10 +2042,11 @@ function selectMode(m){
   document.getElementById('mode-flag-btn').classList.toggle('sel',m==='flag');
   document.getElementById('mode-football-btn').classList.toggle('sel',m==='football');
   document.getElementById('mode-logo-btn').classList.toggle('sel',m==='logoclub');
+  document.getElementById('mode-car-btn')?.classList.toggle('sel',m==='logocar');
   // blitz only for flag mode
   document.getElementById('blitz-card').style.display=m==='training'?'none':'';
   // cont filter for all modes (flag/football/logoclub)
-  document.getElementById('cont-card').style.display='';
+  document.getElementById('cont-card').style.display=m==='logocar'?'none':'';
   const sb=document.getElementById('start-btn');
   if(m==='football'){
     document.getElementById('logo-emoji').textContent='⚽';
@@ -1866,6 +2058,11 @@ function selectMode(m){
     document.getElementById('logo-title').textContent='Loga klubů';
     document.getElementById('logo-sub').textContent='Poznáš logo slavného klubu? 🏟️';
     sb.textContent='🏆 Hrát Loga klubů!';
+  } else if(m==='logocar'){
+    document.getElementById('logo-emoji').textContent='🚗';
+    document.getElementById('logo-title').textContent='Loga aut';
+    document.getElementById('logo-sub').textContent='Poznáš logo automobilové značky? 🏎️';
+    sb.textContent='🚗 Hrát Loga aut!';
   } else {
     document.getElementById('logo-emoji').textContent='🌍';
     document.getElementById('logo-title').textContent='Hádej Vlajku!';
@@ -1874,7 +2071,7 @@ function selectMode(m){
   }
   if(S.nickname.length>0) sb.disabled=false;
   // Disable continent buttons that have too few entries for this mode
-  const _pool=m==='football'?FD:m==='logoclub'?LCD:C;
+  const _pool=m==='football'?FD:m==='logoclub'?LCD:m==='logocar'?LCD_CAR:C;
   const MIN_CONT=6;
   document.querySelectorAll('#cont-sel .sel-btn').forEach((b,i)=>{
     if(i===0){b.disabled=false;b.style.opacity='';b.title='';return;}
@@ -1895,6 +2092,13 @@ function selectMode(m){
    POOL & SHUFFLE
 ═══════════════════════════════ */
 function getPool(){
+  if(S.mode==='logocar'){
+    let p=LCD_CAR;
+    const diff=S.diff||'all';
+    if(diff!=='all') p=p.filter(c=>c.d===diff);
+    if(p.length<4) p=LCD_CAR;
+    return shuffle(p.slice());
+  }
   if(S.mode==='logoclub'){
     let base=S.cont!=='all'?LCD.filter(c=>c.ct===S.cont):LCD;
     let p=base;
@@ -2084,6 +2288,7 @@ function startTraining(wrongList){
 function showFlag(){
   S.phase='flag';S.answered=false;S.fiftyUsedThisQ=false;updatePowerupUI();
   if(S.mode==='logoclub'){showLogoClub();return;}
+  if(S.mode==='logocar'){showLogoCar();return;}
   document.getElementById('g-flag-card').style.display='';
   document.getElementById('g-city-photo').style.display='none';
   document.getElementById('g-city-cap').textContent='';
@@ -2647,6 +2852,87 @@ function onPlayerAns(ok,q){
 }
 
 /* ═══════════════════════════════
+   CAR LOGO PHASE (logocar mode)
+═══════════════════════════════ */
+function fetchCarLogo(slug, wikiTitle){
+  const base = window.location.href.replace(/\/index\.html$/, '').replace(/\/$/, '');
+  const tryLocal = (exts) => {
+    if(!exts.length) return Promise.reject(new Error('no local file'));
+    const [ext, ...rest] = exts;
+    return fetch(base+'/logos/cars/'+slug+'.'+ext, {method:'HEAD'})
+      .then(r => r.ok ? base+'/logos/cars/'+slug+'.'+ext : tryLocal(rest))
+      .catch(() => tryLocal(rest));
+  };
+  return tryLocal(['png','jpg','webp','svg'])
+    .catch(() => fetchWikiClubLogo(wikiTitle))
+    .catch(() => fetchWikiImg('en', wikiTitle));
+}
+const _carLogoCache = {};
+function loadCarLogo(slug, wikiTitle, name){
+  const els = _wikiSetup(name, '🚗', '🚗', true, true);
+  if(_carLogoCache[slug]){_wikiApply(els, _carLogoCache[slug], '🚗');return;}
+  fetchCarLogo(slug, wikiTitle)
+    .then(src => {_carLogoCache[slug]=src;_wikiApply(els,src,'🚗');})
+    .catch(() => {els.loading.textContent='🚗';});
+}
+function showLogoCar(){
+  S.phase='logocar';S.answered=false;
+  const q=S.round[S.qIdx];
+  document.getElementById('g-flag-card').style.display='none';
+  document.getElementById('g-fb').textContent='';
+  document.getElementById('g-pts').textContent='';
+  document.getElementById('next-btn').classList.remove('vis');
+  document.getElementById('g-qn').textContent=S.qIdx+1;
+  document.getElementById('g-prog').style.width=(S.qIdx/S.round.length*100)+'%';
+  document.getElementById('g-sc').textContent=S.score;checkRecordTracker();
+  document.getElementById('g-str').textContent=S.streak>=2?('🔥 '+S.streak):'🔥 0';
+  if(!S.blitzEnabled){const rem=S.round.length-S.qIdx;if(rem===1)showFinalToast();else if(rem===3)showLast3Toast();if(rem<=3)document.getElementById('sg').classList.add('last3-active');}
+  const pill=document.getElementById('g-pill');
+  pill.textContent='🚗 Která značka má toto logo?';pill.className='phase-pill pill-club';
+  document.getElementById('g-q').textContent='Poznáš logo této automobilové značky?';
+  loadCarLogo(q.slug, q.wiki, q.n);
+  const wrong=getDistractors(LCD_CAR,c=>c.n!==q.n,3);
+  buildOpts(shuffle([q,...wrong]),o=>onLogoCarAns(o.n===q.n,q),o=>o.n);
+  startTimer(TC);
+}
+function onLogoCarAns(ok,q){
+  if(S.answered)return;S.answered=true;stopTimer();updatePowerupUI();
+  document.getElementById('g-city-country').textContent=q.n;
+  document.getElementById('g-city-cap').textContent=q.n;
+  const tb=Math.round(750*(S.tLeft/TC));
+  document.querySelectorAll('.opt').forEach(b=>{b.disabled=true;if(b.dataset.v===q.n)b.classList.add('correct');else b.classList.add('wrong');});
+  S.resultMap[q.n]=ok;
+  if(!ok&&S._lastChosen!==undefined) S.wrongAns[q.n]=S._lastChosen;
+  const fb=document.getElementById('g-fb');
+  const isLast=S.qIdx>=S.round.length-1;
+  if(ok){
+    const sb=Math.min(S.streak*100,500);const dp=diffPts();const pts=1000+dp+tb+sb;
+    S.score+=pts;S.streak++;if(S.streak>S.maxStr)S.maxStr=S.streak;S.corrCl++;
+    let bonusPts=0;
+    if(S.streak===3){bonusPts=200;S.score+=bonusPts;showStreakToast('🔥 Série 3! +200 bodů');launchConfetti(50);showComboBanner(3);snd('streak');}
+    else if(S.streak===5){bonusPts=400;S.score+=bonusPts;showStreakToast('🔥🔥 Série 5! +400 bodů');launchConfetti(80);showComboBanner(5);const muted_=S.muted;S.muted=false;snd('fanfare');S.muted=muted_;}
+    else if(S.streak===7){showComboBanner(7);}
+    else if(S.streak===10){bonusPts=1000;S.score+=bonusPts;showStreakToast('⚡ MEGA SÉRIE! +1000 bodů');launchConfetti(200);showComboBanner(10);flashScreen();}
+    document.getElementById('g-sc').textContent=S.score;checkRecordTracker();
+    document.getElementById('g-str').textContent='🔥 '+S.streak;
+    fb.textContent=WIN_CL[Math.floor(Math.random()*WIN_CL.length)](S.nickname);fb.style.color='#f9d423';
+    let pt='🚗 +1000'+(dp?' 💎 +'+dp+' obtížnost':'')+' ⚡ +'+tb+' rychlost';if(bonusPts>0)pt+=' 💥 +'+bonusPts+' bonus';
+    document.getElementById('g-pts').textContent=pt;
+    const _vkL=S.streak===10?'streak10':S.streak===7?'streak7':S.streak===6?'streak6':S.streak===5?'streak5':S.streak===3?'streak3':'correct';
+    snd('correct');speak(_vkL);launchConfetti(60);ansFlash(true);popEmoji(true);updateStreakAura();
+  } else {
+    S.streak=0;document.getElementById('g-str').textContent='🔥 0';
+    fb.textContent=LOSE_CL[Math.floor(Math.random()*LOSE_CL.length)](S.nickname);fb.style.color='#f87171';
+    document.getElementById('g-pts').textContent='Správně: '+q.n;
+    snd('wrong');speak('wrong');ansFlash(false);popEmoji(false);updateStreakAura();
+  }
+  setTimeout(()=>{
+    const nb=document.getElementById('next-btn');
+    nb.textContent=isLast?'🏆 Výsledky':'Další logo ➡️';nb.classList.add('vis');
+  },900);
+}
+
+/* ═══════════════════════════════
    LOGO CLUB PHASE (logoclub mode)
 ═══════════════════════════════ */
 function showLogoClub(){
@@ -2717,7 +3003,7 @@ function onLogoClubAns(ok,q){
    NAVIGATION
 ═══════════════════════════════ */
 function nextPhase(){
-  if(S.phase==='logoclub'){
+  if(S.phase==='logoclub'||S.phase==='logocar'){
     nextQ();
   } else if(S.phase==='flag'){
     if(S.mode==='football'&&S.flagOk) showClub();
@@ -2798,7 +3084,7 @@ function endGame(){
   const etEl=document.getElementById('e-time');
   if(etEl) etEl.textContent=S.totalSec>0?'⏱️ Čas hry: '+fmtMs(S.totalSec):'';
   const tot=S.round.length;
-  const pct=S.mode==='football'?(S.corrFl+S.corrCl+S.corrPl)/(tot*3):S.mode==='logoclub'?S.corrCl/tot:S.corrCnt/tot;
+  const pct=S.mode==='football'?(S.corrFl+S.corrCl+S.corrPl)/(tot*3):(S.mode==='logoclub'||S.mode==='logocar')?S.corrCl/tot:S.corrCnt/tot;
   let trophy,stars;
   if(pct>=.9){trophy='🏆';stars='⭐⭐⭐';}
   else if(pct>=.6){trophy='🥈';stars='⭐⭐';}
@@ -2840,7 +3126,7 @@ function endGame(){
   const retrainEndBtn=document.getElementById('retrain-end-btn');
   if(retrainEndBtn){
     const wrongCnt=S.round.filter(q=>!S.resultMap[q.n]).length;
-    retrainEndBtn.style.display=(wrongCnt>0&&S.mode!=='training'&&S.mode!=='football'&&S.mode!=='logoclub')?'':'none';
+    retrainEndBtn.style.display=(wrongCnt>0&&S.mode!=='training'&&S.mode!=='football'&&S.mode!=='logoclub'&&S.mode!=='logocar')?'':'none';
     if(wrongCnt>0) retrainEndBtn.textContent=`🎯 Procvičit chyby (${wrongCnt})`;
   }
   S.isRecord=S.mode!=='training'?saveScore():false;
@@ -2882,7 +3168,7 @@ function showSummary(){
   document.getElementById('sum-avatar').textContent=S.avatar;
   document.getElementById('sum-nick').textContent=S.nickname;
   const correct=S.round.length-wrongList.length;
-  document.getElementById('sum-score').textContent=`${correct} / ${S.round.length} ${S.mode==='logoclub'?'log':'vlajek'} správně`;
+  document.getElementById('sum-score').textContent=`${correct} / ${S.round.length} ${(S.mode==='logoclub'||S.mode==='logocar')?'log':'vlajek'} správně`;
   const trainBtn=document.getElementById('sum-train-btn');
   const retrainBtn=document.getElementById('sum-retrain-btn');
   if(wrongList.length>0&&S.mode!=='training'){
@@ -2941,7 +3227,7 @@ function saveScore(){
       localStorage.setItem('fgv2_blitz',JSON.stringify(rows.slice(0,20)));
       return prevBest>0&&S.score>prevBest;
     }
-    const lbKey=S.mode==='football'?'fgv2_fotbal':S.mode==='logoclub'?'fgv2_logo':'fgv2';
+    const lbKey=S.mode==='football'?'fgv2_fotbal':(S.mode==='logoclub'||S.mode==='logocar')?'fgv2_logo':'fgv2';
     const rows=JSON.parse(localStorage.getItem(lbKey)||'[]');
     const prevBest=rows.length?rows[0].sc:0;
     if(S.mode==='football'){
@@ -2989,13 +3275,13 @@ async function goLB(mode){
     }catch(e){list.innerHTML='<div style="color:rgba(255,255,255,.4);text-align:center;padding:20px">Síň slávy nedostupná.</div>';}
     return;
   }
-  const lbKey=m==='football'?'fgv2_fotbal':m==='logoclub'?'fgv2_logo':'fgv2';
+  const lbKey=m==='football'?'fgv2_fotbal':(m==='logoclub'||m==='logocar')?'fgv2_logo':'fgv2';
   const medals=['🥇','🥈','🥉'];
   // Try Firebase first
   const fbRows=await fbLeaderboard(m);
   if(fbRows.length>0){
     list.innerHTML='';
-    const modeField=m==='football'?'bestScoreFootball':m==='logoclub'?'bestScoreLogo':'bestScoreFlag';
+    const modeField=m==='football'?'bestScoreFootball':(m==='logoclub'||m==='logocar')?'bestScoreLogo':'bestScoreFlag';
     fbRows.forEach((r,i)=>{
       const row=document.createElement('div');row.className='lb-row';
       const sc=r[modeField]||0;
@@ -3211,7 +3497,7 @@ function shareResult(){
   ctx.textAlign='left'; ctx.fillText(nick,pX+44+10,812); ctx.restore();
 
   // Mode
-  const ml=S.mode==='football'?'⚽ Fotbalový speciál':S.mode==='logoclub'?'🏆 Loga klubů':'🌍 Vlajky';
+  const ml=S.mode==='football'?'⚽ Fotbalový speciál':S.mode==='logoclub'?'🏆 Loga klubů':S.mode==='logocar'?'🚗 Loga aut':'🌍 Vlajky';
   txt(ml,W/2,898,30,'rgba(255,255,255,.38)','600');
 
   // URL
