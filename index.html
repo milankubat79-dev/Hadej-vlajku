@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🌍 Hádej Vlajku!</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0d1b2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Hádej Vlajku">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
 <!-- Firebase compat SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -246,6 +252,18 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#1a1a2e,#
 #auth-modal { display: none; }
 #auth-modal.show { display: flex; }
 
+/* ══ MY STATS ══ */
+.ms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:500px;}
+.ms-tile{background:rgba(255,255,255,.08);border-radius:18px;padding:14px 8px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.ms-tile-ico{font-size:1.5rem;}
+.ms-tile-val{font-size:1.25rem;font-weight:900;color:#ffd700;line-height:1.1;}
+.ms-tile-lbl{font-size:.6rem;font-weight:700;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.8px;}
+.ms-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.06);border-radius:14px;padding:11px 13px;margin-bottom:7px;width:100%;max-width:500px;}
+.ms-row-mode{font-size:1.2rem;}
+.ms-row-info{flex:1;}
+.ms-row-nm{font-size:.82rem;font-weight:800;color:rgba(255,255,255,.85);}
+.ms-row-meta{font-size:.68rem;color:rgba(255,255,255,.4);margin-top:1px;}
+.ms-row-sc{font-size:1rem;font-weight:900;color:#ffd700;}
 /* ══ RESPONSIVE — MOBILE ══ */
 @media (max-width: 480px) {
   body { font-size: 15px; }
@@ -338,6 +356,8 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#1a1a2e,#
           <div id="auth-nm" style="font-weight:900;font-size:1.1rem;"></div>
           <div id="auth-stats" style="font-size:.75rem;color:rgba(255,255,255,.5);margin-top:2px;"></div>
         </div>
+        <button class="sel-btn" style="padding:8px 14px;font-size:.78rem;" onclick="showMyStats()">📊 Statistiky</button>
+        <button class="sel-btn" style="padding:8px 14px;font-size:.78rem;" onclick="showPassport()">🗺️ Pas</button>
         <button class="sel-btn" style="padding:8px 14px;font-size:.78rem;" onclick="doLogout()">Odhlásit</button>
       </div>
     </div>
@@ -473,6 +493,7 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#1a1a2e,#
     <button class="ghost-btn" onclick="goLB()">🏆 Síň slávy</button>
     <button class="ghost-btn" id="share-btn" onclick="shareResult()" style="display:none">📤 Sdílet výsledek</button>
   </div>
+  <button class="ghost-btn" id="retrain-end-btn" onclick="retrainFromEnd()" style="display:none;margin-top:4px;width:100%;background:linear-gradient(135deg,rgba(99,102,241,.25),rgba(67,56,202,.25));border-color:rgba(99,102,241,.5);">🎯 Procvičit chyby</button>
   <button class="ghost-btn" onclick="showScreen('sw')" style="margin-top:4px;width:100%">🏠 Domovská stránka</button>
 </div>
 
@@ -489,6 +510,30 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#1a1a2e,#
   </div>
   <div class="lb-list" id="lb-list"></div>
   <button class="ghost-btn" onclick="showScreen('sw')" style="margin-top:18px">← Zpět</button>
+</div>
+
+<!-- ══ MY STATS ══ -->
+<div id="sms" class="screen">
+  <div style="font-size:2rem;margin-bottom:4px;" id="ms-av">🦁</div>
+  <div style="font-size:1.4rem;font-weight:900;color:#ffd700;" id="ms-nm"></div>
+  <div style="font-size:.75rem;color:rgba(255,255,255,.4);margin-bottom:18px;" id="ms-since"></div>
+  <!-- stat tiles -->
+  <div class="ms-grid" id="ms-tiles"></div>
+  <!-- recent games -->
+  <div style="width:100%;max-width:500px;margin-top:22px;">
+    <div style="font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,.4);margin-bottom:10px;">📋 Posledních 10 her</div>
+    <div id="ms-history"></div>
+  </div>
+  <button class="ghost-btn" onclick="showScreen('sw')" style="margin-top:22px;">← Zpět</button>
+</div>
+
+<!-- PASSPORT SCREEN -->
+<div id="pas" class="screen">
+  <div style="font-size:2.4rem;margin-bottom:4px;">🗺️</div>
+  <div style="font-size:1.4rem;font-weight:900;color:#ffd700;">Cestovatelský pas</div>
+  <div style="font-size:.75rem;color:rgba(255,255,255,.4);margin-bottom:18px;">Vlajky poznané ve vlajkovém režimu</div>
+  <div id="pas-content" style="width:100%;max-width:500px;"></div>
+  <button class="ghost-btn" onclick="showScreen('sw')" style="margin-top:22px;">← Zpět</button>
 </div>
 
 <!-- AUTH MODAL -->
@@ -528,9 +573,9 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#1a1a2e,#
    console.firebase.google.com → Project Settings → Web app
 ═══════════════════════════════ */
 const FB_CFG = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
+  apiKey: "AIzaSyA2bQ_ujAXe6nEMaLkRTWMaggDyy9Y_dfY",
+  authDomain: "hadej-vlajku.firebaseapp.com",
+  projectId: "hadej-vlajku",
 };
 let _db = null;
 function fbDb() {
@@ -561,6 +606,49 @@ function _saveCache(key,obj){ try { localStorage.setItem(key, JSON.stringify(obj
 let _badgeCache  = _loadCache(BADGE_CACHE_KEY);
 let _playerCache = _loadCache(PLAYER_CACHE_KEY);
 let _cityCache   = _loadCache(CITY_CACHE_KEY);
+const VISITED_FLAGS_KEY = 'fgv2_visited_flags';
+let _visitedFlags = new Set(JSON.parse(localStorage.getItem(VISITED_FLAGS_KEY)||'[]'));
+function _saveVisitedFlags(){ try{localStorage.setItem(VISITED_FLAGS_KEY,JSON.stringify([..._visitedFlags]));}catch(e){} }
+const CONTINENT_TOTALS = {eu:47,as:47,am:35,af:53,oc:14};
+// Hardcoded correct logo overrides (bypasses API chain and cache)
+// Keys = sdb name (used as cacheKey in loadWikiPhoto)
+const LOGO_OVERRIDES = {
+  // Evropa
+  'Paris Saint-Germain': 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Paris_Saint-Germain_F.C..svg/200px-Paris_Saint-Germain_F.C..svg.png',
+  // Ameriky
+  'Club America':        'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Club_Am%C3%A9rica_crest.svg/200px-Club_Am%C3%A9rica_crest.svg.png',
+  'Flamengo':            'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Flamengo_braz_logo.svg/200px-Flamengo_braz_logo.svg.png',
+  'Boca Juniors':        'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Boca_Juniors_logo.svg/200px-Boca_Juniors_logo.svg.png',
+  'River Plate':         'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/River_Plate_logo.svg/200px-River_Plate_logo.svg.png',
+  'Corinthians':         'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Sport_Club_Corinthians_Paulista_crest.svg/200px-Sport_Club_Corinthians_Paulista_crest.svg.png',
+  'Palmeiras':           'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Palmeiras_logo.svg/200px-Palmeiras_logo.svg.png',
+  'Santos':              'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Santos_FC_logo.svg/200px-Santos_FC_logo.svg.png',
+  'Sao Paulo':           'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Brasao_do_Sao_Paulo_Futebol_Clube.svg/200px-Brasao_do_Sao_Paulo_Futebol_Clube.svg.png',
+  'Atletico Mineiro':    'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Atletico_mineiro_galo.png/200px-Atletico_mineiro_galo.png',
+  'Fluminense':          'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Fluminense_FC_logo.svg/200px-Fluminense_FC_logo.svg.png',
+  'Botafogo':            'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Botafogo_de_Futebol_e_Regatas.svg/200px-Botafogo_de_Futebol_e_Regatas.svg.png',
+  'Internacional':       'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Sport_Club_Internacional.svg/200px-Sport_Club_Internacional.svg.png',
+  'Gremio':              'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Gremio_foot-ball_porto_alegrense_logo.svg/200px-Gremio_foot-ball_porto_alegrense_logo.svg.png',
+  'Guadalajara':         'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/CD_Guadalajara_logo.svg/200px-CD_Guadalajara_logo.svg.png',
+  'Cruz Azul':           'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Cruz_Azul.svg/200px-Cruz_Azul.svg.png',
+  'Nacional':            'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Club_Nacional_de_Football_logo.svg/200px-Club_Nacional_de_Football_logo.svg.png',
+  'Peñarol':             'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/CA_Penarol_logo.svg/200px-CA_Penarol_logo.svg.png',
+  'Racing Club':         'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Racing_Club_de_Avellaneda_logo.svg/200px-Racing_Club_de_Avellaneda_logo.svg.png',
+  'Independiente':       'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Escudo_del_Club_Atl%C3%A9tico_Independiente.svg/200px-Escudo_del_Club_Atl%C3%A9tico_Independiente.svg.png',
+  'LA Galaxy':           'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/LA_Galaxy_logo.svg/200px-LA_Galaxy_logo.svg.png',
+  'CF Montreal':         'https://upload.wikimedia.org/wikipedia/en/thumb/9/92/CF_Montr%C3%A9al.svg/200px-CF_Montr%C3%A9al.svg.png',
+  'Colo Colo':           'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/CSD_Colo-Colo_logo.svg/200px-CSD_Colo-Colo_logo.svg.png',
+  'Millonarios':         'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Millonarios_FC_logo.svg/200px-Millonarios_FC_logo.svg.png',
+  'LDU Quito':           'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/LDU_Quito.svg/200px-LDU_Quito.svg.png',
+};
+// Clear any stale wrong entries from cache
+(function(){
+  Object.keys(LOGO_OVERRIDES).forEach(k=>{
+    if(_badgeCache[k] && _badgeCache[k] !== LOGO_OVERRIDES[k]){
+      delete _badgeCache[k]; _saveCache(BADGE_CACHE_KEY, _badgeCache);
+    }
+  });
+})();
 function _saveBadgeCache(){ _saveCache(BADGE_CACHE_KEY, _badgeCache); }
 function _savePlayerCache(){ _saveCache(PLAYER_CACHE_KEY, _playerCache); }
 function _saveCityCache(){ _saveCache(CITY_CACHE_KEY, _cityCache); }
@@ -614,10 +702,148 @@ async function fbSaveGame(gameData) {
     const modeField = gameData.blitz?'bestScoreBlitz':gameData.mode==='football'?'bestScoreFootball':gameData.mode==='logoclub'?'bestScoreLogo':'bestScoreFlag';
     const ref = db.collection('players').doc(key);
     const snap = await ref.get();
-    const upd = { totalGames: firebase.firestore.FieldValue.increment(1), totalScore: firebase.firestore.FieldValue.increment(gameData.score), lastPlayed: firebase.firestore.FieldValue.serverTimestamp() };
+    const upd = { totalGames: firebase.firestore.FieldValue.increment(1), totalScore: firebase.firestore.FieldValue.increment(gameData.score), totalPlaySec: firebase.firestore.FieldValue.increment(gameData.elapsedSec||0), lastPlayed: firebase.firestore.FieldValue.serverTimestamp() };
     if (!snap.exists || (snap.data()[modeField]||0) < gameData.score) upd[modeField] = gameData.score;
+    const prevStreak = snap.exists ? (snap.data().maxStreakEver||0) : 0;
+    if ((gameData.maxStreak||0) > prevStreak) upd.maxStreakEver = gameData.maxStreak;
+    // Sync passport visited flags
+    const visArr=[..._visitedFlags];
+    if(visArr.length>0) upd.visitedFlags=firebase.firestore.FieldValue.arrayUnion(...visArr);
     await ref.update(upd);
   } catch(e) { console.warn('fbSaveGame error', e); }
+}
+
+function fmtTime(sec){
+  if(!sec||sec<60) return sec ? `${sec} s` : '—';
+  const h=Math.floor(sec/3600), m=Math.floor((sec%3600)/60);
+  if(h>0) return `${h} hod ${m} min`;
+  return `${m} min`;
+}
+function fmtDate(ts){
+  if(!ts) return '—';
+  const d=ts.toDate?ts.toDate():new Date(ts);
+  return d.toLocaleDateString('cs-CZ',{day:'numeric',month:'short',year:'numeric'});
+}
+function modeLabel(g){
+  if(g.blitz) return '⏱️ Časovka';
+  if(g.mode==='football') return '⚽ Fotbal';
+  if(g.mode==='logoclub') return '🏆 Loga';
+  return '🌍 Vlajky';
+}
+
+async function fbLoadMyHistory(nickname){
+  const db=fbDb(); if(!db) return {player:null,games:[]};
+  const key=nickKey(nickname);
+  try{
+    const [pSnap,gSnap]=await Promise.all([
+      db.collection('players').doc(key).get(),
+      db.collection('games').where('nicknameKey','==',key).orderBy('playedAt','desc').limit(10).get()
+    ]);
+    return {
+      player: pSnap.exists?pSnap.data():null,
+      games: gSnap.docs.map(d=>d.data())
+    };
+  }catch(e){
+    // If index not ready, fall back to player only
+    try{
+      const pSnap=await db.collection('players').doc(key).get();
+      return {player:pSnap.exists?pSnap.data():null, games:[]};
+    }catch(e2){ return {player:null,games:[]}; }
+  }
+}
+
+async function showMyStats(){
+  showScreen('sms');
+  document.getElementById('ms-av').textContent=S.avatar||'🦁';
+  document.getElementById('ms-nm').textContent=S.nickname||'';
+  document.getElementById('ms-tiles').innerHTML='<div style="color:rgba(255,255,255,.4);padding:20px;font-size:.9rem;">Načítám...</div>';
+  document.getElementById('ms-history').innerHTML='';
+  const {player,games}=await fbLoadMyHistory(S.nickname);
+  const p=player||{};
+  // Stat tiles
+  const tiles=[
+    {ico:'🎮',val:(p.totalGames||0).toString(),lbl:'Her celkem'},
+    {ico:'⏱️',val:fmtTime(p.totalPlaySec||0),lbl:'Čas u hry'},
+    {ico:'🔥',val:(p.maxStreakEver||0).toString(),lbl:'Max série'},
+    {ico:'🌍',val:(p.bestScoreFlag||0).toLocaleString('cs'),lbl:'Vlajky rekord'},
+    {ico:'⚽',val:(p.bestScoreFootball||0).toLocaleString('cs'),lbl:'Fotbal rekord'},
+    {ico:'🏆',val:(p.bestScoreLogo||0).toLocaleString('cs'),lbl:'Loga rekord'},
+  ];
+  const since=p.createdAt?`Hráč od: ${fmtDate(p.createdAt)}`:'';
+  document.getElementById('ms-since').textContent=since;
+  document.getElementById('ms-tiles').innerHTML=tiles.map(t=>`
+    <div class="ms-tile">
+      <div class="ms-tile-ico">${t.ico}</div>
+      <div class="ms-tile-val">${t.val}</div>
+      <div class="ms-tile-lbl">${t.lbl}</div>
+    </div>`).join('');
+  // Recent games
+  const hist=document.getElementById('ms-history');
+  if(!games.length){
+    hist.innerHTML='<div style="color:rgba(255,255,255,.35);font-size:.85rem;text-align:center;padding:14px;">Žádné hry zatím nezaznamenány</div>';
+    return;
+  }
+  hist.innerHTML=games.map(g=>{
+    const pct=g.totalQuestions>0?Math.round((g.correctFlags||g.corrCnt||g.correctClubs||0)/g.totalQuestions*100):0;
+    const date=fmtDate(g.playedAt);
+    return `<div class="ms-row">
+      <div class="ms-row-mode">${modeLabel(g)}</div>
+      <div class="ms-row-info">
+        <div class="ms-row-nm">${g.correctFlags||g.corrCnt||g.correctClubs||0}/${g.totalQuestions||0} správně · ${pct}%</div>
+        <div class="ms-row-meta">${date} · série max ${g.maxStreak||0} · ${fmtTime(g.elapsedSec||0)}</div>
+      </div>
+      <div class="ms-row-sc">${(g.score||0).toLocaleString('cs')}</div>
+    </div>`;
+  }).join('');
+}
+
+async function showPassport(){
+  showScreen('pas');
+  const el=document.getElementById('pas-content');
+  el.innerHTML='<div style="color:rgba(255,255,255,.4);padding:20px;text-align:center;">Načítám...</div>';
+  // Merge local + Firestore visited flags
+  let visited=new Set(_visitedFlags);
+  try{
+    const db=fbDb();
+    if(db&&S.nickname){
+      const snap=await db.collection('players').doc(nickKey(S.nickname)).get();
+      if(snap.exists&&snap.data().visitedFlags){
+        snap.data().visitedFlags.forEach(f=>visited.add(f));
+        visited.forEach(f=>_visitedFlags.add(f));
+        _saveVisitedFlags();
+      }
+    }
+  }catch(e){}
+  // Count per continent
+  const cnt={eu:0,as:0,am:0,af:0,oc:0};
+  for(const c of C){ if(visited.has(c.n)) cnt[c.ct]=(cnt[c.ct]||0)+1; }
+  const totalVisited=Object.values(cnt).reduce((a,b)=>a+b,0);
+  const totalAll=196;
+  const pctWorld=Math.round(totalVisited/totalAll*100);
+  let html=`<div style="background:rgba(255,215,0,.12);border:2px solid rgba(255,215,0,.3);border-radius:20px;padding:18px 20px;text-align:center;margin-bottom:16px;">
+    <div style="font-size:2.4rem;font-weight:900;color:#ffd700;line-height:1;">${totalVisited}<span style="font-size:1rem;font-weight:700;color:rgba(255,255,255,.45);"> / ${totalAll}</span></div>
+    <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,.45);margin:4px 0 10px;">Celý svět</div>
+    <div style="background:rgba(255,255,255,.1);border-radius:99px;height:10px;overflow:hidden;">
+      <div style="background:linear-gradient(90deg,#ffd700,#f59e0b);height:100%;width:${pctWorld}%;border-radius:99px;"></div>
+    </div>
+    <div style="font-size:.72rem;color:rgba(255,255,255,.35);margin-top:6px;">${pctWorld} % prozkoumáno</div>
+  </div>`;
+  for(const [ct,label] of [['eu','🌍 Evropa'],['as','🌏 Asie'],['am','🌎 Amerika'],['af','🌍 Afrika'],['oc','🌊 Oceánie']]){
+    const got=cnt[ct]||0;
+    const tot=CONTINENT_TOTALS[ct];
+    const pct=tot>0?Math.round(got/tot*100):0;
+    html+=`<div style="background:rgba(255,255,255,.06);border-radius:16px;padding:13px 16px;margin-bottom:8px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div style="font-size:.87rem;font-weight:800;">${label}</div>
+        <div style="font-size:.87rem;color:#ffd700;font-weight:900;">${got} / ${tot}</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:99px;height:7px;overflow:hidden;">
+        <div style="background:linear-gradient(90deg,#ffd700,#f59e0b);height:100%;width:${pct}%;border-radius:99px;"></div>
+      </div>
+    </div>`;
+  }
+  if(totalVisited===0) html+='<div style="font-size:.82rem;color:rgba(255,255,255,.35);text-align:center;margin-top:12px;">Zahraj vlajkový režim a sbírej razítka! 🌍</div>';
+  el.innerHTML=html;
 }
 
 async function fbLeaderboard(mode) {
@@ -1912,6 +2138,10 @@ function onFlagAns(ok,q){
   document.getElementById('g-reveal').textContent=q.n;
   S.resultMap[q.n]=ok;
   if(!ok&&S._lastChosen!==undefined) S.wrongAns[q.n]=S._lastChosen;
+  // Track visited country in passport (flag mode only)
+  if(ok && S.mode!=='football' && S.mode!=='logoclub'){
+    _visitedFlags.add(q.n); _saveVisitedFlags();
+  }
   const fb=document.getElementById('g-fb');
   const isLast=S.qIdx>=S.round.length-1;
   if(ok){
@@ -1973,7 +2203,7 @@ function fr_rot(el){
    CAPITAL PHASE (flag mode)
 ═══════════════════════════════ */
 function showCapital(){
-  S.phase='cap';S.answered=false;
+  S.phase='cap';S.answered=false;S.fiftyUsedThisQ=false;updatePowerupUI();
   // Clear any stale caption from previous question immediately
   document.getElementById('g-city-cap').textContent='';
   const q=S.round[S.qIdx];
@@ -2325,7 +2555,7 @@ function onCapAns(ok,q){
    CLUB PHASE (football mode)
 ═══════════════════════════════ */
 function showClub(){
-  S.phase='club';S.answered=false;
+  S.phase='club';S.answered=false;S.fiftyUsedThisQ=false;updatePowerupUI();
   const q=S.round[S.qIdx];
   document.getElementById('g-flag-card').style.display='none';
   document.getElementById('g-fb').textContent='';
@@ -2375,7 +2605,7 @@ function onClubAns(ok,q){
    PLAYER PHASE (football mode)
 ═══════════════════════════════ */
 function showPlayer(){
-  S.phase='player';S.answered=false;
+  S.phase='player';S.answered=false;S.fiftyUsedThisQ=false;updatePowerupUI();
   const q=S.round[S.qIdx];
   document.getElementById('g-flag-card').style.display='none';
   document.getElementById('g-fb').textContent='';
@@ -2605,7 +2835,14 @@ function endGame(){
     document.getElementById('s-stat3').textContent=S.maxStr;
     document.getElementById('s-lbl3').textContent='🔥 Max série';
   }
-  document.getElementById('record-banner').style.display='none';document.getElementById('g-record-tracker').classList.remove('active');const shareBtn=document.getElementById('share-btn');if(shareBtn)shareBtn.style.display=S.mode==='training'?'none':'';
+  document.getElementById('record-banner').style.display='none';document.getElementById('g-record-tracker').classList.remove('active');
+  const shareBtn=document.getElementById('share-btn');if(shareBtn)shareBtn.style.display=S.mode==='training'?'none':'';
+  const retrainEndBtn=document.getElementById('retrain-end-btn');
+  if(retrainEndBtn){
+    const wrongCnt=S.round.filter(q=>!S.resultMap[q.n]).length;
+    retrainEndBtn.style.display=(wrongCnt>0&&S.mode!=='training'&&S.mode!=='football'&&S.mode!=='logoclub')?'':'none';
+    if(wrongCnt>0) retrainEndBtn.textContent=`🎯 Procvičit chyby (${wrongCnt})`;
+  }
   S.isRecord=S.mode!=='training'?saveScore():false;
   // Cloud save
   if (S.mode !== 'training' && S.nickname && fbDb()) {
@@ -2882,17 +3119,121 @@ function preloadFootballMedia(q){
 }
 
 /* ── Share Result ── */
+function _rrect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y);
+  ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);
+  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);
+  ctx.quadraticCurveTo(x,y,x+r,y);
+  ctx.closePath();
+}
+
 function shareResult(){
-  const modeLabel=S.mode==='football'?'Fotbalový speciál':S.mode==='logoclub'?'Loga klubů':'Hádej Vlajku!';
-  const text=`${S.avatar} ${S.nickname} právě hrál/a "${modeLabel}" a získal/a ${S.score.toLocaleString('cs')} bodů! 🌍 Dokážeš to překonat?`;
-  const url=window.location.href;
-  if(navigator.share){
-    navigator.share({title:'Hádej Vlajku!',text,url}).catch(()=>{});
-  } else {
-    navigator.clipboard?.writeText(text+'\n'+url).then(()=>{
-      showStreakToast('📋 Zkopírováno!');
-    }).catch(()=>{ showStreakToast('📤 '+text); });
-  }
+  const W=1080,H=1080;
+  const cv=document.createElement('canvas');
+  cv.width=W; cv.height=H;
+  const ctx=cv.getContext('2d');
+
+  // Background
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#0b1829'); bg.addColorStop(1,'#0e1f3a');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+  // Gold glow
+  const gl=ctx.createRadialGradient(W/2,H*0.43,0,W/2,H*0.43,380);
+  gl.addColorStop(0,'rgba(255,215,0,.14)'); gl.addColorStop(1,'rgba(255,215,0,0)');
+  ctx.fillStyle=gl; ctx.fillRect(0,0,W,H);
+
+  // Outer border
+  ctx.strokeStyle='rgba(255,215,0,.45)'; ctx.lineWidth=4;
+  ctx.strokeRect(28,28,W-56,H-56);
+  // Inner border
+  ctx.strokeStyle='rgba(255,215,0,.12)'; ctx.lineWidth=1;
+  ctx.strokeRect(38,38,W-76,H-76);
+
+  const txt=(t,x,y,sz,col,w='700',al='center')=>{
+    ctx.save(); ctx.fillStyle=col;
+    ctx.font=`${w} ${sz}px -apple-system,"Helvetica Neue",Arial,sans-serif`;
+    ctx.textAlign=al; ctx.fillText(t,x,y); ctx.restore();
+  };
+  const emo=(e,x,y,sz)=>{
+    ctx.save(); ctx.font=`${sz}px serif`; ctx.textAlign='center'; ctx.fillText(e,x,y); ctx.restore();
+  };
+
+  // Header
+  txt('🌍 HÁDEJ VLAJKU!',W/2,108,42,'rgba(255,255,255,.4)');
+  ctx.strokeStyle='rgba(255,215,0,.3)'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(110,132); ctx.lineTo(W-110,132); ctx.stroke();
+
+  // Trophy + stars
+  emo(document.getElementById('e-trophy').textContent||'🏆',W/2,290,120);
+  emo(document.getElementById('e-stars').textContent||'⭐⭐⭐',W/2,368,52);
+
+  // Score
+  txt(S.score.toLocaleString('cs'),W/2,490,108,'#ffd700','900');
+  txt('BODŮ',W/2,544,30,'rgba(255,255,255,.38)','600');
+
+  // Divider
+  ctx.strokeStyle='rgba(255,255,255,.09)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(110,575); ctx.lineTo(W-110,575); ctx.stroke();
+
+  // Stat boxes
+  const stats=[
+    [document.getElementById('s-stat1').textContent, document.getElementById('s-lbl1').textContent],
+    [document.getElementById('s-stat2').textContent, document.getElementById('s-lbl2').textContent],
+    [document.getElementById('s-stat3').textContent, document.getElementById('s-lbl3').textContent],
+  ];
+  const cW=W/3;
+  stats.forEach(([v,l],i)=>{
+    const cx=cW*i+cW/2;
+    ctx.save(); ctx.fillStyle='rgba(255,255,255,.07)';
+    _rrect(ctx,cW*i+44,597,cW-88,128,22); ctx.fill(); ctx.restore();
+    txt(v,cx,665,44,'#ffd700','900');
+    txt(l,cx,706,22,'rgba(255,255,255,.42)','600');
+  });
+
+  // Player pill
+  ctx.save(); ctx.fillStyle='rgba(255,255,255,.07)';
+  _rrect(ctx,(W-460)/2,760,460,78,39); ctx.fill(); ctx.restore();
+
+  const nick=S.nickname||'';
+  ctx.font='700 34px -apple-system,Arial,sans-serif';
+  const nW=ctx.measureText(nick).width;
+  const totW=44+10+nW;
+  const pX=W/2-totW/2;
+  emo(S.avatar||'🦁',pX+22,812,42);
+  ctx.save(); ctx.fillStyle='white';
+  ctx.font='700 34px -apple-system,Arial,sans-serif';
+  ctx.textAlign='left'; ctx.fillText(nick,pX+44+10,812); ctx.restore();
+
+  // Mode
+  const ml=S.mode==='football'?'⚽ Fotbalový speciál':S.mode==='logoclub'?'🏆 Loga klubů':'🌍 Vlajky';
+  txt(ml,W/2,898,30,'rgba(255,255,255,.38)','600');
+
+  // URL
+  txt('milankubat79-dev.github.io/Hadej-vlajku',W/2,958,22,'rgba(255,255,255,.22)','400');
+
+  // Share
+  cv.toBlob(async blob=>{
+    const file=new File([blob],'hadej-vlajku.png',{type:'image/png'});
+    const sd={files:[file],title:'Hádej vlajku!',
+      text:`${S.avatar||'🌍'} ${nick} – ${S.score.toLocaleString('cs')} bodů! Zkus to taky 👇`};
+    if(navigator.canShare&&navigator.canShare(sd)){
+      try{ await navigator.share(sd); }
+      catch(e){ if(e.name!=='AbortError') _dlShare(cv); }
+    } else { _dlShare(cv); }
+  },'image/png');
+}
+
+function _dlShare(cv){
+  const a=document.createElement('a');
+  a.download='hadej-vlajku-vysledek.png';
+  a.href=cv.toDataURL('image/png');
+  a.click();
 }
 
 /* ── Live Record Tracker ── */
@@ -2992,6 +3333,10 @@ function loadWikiPhoto(wikiTitle,caption,flagEmoji,fallbackEmoji,style,sdbName){
   const els=_wikiSetup(caption,flagEmoji,fallbackEmoji,isLogo,isLogo/*hideLabel for logo mode*/);
   if(isLogo){
     const cacheKey=sdbName||wikiTitle;
+    if(LOGO_OVERRIDES[cacheKey]){
+      _wikiApply(els,LOGO_OVERRIDES[cacheKey],fallbackEmoji);
+      return;
+    }
     const cached=_badgeCache[cacheKey];
     if(cached){
       _wikiApply(els,cached,fallbackEmoji);
@@ -3044,6 +3389,10 @@ function quitCancel(){document.getElementById('quit-modal').style.display='none'
 function replayGame(){
   if(S.mode==='training'){S.mode=S.prevMode||'flag';}
   startGame();
+}
+function retrainFromEnd(){
+  const wrong=S.round.filter(q=>!S.resultMap[q.n]);
+  if(wrong.length>0) startTraining(wrong);
 }
 
 /* ═══════════════════════════════
@@ -3163,7 +3512,7 @@ const _EN_RE=/\b(GOAT|SIX|SEVEN|PERFECT GAME|PERFECT|ABSOLUTE CINEMA|SIGMA|STREA
 
 function speakText(text,delay=200){
   if(S.muted||typeof speechSynthesis==='undefined'||!text)return;
-  const clean=text.replace(/[\u{1F300}-\u{1FAFF}]/gu,'').trim();
+  const clean=text.replace(/[\u{1F300}-\u{1FAFF}]/gu,'').replace(/[!?.,:;…–—]/g,' ').replace(/\s+/g,' ').trim();
   setTimeout(()=>{
     try{
       speechSynthesis.cancel();
@@ -3490,6 +3839,13 @@ function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classL
     applyLogin(sess.nickname,sess.avatar||'🦁');
   }
 })();
+
+// Register Service Worker for PWA / offline support
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
 </script>
 <footer style="text-align:center;padding:18px 16px 24px;color:rgba(255,255,255,.35);font-size:.8rem;letter-spacing:.04em;">
   Vyrobil <strong style="color:rgba(255,255,255,.5);">Milan Kubát</strong> · 2026
