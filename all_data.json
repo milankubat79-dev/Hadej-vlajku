@@ -1,0 +1,3857 @@
+{
+  "cars": [
+    {
+      "name": "Volkswagen",
+      "wiki": "Volkswagen",
+      "slug": "volkswagen"
+    },
+    {
+      "name": "BMW",
+      "wiki": "BMW",
+      "slug": "bmw"
+    },
+    {
+      "name": "Mercedes-Benz",
+      "wiki": "Mercedes-Benz",
+      "slug": "mercedes-benz"
+    },
+    {
+      "name": "Audi",
+      "wiki": "Audi",
+      "slug": "audi"
+    },
+    {
+      "name": "Porsche",
+      "wiki": "Porsche",
+      "slug": "porsche"
+    },
+    {
+      "name": "Opel",
+      "wiki": "Opel",
+      "slug": "opel"
+    },
+    {
+      "name": "Smart",
+      "wiki": "Smart automobile brand",
+      "slug": "smart"
+    },
+    {
+      "name": "Maybach",
+      "wiki": "Mercedes-Maybach",
+      "slug": "maybach"
+    },
+    {
+      "name": "Alpina",
+      "wiki": "Alpina automobile manufacturer",
+      "slug": "alpina"
+    },
+    {
+      "name": "Brabus",
+      "wiki": "Brabus",
+      "slug": "brabus"
+    },
+    {
+      "name": "Trabant",
+      "wiki": "Trabant",
+      "slug": "trabant"
+    },
+    {
+      "name": "Borgward",
+      "wiki": "Borgward",
+      "slug": "borgward"
+    },
+    {
+      "name": "Wiesmann",
+      "wiki": "Wiesmann",
+      "slug": "wiesmann"
+    },
+    {
+      "name": "NSU",
+      "wiki": "NSU Motorenwerke AG",
+      "slug": "nsu"
+    },
+    {
+      "name": "Gumpert",
+      "wiki": "Gumpert Sportwagenmanufaktur",
+      "slug": "gumpert"
+    },
+    {
+      "name": "RUF",
+      "wiki": "RUF Automobile",
+      "slug": "ruf"
+    },
+    {
+      "name": "Ferrari",
+      "wiki": "Ferrari",
+      "slug": "ferrari"
+    },
+    {
+      "name": "Lamborghini",
+      "wiki": "Lamborghini",
+      "slug": "lamborghini"
+    },
+    {
+      "name": "Maserati",
+      "wiki": "Maserati",
+      "slug": "maserati"
+    },
+    {
+      "name": "Alfa Romeo",
+      "wiki": "Alfa Romeo",
+      "slug": "alfa-romeo"
+    },
+    {
+      "name": "Fiat",
+      "wiki": "Fiat Automobiles",
+      "slug": "fiat"
+    },
+    {
+      "name": "Lancia",
+      "wiki": "Lancia",
+      "slug": "lancia"
+    },
+    {
+      "name": "Pagani",
+      "wiki": "Pagani",
+      "slug": "pagani"
+    },
+    {
+      "name": "Abarth",
+      "wiki": "Abarth",
+      "slug": "abarth"
+    },
+    {
+      "name": "De Tomaso",
+      "wiki": "De Tomaso",
+      "slug": "de-tomaso"
+    },
+    {
+      "name": "Pininfarina",
+      "wiki": "Pininfarina",
+      "slug": "pininfarina"
+    },
+    {
+      "name": "Autobianchi",
+      "wiki": "Autobianchi",
+      "slug": "autobianchi"
+    },
+    {
+      "name": "Bizzarrini",
+      "wiki": "Bizzarrini",
+      "slug": "bizzarrini"
+    },
+    {
+      "name": "Iso",
+      "wiki": "Iso Rivolta",
+      "slug": "iso"
+    },
+    {
+      "name": "Aston Martin",
+      "wiki": "Aston Martin",
+      "slug": "aston-martin"
+    },
+    {
+      "name": "Bentley",
+      "wiki": "Bentley Motors",
+      "slug": "bentley"
+    },
+    {
+      "name": "Rolls-Royce",
+      "wiki": "Rolls-Royce Motor Cars",
+      "slug": "rolls-royce"
+    },
+    {
+      "name": "Land Rover",
+      "wiki": "Land Rover",
+      "slug": "land-rover"
+    },
+    {
+      "name": "Jaguar",
+      "wiki": "Jaguar Cars",
+      "slug": "jaguar"
+    },
+    {
+      "name": "Mini",
+      "wiki": "Mini marque",
+      "slug": "mini"
+    },
+    {
+      "name": "Lotus",
+      "wiki": "Lotus Cars",
+      "slug": "lotus"
+    },
+    {
+      "name": "McLaren",
+      "wiki": "McLaren Automotive",
+      "slug": "mclaren"
+    },
+    {
+      "name": "TVR",
+      "wiki": "TVR",
+      "slug": "tvr"
+    },
+    {
+      "name": "Morgan",
+      "wiki": "Morgan Motor Company",
+      "slug": "morgan"
+    },
+    {
+      "name": "Caterham",
+      "wiki": "Caterham Cars",
+      "slug": "caterham"
+    },
+    {
+      "name": "Ineos",
+      "wiki": "Ineos Automotive",
+      "slug": "ineos"
+    },
+    {
+      "name": "Noble",
+      "wiki": "Noble car",
+      "slug": "noble"
+    },
+    {
+      "name": "Vauxhall",
+      "wiki": "Vauxhall Motors",
+      "slug": "vauxhall"
+    },
+    {
+      "name": "Austin",
+      "wiki": "Austin Motor Company",
+      "slug": "austin"
+    },
+    {
+      "name": "Triumph",
+      "wiki": "Triumph Motor Company",
+      "slug": "triumph"
+    },
+    {
+      "name": "Rover",
+      "wiki": "Rover Company",
+      "slug": "rover"
+    },
+    {
+      "name": "Ariel",
+      "wiki": "Ariel Motor Company",
+      "slug": "ariel"
+    },
+    {
+      "name": "BAC",
+      "wiki": "Briggs Automotive Company",
+      "slug": "bac"
+    },
+    {
+      "name": "Peugeot",
+      "wiki": "Peugeot",
+      "slug": "peugeot"
+    },
+    {
+      "name": "Citroen",
+      "wiki": "Citroen",
+      "slug": "citroen"
+    },
+    {
+      "name": "Renault",
+      "wiki": "Renault",
+      "slug": "renault"
+    },
+    {
+      "name": "DS",
+      "wiki": "DS Automobiles",
+      "slug": "ds"
+    },
+    {
+      "name": "Alpine",
+      "wiki": "Alpine automobile",
+      "slug": "alpine"
+    },
+    {
+      "name": "Bugatti",
+      "wiki": "Bugatti",
+      "slug": "bugatti"
+    },
+    {
+      "name": "Panhard",
+      "wiki": "Panhard",
+      "slug": "panhard"
+    },
+    {
+      "name": "Simca",
+      "wiki": "Simca",
+      "slug": "simca"
+    },
+    {
+      "name": "Matra",
+      "wiki": "Matra company",
+      "slug": "matra"
+    },
+    {
+      "name": "Talbot",
+      "wiki": "Talbot",
+      "slug": "talbot"
+    },
+    {
+      "name": "Volvo",
+      "wiki": "Volvo Cars",
+      "slug": "volvo"
+    },
+    {
+      "name": "Saab",
+      "wiki": "Saab Automobile",
+      "slug": "saab"
+    },
+    {
+      "name": "Koenigsegg",
+      "wiki": "Koenigsegg",
+      "slug": "koenigsegg"
+    },
+    {
+      "name": "Polestar",
+      "wiki": "Polestar company",
+      "slug": "polestar"
+    },
+    {
+      "name": "SEAT",
+      "wiki": "SEAT",
+      "slug": "seat"
+    },
+    {
+      "name": "Cupra",
+      "wiki": "Cupra automobile brand",
+      "slug": "cupra"
+    },
+    {
+      "name": "Hispano-Suiza",
+      "wiki": "Hispano-Suiza Cars",
+      "slug": "hispano-suiza"
+    },
+    {
+      "name": "Skoda",
+      "wiki": "Skoda Auto",
+      "slug": "skoda"
+    },
+    {
+      "name": "Tatra",
+      "wiki": "Tatra company",
+      "slug": "tatra"
+    },
+    {
+      "name": "Dacia",
+      "wiki": "Dacia brand",
+      "slug": "dacia"
+    },
+    {
+      "name": "Spyker",
+      "wiki": "Spyker",
+      "slug": "spyker"
+    },
+    {
+      "name": "Donkervoort",
+      "wiki": "Donkervoort",
+      "slug": "donkervoort"
+    },
+    {
+      "name": "Rimac",
+      "wiki": "Rimac Automobili",
+      "slug": "rimac"
+    },
+    {
+      "name": "Zenvo",
+      "wiki": "Zenvo Automotive",
+      "slug": "zenvo"
+    },
+    {
+      "name": "Zastava",
+      "wiki": "Zastava Cars",
+      "slug": "zastava"
+    },
+    {
+      "name": "FSO",
+      "wiki": "Fabryka Samochodow Osobowych",
+      "slug": "fso"
+    },
+    {
+      "name": "ZAZ",
+      "wiki": "ZAZ",
+      "slug": "zaz"
+    },
+    {
+      "name": "Toyota",
+      "wiki": "Toyota",
+      "slug": "toyota"
+    },
+    {
+      "name": "Honda",
+      "wiki": "Honda",
+      "slug": "honda"
+    },
+    {
+      "name": "Nissan",
+      "wiki": "Nissan",
+      "slug": "nissan"
+    },
+    {
+      "name": "Mazda",
+      "wiki": "Mazda",
+      "slug": "mazda"
+    },
+    {
+      "name": "Mitsubishi",
+      "wiki": "Mitsubishi Motors",
+      "slug": "mitsubishi"
+    },
+    {
+      "name": "Subaru",
+      "wiki": "Subaru",
+      "slug": "subaru"
+    },
+    {
+      "name": "Suzuki",
+      "wiki": "Suzuki",
+      "slug": "suzuki"
+    },
+    {
+      "name": "Lexus",
+      "wiki": "Lexus",
+      "slug": "lexus"
+    },
+    {
+      "name": "Daihatsu",
+      "wiki": "Daihatsu",
+      "slug": "daihatsu"
+    },
+    {
+      "name": "Isuzu",
+      "wiki": "Isuzu Motors",
+      "slug": "isuzu"
+    },
+    {
+      "name": "Infiniti",
+      "wiki": "Infiniti",
+      "slug": "infiniti"
+    },
+    {
+      "name": "Acura",
+      "wiki": "Acura",
+      "slug": "acura"
+    },
+    {
+      "name": "Yamaha",
+      "wiki": "Yamaha Motor Company",
+      "slug": "yamaha"
+    },
+    {
+      "name": "Mitsuoka",
+      "wiki": "Mitsuoka Motor",
+      "slug": "mitsuoka"
+    },
+    {
+      "name": "Ford",
+      "wiki": "Ford Motor Company",
+      "slug": "ford"
+    },
+    {
+      "name": "Chevrolet",
+      "wiki": "Chevrolet",
+      "slug": "chevrolet"
+    },
+    {
+      "name": "Dodge",
+      "wiki": "Dodge",
+      "slug": "dodge"
+    },
+    {
+      "name": "Jeep",
+      "wiki": "Jeep",
+      "slug": "jeep"
+    },
+    {
+      "name": "Tesla",
+      "wiki": "Tesla Inc.",
+      "slug": "tesla"
+    },
+    {
+      "name": "Cadillac",
+      "wiki": "Cadillac",
+      "slug": "cadillac"
+    },
+    {
+      "name": "Buick",
+      "wiki": "Buick",
+      "slug": "buick"
+    },
+    {
+      "name": "Lincoln",
+      "wiki": "Lincoln Motor Company",
+      "slug": "lincoln"
+    },
+    {
+      "name": "Chrysler",
+      "wiki": "Chrysler",
+      "slug": "chrysler"
+    },
+    {
+      "name": "GMC",
+      "wiki": "GMC automobile",
+      "slug": "gmc"
+    },
+    {
+      "name": "RAM",
+      "wiki": "Ram Trucks",
+      "slug": "ram"
+    },
+    {
+      "name": "Hummer",
+      "wiki": "Hummer",
+      "slug": "hummer"
+    },
+    {
+      "name": "Pontiac",
+      "wiki": "Pontiac automobile",
+      "slug": "pontiac"
+    },
+    {
+      "name": "Oldsmobile",
+      "wiki": "Oldsmobile",
+      "slug": "oldsmobile"
+    },
+    {
+      "name": "Mercury",
+      "wiki": "Mercury automobile",
+      "slug": "mercury"
+    },
+    {
+      "name": "Plymouth",
+      "wiki": "Plymouth automobile brand",
+      "slug": "plymouth"
+    },
+    {
+      "name": "Saturn",
+      "wiki": "Saturn Corporation",
+      "slug": "saturn"
+    },
+    {
+      "name": "Shelby",
+      "wiki": "Shelby car manufacturer",
+      "slug": "shelby"
+    },
+    {
+      "name": "DeLorean",
+      "wiki": "DeLorean Motor Company",
+      "slug": "delorean"
+    },
+    {
+      "name": "Rivian",
+      "wiki": "Rivian",
+      "slug": "rivian"
+    },
+    {
+      "name": "Lucid",
+      "wiki": "Lucid Motors",
+      "slug": "lucid"
+    },
+    {
+      "name": "Fisker",
+      "wiki": "Fisker Inc.",
+      "slug": "fisker"
+    },
+    {
+      "name": "AMC",
+      "wiki": "American Motors Corporation",
+      "slug": "amc"
+    },
+    {
+      "name": "Karma",
+      "wiki": "Karma Automotive",
+      "slug": "karma"
+    },
+    {
+      "name": "Packard",
+      "wiki": "Packard",
+      "slug": "packard"
+    },
+    {
+      "name": "Studebaker",
+      "wiki": "Studebaker",
+      "slug": "studebaker"
+    },
+    {
+      "name": "Hudson",
+      "wiki": "Hudson Motor Car Company",
+      "slug": "hudson"
+    },
+    {
+      "name": "Nash",
+      "wiki": "Nash Motors",
+      "slug": "nash"
+    },
+    {
+      "name": "Edsel",
+      "wiki": "Edsel",
+      "slug": "edsel"
+    },
+    {
+      "name": "Kaiser",
+      "wiki": "Kaiser automobile",
+      "slug": "kaiser"
+    },
+    {
+      "name": "Hyundai",
+      "wiki": "Hyundai Motor Company",
+      "slug": "hyundai"
+    },
+    {
+      "name": "Kia",
+      "wiki": "Kia Corporation",
+      "slug": "kia"
+    },
+    {
+      "name": "Genesis",
+      "wiki": "Genesis automobile",
+      "slug": "genesis"
+    },
+    {
+      "name": "SsangYong",
+      "wiki": "SsangYong Motor",
+      "slug": "ssangyong"
+    },
+    {
+      "name": "Daewoo",
+      "wiki": "Daewoo Motors",
+      "slug": "daewoo"
+    },
+    {
+      "name": "Samsung",
+      "wiki": "Renault Korea Motors",
+      "slug": "samsung-cars"
+    },
+    {
+      "name": "BYD",
+      "wiki": "BYD Auto",
+      "slug": "byd"
+    },
+    {
+      "name": "NIO",
+      "wiki": "Nio Inc.",
+      "slug": "nio"
+    },
+    {
+      "name": "MG",
+      "wiki": "MG marque",
+      "slug": "mg"
+    },
+    {
+      "name": "Geely",
+      "wiki": "Geely",
+      "slug": "geely"
+    },
+    {
+      "name": "Great Wall",
+      "wiki": "Great Wall Motor",
+      "slug": "great-wall"
+    },
+    {
+      "name": "Li Auto",
+      "wiki": "Li Auto",
+      "slug": "li-auto"
+    },
+    {
+      "name": "Xpeng",
+      "wiki": "Xpeng",
+      "slug": "xpeng"
+    },
+    {
+      "name": "Chery",
+      "wiki": "Chery",
+      "slug": "chery"
+    },
+    {
+      "name": "GAC",
+      "wiki": "GAC Group",
+      "slug": "gac"
+    },
+    {
+      "name": "Hongqi",
+      "wiki": "Hongqi automobile",
+      "slug": "hongqi"
+    },
+    {
+      "name": "Haval",
+      "wiki": "Haval",
+      "slug": "haval"
+    },
+    {
+      "name": "Zeekr",
+      "wiki": "Zeekr",
+      "slug": "zeekr"
+    },
+    {
+      "name": "Lynk & Co",
+      "wiki": "Lynk and Co",
+      "slug": "lynk-co"
+    },
+    {
+      "name": "ORA",
+      "wiki": "Ora automobile",
+      "slug": "ora"
+    },
+    {
+      "name": "Changan",
+      "wiki": "Changan Automobile",
+      "slug": "changan"
+    },
+    {
+      "name": "Dongfeng",
+      "wiki": "Dongfeng Motor",
+      "slug": "dongfeng"
+    },
+    {
+      "name": "FAW",
+      "wiki": "FAW Group",
+      "slug": "faw"
+    },
+    {
+      "name": "Wuling",
+      "wiki": "SGMW",
+      "slug": "wuling"
+    },
+    {
+      "name": "Baojun",
+      "wiki": "Baojun",
+      "slug": "baojun"
+    },
+    {
+      "name": "Roewe",
+      "wiki": "Roewe",
+      "slug": "roewe"
+    },
+    {
+      "name": "Voyah",
+      "wiki": "Voyah",
+      "slug": "voyah"
+    },
+    {
+      "name": "Denza",
+      "wiki": "Denza",
+      "slug": "denza"
+    },
+    {
+      "name": "Neta",
+      "wiki": "Neta Auto",
+      "slug": "neta"
+    },
+    {
+      "name": "Leapmotor",
+      "wiki": "Leapmotor",
+      "slug": "leapmotor"
+    },
+    {
+      "name": "Tank",
+      "wiki": "Tank automobile brand",
+      "slug": "tank"
+    },
+    {
+      "name": "Deepal",
+      "wiki": "Deepal",
+      "slug": "deepal"
+    },
+    {
+      "name": "Zhiji",
+      "wiki": "Zhiji Motor",
+      "slug": "zhiji"
+    },
+    {
+      "name": "Avatr",
+      "wiki": "Avatr",
+      "slug": "avatr"
+    },
+    {
+      "name": "Brilliance",
+      "wiki": "Brilliance China Automotive",
+      "slug": "brilliance"
+    },
+    {
+      "name": "JAC",
+      "wiki": "JAC Motors",
+      "slug": "jac"
+    },
+    {
+      "name": "BAIC",
+      "wiki": "BAIC Group",
+      "slug": "baic"
+    },
+    {
+      "name": "AITO",
+      "wiki": "Aito",
+      "slug": "aito"
+    },
+    {
+      "name": "Yangwang",
+      "wiki": "Yangwang",
+      "slug": "yangwang"
+    },
+    {
+      "name": "SAIC",
+      "wiki": "SAIC Motor",
+      "slug": "saic"
+    },
+    {
+      "name": "Tata",
+      "wiki": "Tata Motors",
+      "slug": "tata"
+    },
+    {
+      "name": "Mahindra",
+      "wiki": "Mahindra and Mahindra",
+      "slug": "mahindra"
+    },
+    {
+      "name": "Maruti Suzuki",
+      "wiki": "Maruti Suzuki",
+      "slug": "maruti-suzuki"
+    },
+    {
+      "name": "Force Motors",
+      "wiki": "Force Motors",
+      "slug": "force-motors"
+    },
+    {
+      "name": "Hindustan",
+      "wiki": "Hindustan Motors",
+      "slug": "hindustan"
+    },
+    {
+      "name": "Lada",
+      "wiki": "Lada",
+      "slug": "lada"
+    },
+    {
+      "name": "UAZ",
+      "wiki": "UAZ",
+      "slug": "uaz"
+    },
+    {
+      "name": "GAZ",
+      "wiki": "GAZ",
+      "slug": "gaz"
+    },
+    {
+      "name": "Moskvich",
+      "wiki": "Moskvich",
+      "slug": "moskvich"
+    },
+    {
+      "name": "Aurus",
+      "wiki": "Aurus automobile",
+      "slug": "aurus"
+    },
+    {
+      "name": "Proton",
+      "wiki": "Proton automobile manufacturer",
+      "slug": "proton"
+    },
+    {
+      "name": "Perodua",
+      "wiki": "Perodua",
+      "slug": "perodua"
+    },
+    {
+      "name": "TOGG",
+      "wiki": "TOGG",
+      "slug": "togg"
+    },
+    {
+      "name": "Tofas",
+      "wiki": "Tofas",
+      "slug": "tofas"
+    },
+    {
+      "name": "Karsan",
+      "wiki": "Karsan",
+      "slug": "karsan"
+    },
+    {
+      "name": "IKCO",
+      "wiki": "Iran Khodro",
+      "slug": "ikco"
+    },
+    {
+      "name": "Holden",
+      "wiki": "Holden",
+      "slug": "holden"
+    },
+    {
+      "name": "HSV",
+      "wiki": "Holden Special Vehicles",
+      "slug": "hsv"
+    },
+    {
+      "name": "Bolwell",
+      "wiki": "Bolwell",
+      "slug": "bolwell"
+    },
+    {
+      "name": "Troller",
+      "wiki": "Troller",
+      "slug": "troller"
+    },
+    {
+      "name": "Agrale",
+      "wiki": "Agrale",
+      "slug": "agrale"
+    },
+    {
+      "name": "Mastretta",
+      "wiki": "Mastretta",
+      "slug": "mastretta"
+    },
+    {
+      "name": "W Motors",
+      "wiki": "W Motors",
+      "slug": "w-motors"
+    }
+  ],
+  "clubs": [
+    {
+      "name": "Real Madrid",
+      "wiki": "Real Madrid CF",
+      "sdb": "Real Madrid",
+      "slug": "real-madrid"
+    },
+    {
+      "name": "FC Barcelona",
+      "wiki": "FC Barcelona",
+      "sdb": "Barcelona",
+      "slug": "fc-barcelona"
+    },
+    {
+      "name": "Bayern Mnichov",
+      "wiki": "FC Bayern Munich",
+      "sdb": "Bayern Munich",
+      "slug": "bayern-mnichov"
+    },
+    {
+      "name": "Manchester United",
+      "wiki": "Manchester United F.C.",
+      "sdb": "Manchester United",
+      "slug": "manchester-united"
+    },
+    {
+      "name": "Chelsea FC",
+      "wiki": "Chelsea F.C.",
+      "sdb": "Chelsea",
+      "slug": "chelsea-fc"
+    },
+    {
+      "name": "Liverpool FC",
+      "wiki": "Liverpool F.C.",
+      "sdb": "Liverpool",
+      "slug": "liverpool-fc"
+    },
+    {
+      "name": "Juventus",
+      "wiki": "Juventus F.C.",
+      "sdb": "Juventus",
+      "slug": "juventus"
+    },
+    {
+      "name": "Paris Saint-Germain",
+      "wiki": "Paris Saint-Germain F.C.",
+      "sdb": "Paris Saint-Germain",
+      "slug": "paris-saint-germain"
+    },
+    {
+      "name": "Arsenal FC",
+      "wiki": "Arsenal F.C.",
+      "sdb": "Arsenal",
+      "slug": "arsenal-fc"
+    },
+    {
+      "name": "Manchester City",
+      "wiki": "Manchester City F.C.",
+      "sdb": "Manchester City",
+      "slug": "manchester-city"
+    },
+    {
+      "name": "Borussia Dortmund",
+      "wiki": "Borussia Dortmund",
+      "sdb": "Borussia Dortmund",
+      "slug": "borussia-dortmund"
+    },
+    {
+      "name": "Atlético Madrid",
+      "wiki": "Atlético de Madrid",
+      "sdb": "Atletico Madrid",
+      "slug": "atletico-madrid"
+    },
+    {
+      "name": "Napoli",
+      "wiki": "SSC Napoli",
+      "sdb": "Napoli",
+      "slug": "napoli"
+    },
+    {
+      "name": "Sevilla FC",
+      "wiki": "Sevilla FC",
+      "sdb": "Sevilla",
+      "slug": "sevilla-fc"
+    },
+    {
+      "name": "Aston Villa",
+      "wiki": "Aston Villa F.C.",
+      "sdb": "Aston Villa",
+      "slug": "aston-villa"
+    },
+    {
+      "name": "Newcastle United",
+      "wiki": "Newcastle United F.C.",
+      "sdb": "Newcastle United",
+      "slug": "newcastle-united"
+    },
+    {
+      "name": "West Ham United",
+      "wiki": "West Ham United F.C.",
+      "sdb": "West Ham United",
+      "slug": "west-ham-united"
+    },
+    {
+      "name": "RB Leipzig",
+      "wiki": "RB Leipzig",
+      "sdb": "RB Leipzig",
+      "slug": "rb-leipzig"
+    },
+    {
+      "name": "AC Milán",
+      "wiki": "A.C. Milan",
+      "sdb": "AC Milan",
+      "slug": "ac-milan"
+    },
+    {
+      "name": "Inter Milán",
+      "wiki": "FC Internazionale Milano",
+      "sdb": "Internazionale",
+      "slug": "inter-milan"
+    },
+    {
+      "name": "FC Porto",
+      "wiki": "FC Porto",
+      "sdb": "Porto",
+      "slug": "fc-porto"
+    },
+    {
+      "name": "Benfica",
+      "wiki": "S.L. Benfica",
+      "sdb": "Benfica",
+      "slug": "benfica"
+    },
+    {
+      "name": "Ajax Amsterdam",
+      "wiki": "AFC Ajax",
+      "sdb": "Ajax",
+      "slug": "ajax-amsterdam"
+    },
+    {
+      "name": "AS Řím",
+      "wiki": "A.S. Roma",
+      "sdb": "AS Roma",
+      "slug": "as-rim"
+    },
+    {
+      "name": "Tottenham Hotspur",
+      "wiki": "Tottenham Hotspur F.C.",
+      "sdb": "Tottenham Hotspur",
+      "slug": "tottenham-hotspur"
+    },
+    {
+      "name": "Valencia CF",
+      "wiki": "Valencia CF",
+      "sdb": "Valencia",
+      "slug": "valencia-cf"
+    },
+    {
+      "name": "Celtic FC",
+      "wiki": "Celtic F.C.",
+      "sdb": "Celtic",
+      "slug": "celtic-fc"
+    },
+    {
+      "name": "Sporting CP",
+      "wiki": "Sporting CP",
+      "sdb": "Sporting CP",
+      "slug": "sporting-cp"
+    },
+    {
+      "name": "Olympique Marseille",
+      "wiki": "Olympique de Marseille",
+      "sdb": "Marseille",
+      "slug": "olympique-marseille"
+    },
+    {
+      "name": "Bayer Leverkusen",
+      "wiki": "Bayer 04 Leverkusen",
+      "sdb": "Bayer Leverkusen",
+      "slug": "bayer-leverkusen"
+    },
+    {
+      "name": "Eintracht Frankfurt",
+      "wiki": "Eintracht Frankfurt",
+      "sdb": "Eintracht Frankfurt",
+      "slug": "eintracht-frankfurt"
+    },
+    {
+      "name": "Atalanta BC",
+      "wiki": "Atalanta B.C.",
+      "sdb": "Atalanta",
+      "slug": "atalanta-bc"
+    },
+    {
+      "name": "PSV Eindhoven",
+      "wiki": "PSV Eindhoven",
+      "sdb": "PSV Eindhoven",
+      "slug": "psv-eindhoven"
+    },
+    {
+      "name": "Feyenoord",
+      "wiki": "Feyenoord",
+      "sdb": "Feyenoord",
+      "slug": "feyenoord"
+    },
+    {
+      "name": "Villarreal CF",
+      "wiki": "Villarreal CF",
+      "sdb": "Villarreal",
+      "slug": "villarreal-cf"
+    },
+    {
+      "name": "Real Betis",
+      "wiki": "Real Betis",
+      "sdb": "Real Betis",
+      "slug": "real-betis"
+    },
+    {
+      "name": "Real Sociedad",
+      "wiki": "Real Sociedad",
+      "sdb": "Real Sociedad",
+      "slug": "real-sociedad"
+    },
+    {
+      "name": "Athletic Club",
+      "wiki": "Athletic Club",
+      "sdb": "Athletic Club",
+      "slug": "athletic-club"
+    },
+    {
+      "name": "Olympique Lyon",
+      "wiki": "Olympique Lyonnais",
+      "sdb": "Lyon",
+      "slug": "olympique-lyon"
+    },
+    {
+      "name": "AS Monaco",
+      "wiki": "AS Monaco FC",
+      "sdb": "Monaco",
+      "slug": "as-monaco"
+    },
+    {
+      "name": "LOSC Lille",
+      "wiki": "Lille OSC",
+      "sdb": "Lille",
+      "slug": "losc-lille"
+    },
+    {
+      "name": "Stade Rennais",
+      "wiki": "Stade Rennais F.C.",
+      "sdb": "Stade Rennais",
+      "slug": "stade-rennais"
+    },
+    {
+      "name": "Lazio",
+      "wiki": "S.S. Lazio",
+      "sdb": "Lazio",
+      "slug": "lazio"
+    },
+    {
+      "name": "Fiorentina",
+      "wiki": "ACF Fiorentina",
+      "sdb": "Fiorentina",
+      "slug": "fiorentina"
+    },
+    {
+      "name": "Borussia Mönchengladbach",
+      "wiki": "Borussia Mönchengladbach",
+      "sdb": "Borussia Monchengladbach",
+      "slug": "borussia-monchengladbach"
+    },
+    {
+      "name": "VfB Stuttgart",
+      "wiki": "VfB Stuttgart",
+      "sdb": "Stuttgart",
+      "slug": "vfb-stuttgart"
+    },
+    {
+      "name": "VfL Wolfsburg",
+      "wiki": "VfL Wolfsburg",
+      "sdb": "Wolfsburg",
+      "slug": "vfl-wolfsburg"
+    },
+    {
+      "name": "AZ Alkmaar",
+      "wiki": "AZ Alkmaar",
+      "sdb": "AZ",
+      "slug": "az-alkmaar"
+    },
+    {
+      "name": "Club Brugge",
+      "wiki": "Club Brugge KV",
+      "sdb": "Club Brugge",
+      "slug": "club-brugge"
+    },
+    {
+      "name": "Olympiakos Pireus",
+      "wiki": "Olympiacos F.C.",
+      "sdb": "Olympiacos",
+      "slug": "olympiakos-pireus"
+    },
+    {
+      "name": "Panathinaikos FC",
+      "wiki": "Panathinaikos F.C.",
+      "sdb": "Panathinaikos",
+      "slug": "panathinaikos-fc"
+    },
+    {
+      "name": "AEK Atény",
+      "wiki": "AEK Athens F.C.",
+      "sdb": "AEK Athens",
+      "slug": "aek-ateny"
+    },
+    {
+      "name": "PAOK Soluň",
+      "wiki": "PAOK FC",
+      "sdb": "PAOK FC",
+      "slug": "paok-soluň"
+    },
+    {
+      "name": "FC Kodaň",
+      "wiki": "FC Copenhagen",
+      "sdb": "FC Copenhagen",
+      "slug": "fc-kodaň"
+    },
+    {
+      "name": "Brøndby IF",
+      "wiki": "Brøndby IF",
+      "sdb": "Brondby",
+      "slug": "brondby-if"
+    },
+    {
+      "name": "FC Midtjylland",
+      "wiki": "FC Midtjylland",
+      "sdb": "FC Midtjylland",
+      "slug": "fc-midtjylland"
+    },
+    {
+      "name": "AIK Stockholm",
+      "wiki": "AIK Fotboll",
+      "sdb": "AIK",
+      "slug": "aik-stockholm"
+    },
+    {
+      "name": "IFK Göteborg",
+      "wiki": "IFK Göteborg",
+      "sdb": "IFK Goteborg",
+      "slug": "ifk-goteborg"
+    },
+    {
+      "name": "Djurgårdens IF",
+      "wiki": "Djurgårdens IF Fotboll",
+      "sdb": "Djurgarden",
+      "slug": "djurgardens-if"
+    },
+    {
+      "name": "Rosenborg BK",
+      "wiki": "Rosenborg BK",
+      "sdb": "Rosenborg",
+      "slug": "rosenborg-bk"
+    },
+    {
+      "name": "HJK Helsinki",
+      "wiki": "HJK Helsinki",
+      "sdb": "HJK Helsinki",
+      "slug": "hjk-helsinki"
+    },
+    {
+      "name": "FC Basilej",
+      "wiki": "FC Basel",
+      "sdb": "FC Basel",
+      "slug": "fc-basilej"
+    },
+    {
+      "name": "BSC Young Boys",
+      "wiki": "BSC Young Boys",
+      "sdb": "Young Boys",
+      "slug": "bsc-young-boys"
+    },
+    {
+      "name": "Galatasaray",
+      "wiki": "Galatasaray S.K. (football)",
+      "sdb": "Galatasaray",
+      "slug": "galatasaray"
+    },
+    {
+      "name": "Fenerbahçe",
+      "wiki": "Fenerbahçe S.K. (football)",
+      "sdb": "Fenerbahce",
+      "slug": "fenerbahce"
+    },
+    {
+      "name": "Beşiktaş",
+      "wiki": "Beşiktaş J.K. (football)",
+      "sdb": "Besiktas",
+      "slug": "beşiktaş"
+    },
+    {
+      "name": "Anderlecht",
+      "wiki": "R.S.C. Anderlecht",
+      "sdb": "Anderlecht",
+      "slug": "anderlecht"
+    },
+    {
+      "name": "AC Sparta Praha",
+      "wiki": "AC Sparta Prague",
+      "sdb": "Sparta Prague",
+      "slug": "ac-sparta-praha"
+    },
+    {
+      "name": "SK Slavia Praha",
+      "wiki": "SK Slavia Prague",
+      "sdb": "Slavia Prague",
+      "slug": "sk-slavia-praha"
+    },
+    {
+      "name": "Rangers FC",
+      "wiki": "Rangers F.C.",
+      "sdb": "Rangers",
+      "slug": "rangers-fc"
+    },
+    {
+      "name": "Dinamo Záhřeb",
+      "wiki": "GNK Dinamo Zagreb",
+      "sdb": "Dinamo Zagreb",
+      "slug": "dinamo-zahreb"
+    },
+    {
+      "name": "Malmö FF",
+      "wiki": "Malmö FF",
+      "sdb": "Malmo FF",
+      "slug": "malmo-ff"
+    },
+    {
+      "name": "Legia Varšava",
+      "wiki": "Legia Warsaw",
+      "sdb": "Legia Warsaw",
+      "slug": "legia-varsava"
+    },
+    {
+      "name": "Crvená hvězda",
+      "wiki": "FK Red Star Belgrade",
+      "sdb": "Red Star Belgrade",
+      "slug": "crvena-hvezda"
+    },
+    {
+      "name": "Ferencváros",
+      "wiki": "Ferencváros TC",
+      "sdb": "Ferencvaros",
+      "slug": "ferencvaros"
+    },
+    {
+      "name": "Trabzonspor",
+      "wiki": "Trabzonspor",
+      "sdb": "Trabzonspor",
+      "slug": "trabzonspor"
+    },
+    {
+      "name": "Šachtar Doněck",
+      "wiki": "FC Shakhtar Donetsk",
+      "sdb": "Shakhtar Donetsk",
+      "slug": "sachtar-doneck"
+    },
+    {
+      "name": "Dynamo Kyjev",
+      "wiki": "FC Dynamo Kyiv",
+      "sdb": "Dynamo Kyiv",
+      "slug": "dynamo-kyjev"
+    },
+    {
+      "name": "CSKA Moskva",
+      "wiki": "PFC CSKA Moscow",
+      "sdb": "CSKA Moscow",
+      "slug": "cska-moskva"
+    },
+    {
+      "name": "Spartak Moskva",
+      "wiki": "FC Spartak Moscow",
+      "sdb": "Spartak Moscow",
+      "slug": "spartak-moskva"
+    },
+    {
+      "name": "Zenit Petrohrad",
+      "wiki": "FC Zenit Saint Petersburg",
+      "sdb": "Zenit St. Petersburg",
+      "slug": "zenit-petrohrad"
+    },
+    {
+      "name": "Lokomotiv Moskva",
+      "wiki": "FC Lokomotiv Moscow",
+      "sdb": "Lokomotiv Moscow",
+      "slug": "lokomotiv-moskva"
+    },
+    {
+      "name": "Slovan Bratislava",
+      "wiki": "ŠK Slovan Bratislava",
+      "sdb": "Slovan Bratislava",
+      "slug": "slovan-bratislava"
+    },
+    {
+      "name": "Viktoria Plzeň",
+      "wiki": "FC Viktoria Plzeň",
+      "sdb": "Viktoria Plzen",
+      "slug": "viktoria-plzeň"
+    },
+    {
+      "name": "Baník Ostrava",
+      "wiki": "FC Baník Ostrava",
+      "sdb": "Banik Ostrava",
+      "slug": "banik-ostrava"
+    },
+    {
+      "name": "Sigma Olomouc",
+      "wiki": "SK Sigma Olomouc",
+      "sdb": "Sigma Olomouc",
+      "slug": "sigma-olomouc"
+    },
+    {
+      "name": "Bohemians 1905",
+      "wiki": "Bohemians 1905",
+      "sdb": "Bohemians 1905",
+      "slug": "bohemians-1905"
+    },
+    {
+      "name": "FK Jablonec",
+      "wiki": "FK Jablonec",
+      "sdb": "FK Jablonec",
+      "slug": "fk-jablonec"
+    },
+    {
+      "name": "SK Rapid Wien",
+      "wiki": "SK Rapid Wien",
+      "sdb": "Rapid Vienna",
+      "slug": "sk-rapid-wien"
+    },
+    {
+      "name": "FC Red Bull Salzburg",
+      "wiki": "FC Red Bull Salzburg",
+      "sdb": "Red Bull Salzburg",
+      "slug": "fc-red-bull-salzburg"
+    },
+    {
+      "name": "Sturm Graz",
+      "wiki": "SK Sturm Graz",
+      "sdb": "Sturm Graz",
+      "slug": "sturm-graz"
+    },
+    {
+      "name": "LASK Linz",
+      "wiki": "LASK",
+      "sdb": "LASK Linz",
+      "slug": "lask-linz"
+    },
+    {
+      "name": "FC Šerif Tiraspol",
+      "wiki": "FC Sheriff Tiraspol",
+      "sdb": "Sheriff Tiraspol",
+      "slug": "fc-serif-tiraspol"
+    },
+    {
+      "name": "FC Astana",
+      "wiki": "FC Astana (football club)",
+      "sdb": "FC Astana",
+      "slug": "fc-astana"
+    },
+    {
+      "name": "FK Partizan Bělehrad",
+      "wiki": "FK Partizan",
+      "sdb": "FK Partizan",
+      "slug": "fk-partizan-belehrad"
+    },
+    {
+      "name": "NK Maribor",
+      "wiki": "NK Maribor",
+      "sdb": "NK Maribor",
+      "slug": "nk-maribor"
+    },
+    {
+      "name": "FK Željezničar",
+      "wiki": "FK Željezničar Sarajevo",
+      "sdb": "FK Zeljeznicar",
+      "slug": "fk-zeljeznicar"
+    },
+    {
+      "name": "FC Drita",
+      "wiki": "FC Drita",
+      "sdb": "FC Drita",
+      "slug": "fc-drita"
+    },
+    {
+      "name": "Qarabağ FK",
+      "wiki": "Qarabağ FK",
+      "sdb": "Qarabag FK",
+      "slug": "qarabağ-fk"
+    },
+    {
+      "name": "FC Pjunik",
+      "wiki": "FC Pyunik",
+      "sdb": "Pyunik",
+      "slug": "fc-pjunik"
+    },
+    {
+      "name": "FC Dinamo Tbilisi",
+      "wiki": "FC Dinamo Tbilisi",
+      "sdb": "Dinamo Tbilisi",
+      "slug": "fc-dinamo-tbilisi"
+    },
+    {
+      "name": "FC BATE Borisov",
+      "wiki": "FC BATE Borisov",
+      "sdb": "BATE Borisov",
+      "slug": "fc-bate-borisov"
+    },
+    {
+      "name": "Maccabi Tel Aviv",
+      "wiki": "Maccabi Tel Aviv F.C.",
+      "sdb": "Maccabi Tel Aviv",
+      "slug": "maccabi-tel-aviv"
+    },
+    {
+      "name": "APOEL FC",
+      "wiki": "APOEL FC",
+      "sdb": "APOEL FC",
+      "slug": "apoel-fc"
+    },
+    {
+      "name": "FC Vaduz",
+      "wiki": "FC Vaduz",
+      "sdb": "FC Vaduz",
+      "slug": "fc-vaduz"
+    },
+    {
+      "name": "F91 Dudelange",
+      "wiki": "F91 Dudelange",
+      "sdb": "F91 Dudelange",
+      "slug": "f91-dudelange"
+    },
+    {
+      "name": "Shamrock Rovers",
+      "wiki": "Shamrock Rovers F.C.",
+      "sdb": "Shamrock Rovers",
+      "slug": "shamrock-rovers"
+    },
+    {
+      "name": "Žilina",
+      "wiki": "MŠK Žilina",
+      "sdb": "MSK Zilina",
+      "slug": "zilina"
+    },
+    {
+      "name": "Leeds United",
+      "wiki": "Leeds United F.C.",
+      "sdb": "Leeds United",
+      "slug": "leeds-united"
+    },
+    {
+      "name": "Leicester City",
+      "wiki": "Leicester City F.C.",
+      "sdb": "Leicester City",
+      "slug": "leicester-city"
+    },
+    {
+      "name": "Sunderland AFC",
+      "wiki": "Sunderland A.F.C.",
+      "sdb": "Sunderland",
+      "slug": "sunderland-afc"
+    },
+    {
+      "name": "Sheffield United",
+      "wiki": "Sheffield United F.C.",
+      "sdb": "Sheffield United",
+      "slug": "sheffield-united"
+    },
+    {
+      "name": "Burnley FC",
+      "wiki": "Burnley F.C.",
+      "sdb": "Burnley",
+      "slug": "burnley-fc"
+    },
+    {
+      "name": "Middlesbrough FC",
+      "wiki": "Middlesbrough F.C.",
+      "sdb": "Middlesbrough",
+      "slug": "middlesbrough-fc"
+    },
+    {
+      "name": "West Bromwich Albion",
+      "wiki": "West Bromwich Albion F.C.",
+      "sdb": "West Brom",
+      "slug": "west-bromwich-albion"
+    },
+    {
+      "name": "Norwich City",
+      "wiki": "Norwich City F.C.",
+      "sdb": "Norwich City",
+      "slug": "norwich-city"
+    },
+    {
+      "name": "Queens Park Rangers",
+      "wiki": "Queens Park Rangers F.C.",
+      "sdb": "QPR",
+      "slug": "queens-park-rangers"
+    },
+    {
+      "name": "Hull City",
+      "wiki": "Hull City A.F.C.",
+      "sdb": "Hull City",
+      "slug": "hull-city"
+    },
+    {
+      "name": "Stoke City",
+      "wiki": "Stoke City F.C.",
+      "sdb": "Stoke City",
+      "slug": "stoke-city"
+    },
+    {
+      "name": "Coventry City",
+      "wiki": "Coventry City F.C.",
+      "sdb": "Coventry City",
+      "slug": "coventry-city"
+    },
+    {
+      "name": "Millwall FC",
+      "wiki": "Millwall F.C.",
+      "sdb": "Millwall",
+      "slug": "millwall-fc"
+    },
+    {
+      "name": "Plymouth Argyle",
+      "wiki": "Plymouth Argyle F.C.",
+      "sdb": "Plymouth Argyle",
+      "slug": "plymouth-argyle"
+    },
+    {
+      "name": "Bristol City",
+      "wiki": "Bristol City F.C.",
+      "sdb": "Bristol City",
+      "slug": "bristol-city"
+    },
+    {
+      "name": "Luton Town",
+      "wiki": "Luton Town F.C.",
+      "sdb": "Luton Town",
+      "slug": "luton-town"
+    },
+    {
+      "name": "Oxford United",
+      "wiki": "Oxford United F.C.",
+      "sdb": "Oxford United",
+      "slug": "oxford-united"
+    },
+    {
+      "name": "Swansea City",
+      "wiki": "Swansea City A.F.C.",
+      "sdb": "Swansea City",
+      "slug": "swansea-city"
+    },
+    {
+      "name": "Birmingham City",
+      "wiki": "Birmingham City F.C.",
+      "sdb": "Birmingham City",
+      "slug": "birmingham-city"
+    },
+    {
+      "name": "Charlton Athletic",
+      "wiki": "Charlton Athletic F.C.",
+      "sdb": "Charlton Athletic",
+      "slug": "charlton-athletic"
+    },
+    {
+      "name": "Bolton Wanderers",
+      "wiki": "Bolton Wanderers F.C.",
+      "sdb": "Bolton Wanderers",
+      "slug": "bolton-wanderers"
+    },
+    {
+      "name": "Stockport County",
+      "wiki": "Stockport County F.C.",
+      "sdb": "Stockport County",
+      "slug": "stockport-county"
+    },
+    {
+      "name": "Peterborough United",
+      "wiki": "Peterborough United F.C.",
+      "sdb": "Peterborough United",
+      "slug": "peterborough-united"
+    },
+    {
+      "name": "Hamburger SV",
+      "wiki": "Hamburger SV",
+      "sdb": "Hamburger SV",
+      "slug": "hamburger-sv"
+    },
+    {
+      "name": "Hannover 96",
+      "wiki": "Hannover 96",
+      "sdb": "Hannover 96",
+      "slug": "hannover-96"
+    },
+    {
+      "name": "Fortuna Düsseldorf",
+      "wiki": "Fortuna Düsseldorf",
+      "sdb": "Fortuna Dusseldorf",
+      "slug": "fortuna-dusseldorf"
+    },
+    {
+      "name": "Schalke 04",
+      "wiki": "FC Schalke 04",
+      "sdb": "Schalke 04",
+      "slug": "schalke-04"
+    },
+    {
+      "name": "1. FC Köln",
+      "wiki": "1. FC Köln",
+      "sdb": "1 FC Koln",
+      "slug": "1-fc-koln"
+    },
+    {
+      "name": "Hertha BSC",
+      "wiki": "Hertha BSC",
+      "sdb": "Hertha Berlin",
+      "slug": "hertha-bsc"
+    },
+    {
+      "name": "Nürnberg",
+      "wiki": "1. FC Nürnberg",
+      "sdb": "FC Nurnberg",
+      "slug": "nurnberg"
+    },
+    {
+      "name": "Kaiserslautern",
+      "wiki": "1. FC Kaiserslautern",
+      "sdb": "1 FC Kaiserslautern",
+      "slug": "kaiserslautern"
+    },
+    {
+      "name": "SpVgg Greuther Fürth",
+      "wiki": "SpVgg Greuther Fürth",
+      "sdb": "Greuther Furth",
+      "slug": "spvgg-greuther-furth"
+    },
+    {
+      "name": "Deportivo La Coruña",
+      "wiki": "RC Deportivo de La Coruña",
+      "sdb": "Deportivo de La Coruna",
+      "slug": "deportivo-la-coruna"
+    },
+    {
+      "name": "Sporting Gijón",
+      "wiki": "Real Sporting de Gijón",
+      "sdb": "Sporting Gijon",
+      "slug": "sporting-gijon"
+    },
+    {
+      "name": "Rayo Vallecano",
+      "wiki": "Rayo Vallecano",
+      "sdb": "Rayo Vallecano",
+      "slug": "rayo-vallecano"
+    },
+    {
+      "name": "UD Las Palmas",
+      "wiki": "UD Las Palmas",
+      "sdb": "Las Palmas",
+      "slug": "ud-las-palmas"
+    },
+    {
+      "name": "Levante UD",
+      "wiki": "Levante UD",
+      "sdb": "Levante UD",
+      "slug": "levante-ud"
+    },
+    {
+      "name": "Real Valladolid",
+      "wiki": "Real Valladolid CF",
+      "sdb": "Real Valladolid",
+      "slug": "real-valladolid"
+    },
+    {
+      "name": "Flamengo",
+      "wiki": "Clube de Regatas do Flamengo",
+      "sdb": "Flamengo",
+      "slug": "flamengo"
+    },
+    {
+      "name": "Boca Juniors",
+      "wiki": "Boca Juniors",
+      "sdb": "Boca Juniors",
+      "slug": "boca-juniors"
+    },
+    {
+      "name": "River Plate",
+      "wiki": "Club Atlético River Plate",
+      "sdb": "River Plate",
+      "slug": "river-plate"
+    },
+    {
+      "name": "Club América",
+      "wiki": "Club América",
+      "sdb": "Club America",
+      "slug": "club-america"
+    },
+    {
+      "name": "Corinthians",
+      "wiki": "Sport Club Corinthians Paulista",
+      "sdb": "Corinthians",
+      "slug": "corinthians"
+    },
+    {
+      "name": "Palmeiras",
+      "wiki": "Sociedade Esportiva Palmeiras",
+      "sdb": "Palmeiras",
+      "slug": "palmeiras"
+    },
+    {
+      "name": "Santos FC",
+      "wiki": "Santos FC",
+      "sdb": "Santos",
+      "slug": "santos-fc"
+    },
+    {
+      "name": "São Paulo FC",
+      "wiki": "São Paulo FC",
+      "sdb": "Sao Paulo",
+      "slug": "sao-paulo-fc"
+    },
+    {
+      "name": "Chivas Guadalajara",
+      "wiki": "Club Deportivo Guadalajara",
+      "sdb": "Guadalajara",
+      "slug": "chivas-guadalajara"
+    },
+    {
+      "name": "Cruz Azul",
+      "wiki": "Cruz Azul",
+      "sdb": "Cruz Azul",
+      "slug": "cruz-azul"
+    },
+    {
+      "name": "Club Nacional",
+      "wiki": "Club Nacional de Football",
+      "sdb": "Nacional",
+      "slug": "club-nacional"
+    },
+    {
+      "name": "Peñarol",
+      "wiki": "Club Atlético Peñarol",
+      "sdb": "Peñarol",
+      "slug": "penarol"
+    },
+    {
+      "name": "Racing Club",
+      "wiki": "Racing Club de Avellaneda",
+      "sdb": "Racing Club",
+      "slug": "racing-club"
+    },
+    {
+      "name": "Atlético Mineiro",
+      "wiki": "Clube Atlético Mineiro",
+      "sdb": "Atletico Mineiro",
+      "slug": "atletico-mineiro"
+    },
+    {
+      "name": "Botafogo",
+      "wiki": "Botafogo de Futebol e Regatas",
+      "sdb": "Botafogo",
+      "slug": "botafogo"
+    },
+    {
+      "name": "LDU Quito",
+      "wiki": "Liga Deportiva Universitaria de Quito",
+      "sdb": "LDU Quito",
+      "slug": "ldu-quito"
+    },
+    {
+      "name": "Independiente",
+      "wiki": "Club Atlético Independiente",
+      "sdb": "Independiente",
+      "slug": "independiente"
+    },
+    {
+      "name": "Estudiantes LP",
+      "wiki": "Club Estudiantes de La Plata",
+      "sdb": "Estudiantes",
+      "slug": "estudiantes-lp"
+    },
+    {
+      "name": "Fluminense",
+      "wiki": "Fluminense FC",
+      "sdb": "Fluminense",
+      "slug": "fluminense"
+    },
+    {
+      "name": "Internacional",
+      "wiki": "Sport Club Internacional",
+      "sdb": "Internacional",
+      "slug": "internacional"
+    },
+    {
+      "name": "Grêmio",
+      "wiki": "Grêmio Foot-Ball Porto Alegrense",
+      "sdb": "Gremio",
+      "slug": "gremio"
+    },
+    {
+      "name": "Cruzeiro",
+      "wiki": "Cruzeiro Esporte Clube",
+      "sdb": "Cruzeiro",
+      "slug": "cruzeiro"
+    },
+    {
+      "name": "Vasco da Gama",
+      "wiki": "Club de Regatas Vasco da Gama",
+      "sdb": "Vasco da Gama",
+      "slug": "vasco-da-gama"
+    },
+    {
+      "name": "Colo-Colo",
+      "wiki": "Club Social y Deportivo Colo-Colo",
+      "sdb": "Colo Colo",
+      "slug": "colo-colo"
+    },
+    {
+      "name": "Universidad de Chile",
+      "wiki": "Club Universidad de Chile",
+      "sdb": "Universidad de Chile",
+      "slug": "universidad-de-chile"
+    },
+    {
+      "name": "Tigres UANL",
+      "wiki": "Tigres UANL",
+      "sdb": "Tigres UANL",
+      "slug": "tigres-uanl"
+    },
+    {
+      "name": "Monterrey",
+      "wiki": "C.F. Monterrey",
+      "sdb": "Monterrey",
+      "slug": "monterrey"
+    },
+    {
+      "name": "Pachuca",
+      "wiki": "C.F. Pachuca",
+      "sdb": "Pachuca",
+      "slug": "pachuca"
+    },
+    {
+      "name": "Toluca FC",
+      "wiki": "Deportivo Toluca F.C.",
+      "sdb": "Toluca",
+      "slug": "toluca-fc"
+    },
+    {
+      "name": "LA Galaxy",
+      "wiki": "LA Galaxy",
+      "sdb": "LA Galaxy",
+      "slug": "la-galaxy"
+    },
+    {
+      "name": "CF Montréal",
+      "wiki": "CF Montréal",
+      "sdb": "CF Montreal",
+      "slug": "cf-montreal"
+    },
+    {
+      "name": "Millonarios",
+      "wiki": "Millonarios FC",
+      "sdb": "Millonarios",
+      "slug": "millonarios"
+    },
+    {
+      "name": "Olimpia",
+      "wiki": "Club Olimpia",
+      "sdb": "Club Olimpia",
+      "slug": "olimpia"
+    },
+    {
+      "name": "Universitario",
+      "wiki": "Club Universitario de Deportes",
+      "sdb": "Universitario",
+      "slug": "universitario"
+    },
+    {
+      "name": "Once Caldas",
+      "wiki": "Once Caldas",
+      "sdb": "Once Caldas",
+      "slug": "once-caldas"
+    },
+    {
+      "name": "Deportivo Cali",
+      "wiki": "Deportivo Cali",
+      "sdb": "Deportivo Cali",
+      "slug": "deportivo-cali"
+    },
+    {
+      "name": "Vélez Sársfield",
+      "wiki": "Club Atlético Vélez Sársfield",
+      "sdb": "Velez Sarsfield",
+      "slug": "velez-sarsfield"
+    },
+    {
+      "name": "Atlético Nacional",
+      "wiki": "Atlético Nacional",
+      "sdb": "Atletico Nacional",
+      "slug": "atletico-nacional"
+    },
+    {
+      "name": "América de Cali",
+      "wiki": "América de Cali",
+      "sdb": "America de Cali",
+      "slug": "america-de-cali"
+    },
+    {
+      "name": "Junior Barranquilla",
+      "wiki": "Atlético Junior",
+      "sdb": "Junior Barranquilla",
+      "slug": "junior-barranquilla"
+    },
+    {
+      "name": "Alianza Lima",
+      "wiki": "Club Alianza Lima",
+      "sdb": "Alianza Lima",
+      "slug": "alianza-lima"
+    },
+    {
+      "name": "Sporting Cristal",
+      "wiki": "Club Sporting Cristal",
+      "sdb": "Sporting Cristal",
+      "slug": "sporting-cristal"
+    },
+    {
+      "name": "Newell's Old Boys",
+      "wiki": "Newell's Old Boys",
+      "sdb": "Newells Old Boys",
+      "slug": "newells-old-boys"
+    },
+    {
+      "name": "San Lorenzo",
+      "wiki": "Club Atlético San Lorenzo de Almagro",
+      "sdb": "San Lorenzo",
+      "slug": "san-lorenzo"
+    },
+    {
+      "name": "Lanús",
+      "wiki": "Club Atlético Lanús",
+      "sdb": "Lanus",
+      "slug": "lanus"
+    },
+    {
+      "name": "Deportivo Saprissa",
+      "wiki": "Deportivo Saprissa",
+      "sdb": "Deportivo Saprissa",
+      "slug": "deportivo-saprissa"
+    },
+    {
+      "name": "Comunicaciones FC",
+      "wiki": "Comunicaciones FC",
+      "sdb": "Comunicaciones FC",
+      "slug": "comunicaciones-fc"
+    },
+    {
+      "name": "CD Marathón",
+      "wiki": "Club Deportivo Marathón",
+      "sdb": "CD Marathon",
+      "slug": "cd-marathon"
+    },
+    {
+      "name": "W Connection FC",
+      "wiki": "W Connection F.C.",
+      "sdb": "W Connection",
+      "slug": "w-connection-fc"
+    },
+    {
+      "name": "Barcelona SC",
+      "wiki": "Barcelona S.C.",
+      "sdb": "Barcelona SC",
+      "slug": "barcelona-sc"
+    },
+    {
+      "name": "The Strongest",
+      "wiki": "Club The Strongest",
+      "sdb": "The Strongest",
+      "slug": "the-strongest"
+    },
+    {
+      "name": "Caracas FC",
+      "wiki": "Caracas FC",
+      "sdb": "Caracas FC",
+      "slug": "caracas-fc"
+    },
+    {
+      "name": "Olimpia Honduras",
+      "wiki": "Club Deportivo Olimpia",
+      "sdb": "CD Olimpia",
+      "slug": "olimpia-honduras"
+    },
+    {
+      "name": "Al-Nassr",
+      "wiki": "Al-Nassr FC",
+      "sdb": "Al-Nassr",
+      "slug": "al-nassr"
+    },
+    {
+      "name": "Al-Hilal",
+      "wiki": "Al-Hilal FC",
+      "sdb": "Al-Hilal",
+      "slug": "al-hilal"
+    },
+    {
+      "name": "Kashima Antlers",
+      "wiki": "Kashima Antlers",
+      "sdb": "Kashima Antlers",
+      "slug": "kashima-antlers"
+    },
+    {
+      "name": "Urawa Red Diamonds",
+      "wiki": "Urawa Red Diamonds",
+      "sdb": "Urawa Red Diamonds",
+      "slug": "urawa-red-diamonds"
+    },
+    {
+      "name": "Al-Ittihad",
+      "wiki": "Al-Ittihad Club",
+      "sdb": "Al-Ittihad Club",
+      "slug": "al-ittihad"
+    },
+    {
+      "name": "Persepolis FC",
+      "wiki": "Persepolis F.C.",
+      "sdb": "Persepolis",
+      "slug": "persepolis-fc"
+    },
+    {
+      "name": "Gamba Osaka",
+      "wiki": "Gamba Osaka",
+      "sdb": "Gamba Osaka",
+      "slug": "gamba-osaka"
+    },
+    {
+      "name": "Yokohama F. Marinos",
+      "wiki": "Yokohama F. Marinos",
+      "sdb": "Yokohama Marinos",
+      "slug": "yokohama-f-marinos"
+    },
+    {
+      "name": "Al-Ahli Saudi",
+      "wiki": "Al-Ahli Saudi FC",
+      "sdb": "Al-Ahli",
+      "slug": "al-ahli-saudi"
+    },
+    {
+      "name": "Jeonbuk Motors",
+      "wiki": "Jeonbuk Hyundai Motors FC",
+      "sdb": "Jeonbuk Motors FC",
+      "slug": "jeonbuk-motors"
+    },
+    {
+      "name": "Esteghlal FC",
+      "wiki": "Esteghlal FC",
+      "sdb": "Esteghlal",
+      "slug": "esteghlal-fc"
+    },
+    {
+      "name": "Vissel Kobe",
+      "wiki": "Vissel Kobe",
+      "sdb": "Vissel Kobe",
+      "slug": "vissel-kobe"
+    },
+    {
+      "name": "Cerezo Osaka",
+      "wiki": "Cerezo Osaka",
+      "sdb": "Cerezo Osaka",
+      "slug": "cerezo-osaka"
+    },
+    {
+      "name": "Sanfrecce Hiroshima",
+      "wiki": "Sanfrecce Hiroshima",
+      "sdb": "Sanfrecce Hiroshima",
+      "slug": "sanfrecce-hiroshima"
+    },
+    {
+      "name": "Pohang Steelers",
+      "wiki": "Pohang Steelers FC",
+      "sdb": "Pohang Steelers",
+      "slug": "pohang-steelers"
+    },
+    {
+      "name": "Al-Ain FC",
+      "wiki": "Al Ain FC",
+      "sdb": "Al Ain",
+      "slug": "al-ain-fc"
+    },
+    {
+      "name": "Al-Wasl FC",
+      "wiki": "Al-Wasl FC",
+      "sdb": "Al-Wasl",
+      "slug": "al-wasl-fc"
+    },
+    {
+      "name": "Shanghai Port FC",
+      "wiki": "Shanghai Port F.C.",
+      "sdb": "Shanghai Port",
+      "slug": "shanghai-port-fc"
+    },
+    {
+      "name": "Beijing Guoan",
+      "wiki": "Beijing Guoan F.C.",
+      "sdb": "Beijing Guoan",
+      "slug": "beijing-guoan"
+    },
+    {
+      "name": "Johor Darul Ta'zim",
+      "wiki": "Johor Darul Ta'zim FC",
+      "sdb": "Johor Darul Takzim",
+      "slug": "johor-darul-tazim"
+    },
+    {
+      "name": "Muangthong United",
+      "wiki": "Muangthong United F.C.",
+      "sdb": "Muangthong United",
+      "slug": "muangthong-united"
+    },
+    {
+      "name": "Buriram United",
+      "wiki": "Buriram United F.C.",
+      "sdb": "Buriram United",
+      "slug": "buriram-united"
+    },
+    {
+      "name": "Sepahan FC",
+      "wiki": "Sepahan FC",
+      "sdb": "Sepahan",
+      "slug": "sepahan-fc"
+    },
+    {
+      "name": "Suwon Samsung",
+      "wiki": "Suwon Samsung Bluewings",
+      "sdb": "Suwon Samsung Bluewings",
+      "slug": "suwon-samsung"
+    },
+    {
+      "name": "Ulsan Hyundai",
+      "wiki": "Ulsan HD FC",
+      "sdb": "Ulsan Hyundai",
+      "slug": "ulsan-hyundai"
+    },
+    {
+      "name": "Guangzhou FC",
+      "wiki": "Guangzhou FC",
+      "sdb": "Guangzhou FC",
+      "slug": "guangzhou-fc"
+    },
+    {
+      "name": "Persib Bandung",
+      "wiki": "Persib Bandung",
+      "sdb": "Persib Bandung",
+      "slug": "persib-bandung"
+    },
+    {
+      "name": "Arema FC",
+      "wiki": "Arema FC",
+      "sdb": "Arema FC",
+      "slug": "arema-fc"
+    },
+    {
+      "name": "Lion City Sailors",
+      "wiki": "Lion City Sailors FC",
+      "sdb": "Lion City Sailors",
+      "slug": "lion-city-sailors"
+    },
+    {
+      "name": "Tampines Rovers",
+      "wiki": "Tampines Rovers FC",
+      "sdb": "Tampines Rovers",
+      "slug": "tampines-rovers"
+    },
+    {
+      "name": "Hà Nội FC",
+      "wiki": "Hà Nội FC",
+      "sdb": "Hanoi FC",
+      "slug": "ha-nội-fc"
+    },
+    {
+      "name": "Ho Chi Minh City FC",
+      "wiki": "Ho Chi Minh City FC",
+      "sdb": "Ho Chi Minh City FC",
+      "slug": "ho-chi-minh-city-fc"
+    },
+    {
+      "name": "FC Pakhtakor",
+      "wiki": "FC Pakhtakor",
+      "sdb": "Pakhtakor",
+      "slug": "fc-pakhtakor"
+    },
+    {
+      "name": "Al-Karamah SC",
+      "wiki": "Al-Karamah SC",
+      "sdb": "Al-Karamah",
+      "slug": "al-karamah-sc"
+    },
+    {
+      "name": "Al-Shorta SC",
+      "wiki": "Al-Shorta SC",
+      "sdb": "Al Shorta",
+      "slug": "al-shorta-sc"
+    },
+    {
+      "name": "Al-Faisaly",
+      "wiki": "Al-Faisaly F.C.",
+      "sdb": "Al-Faisaly",
+      "slug": "al-faisaly"
+    },
+    {
+      "name": "Al-Ahed FC",
+      "wiki": "Al-Ahed FC",
+      "sdb": "Al Ahed",
+      "slug": "al-ahed-fc"
+    },
+    {
+      "name": "Maccabi Tel Aviv",
+      "wiki": "Maccabi Tel Aviv F.C.",
+      "sdb": "Maccabi Tel Aviv",
+      "slug": "maccabi-tel-aviv"
+    },
+    {
+      "name": "Mohun Bagan AC",
+      "wiki": "Mohun Bagan AC",
+      "sdb": "Mohun Bagan AC",
+      "slug": "mohun-bagan-ac"
+    },
+    {
+      "name": "Seongnam FC",
+      "wiki": "Seongnam FC",
+      "sdb": "Seongnam FC",
+      "slug": "seongnam-fc"
+    },
+    {
+      "name": "Consadole Sapporo",
+      "wiki": "Hokkaido Consadole Sapporo",
+      "sdb": "Consadole Sapporo",
+      "slug": "consadole-sapporo"
+    },
+    {
+      "name": "Kaya FC-Iloilo",
+      "wiki": "Kaya FC-Iloilo",
+      "sdb": "Kaya Iloilo",
+      "slug": "kaya-fc-iloilo"
+    },
+    {
+      "name": "April 25 SC",
+      "wiki": "April 25 SC",
+      "sdb": "April 25 SC",
+      "slug": "april-25-sc"
+    },
+    {
+      "name": "Al Ahly",
+      "wiki": "Al Ahly SC",
+      "sdb": "Al Ahly",
+      "slug": "al-ahly"
+    },
+    {
+      "name": "Zamalek SC",
+      "wiki": "Zamalek SC",
+      "sdb": "Zamalek",
+      "slug": "zamalek-sc"
+    },
+    {
+      "name": "Kaizer Chiefs",
+      "wiki": "Kaizer Chiefs FC",
+      "sdb": "Kaizer Chiefs",
+      "slug": "kaizer-chiefs"
+    },
+    {
+      "name": "Mamelodi Sundowns",
+      "wiki": "Mamelodi Sundowns FC",
+      "sdb": "Mamelodi Sundowns",
+      "slug": "mamelodi-sundowns"
+    },
+    {
+      "name": "TP Mazembe",
+      "wiki": "TP Mazembe",
+      "sdb": "TP Mazembe",
+      "slug": "tp-mazembe"
+    },
+    {
+      "name": "Espérance Tunis",
+      "wiki": "Espérance Sportive de Tunis",
+      "sdb": "ES Tunis",
+      "slug": "esperance-tunis"
+    },
+    {
+      "name": "Wydad Casablanca",
+      "wiki": "Wydad AC",
+      "sdb": "Wydad Casablanca",
+      "slug": "wydad-casablanca"
+    },
+    {
+      "name": "Asante Kotoko",
+      "wiki": "Asante Kotoko SC",
+      "sdb": "Asante Kotoko",
+      "slug": "asante-kotoko"
+    },
+    {
+      "name": "Orlando Pirates",
+      "wiki": "Orlando Pirates F.C.",
+      "sdb": "Orlando Pirates",
+      "slug": "orlando-pirates"
+    },
+    {
+      "name": "USM Alger",
+      "wiki": "USM Alger",
+      "sdb": "USM Alger",
+      "slug": "usm-alger"
+    },
+    {
+      "name": "Simba SC",
+      "wiki": "Simba S.C.",
+      "sdb": "Simba SC",
+      "slug": "simba-sc"
+    },
+    {
+      "name": "Raja Casablanca",
+      "wiki": "Raja Club Athletic",
+      "sdb": "Raja Casablanca",
+      "slug": "raja-casablanca"
+    },
+    {
+      "name": "CR Belouizdad",
+      "wiki": "CR Belouizdad",
+      "sdb": "CR Belouizdad",
+      "slug": "cr-belouizdad"
+    },
+    {
+      "name": "MC Alger",
+      "wiki": "MC Alger",
+      "sdb": "MC Alger",
+      "slug": "mc-alger"
+    },
+    {
+      "name": "ASEC Mimosas",
+      "wiki": "ASEC Mimosas",
+      "sdb": "ASEC Mimosas",
+      "slug": "asec-mimosas"
+    },
+    {
+      "name": "Club Africain",
+      "wiki": "Club Africain",
+      "sdb": "Club Africain",
+      "slug": "club-africain"
+    },
+    {
+      "name": "Étoile du Sahel",
+      "wiki": "Étoile Sportive du Sahel",
+      "sdb": "Etoile du Sahel",
+      "slug": "etoile-du-sahel"
+    },
+    {
+      "name": "Hearts of Oak",
+      "wiki": "Accra Hearts of Oak SC",
+      "sdb": "Hearts of Oak",
+      "slug": "hearts-of-oak"
+    },
+    {
+      "name": "Young Africans SC",
+      "wiki": "Young Africans S.C.",
+      "sdb": "Young Africans",
+      "slug": "young-africans-sc"
+    },
+    {
+      "name": "Gor Mahia",
+      "wiki": "Gor Mahia F.C.",
+      "sdb": "Gor Mahia",
+      "slug": "gor-mahia"
+    },
+    {
+      "name": "Génération Foot",
+      "wiki": "Génération Foot",
+      "sdb": "Generation Foot",
+      "slug": "generation-foot"
+    },
+    {
+      "name": "Petro de Luanda",
+      "wiki": "Atlético Petróleos de Luanda",
+      "sdb": "Petro de Luanda",
+      "slug": "petro-de-luanda"
+    },
+    {
+      "name": "Al-Masry SC",
+      "wiki": "Al-Masry SC",
+      "sdb": "Al Masry",
+      "slug": "al-masry-sc"
+    },
+    {
+      "name": "Enyimba FC",
+      "wiki": "Enyimba F.C.",
+      "sdb": "Enyimba",
+      "slug": "enyimba-fc"
+    },
+    {
+      "name": "Horoya AC",
+      "wiki": "Horoya AC",
+      "sdb": "Horoya Athletic Club",
+      "slug": "horoya-ac"
+    },
+    {
+      "name": "Hafia FC",
+      "wiki": "Hafia FC",
+      "sdb": "Hafia FC",
+      "slug": "hafia-fc"
+    },
+    {
+      "name": "CS Sfaxien",
+      "wiki": "Club Sportif Sfaxien",
+      "sdb": "CS Sfaxien",
+      "slug": "cs-sfaxien"
+    },
+    {
+      "name": "Mouloudia Alger",
+      "wiki": "MC Alger",
+      "sdb": "Mouloudia Alger",
+      "slug": "mouloudia-alger"
+    },
+    {
+      "name": "AFC Leopards",
+      "wiki": "AFC Leopards",
+      "sdb": "AFC Leopards",
+      "slug": "afc-leopards"
+    },
+    {
+      "name": "AS Vita Club",
+      "wiki": "AS Vita Club",
+      "sdb": "AS Vita Club",
+      "slug": "as-vita-club"
+    },
+    {
+      "name": "Azam FC",
+      "wiki": "Azam FC",
+      "sdb": "Azam FC",
+      "slug": "azam-fc"
+    },
+    {
+      "name": "KCCA FC",
+      "wiki": "KCCA FC",
+      "sdb": "KCCA FC",
+      "slug": "kcca-fc"
+    },
+    {
+      "name": "APR FC",
+      "wiki": "APR FC",
+      "sdb": "APR FC",
+      "slug": "apr-fc"
+    },
+    {
+      "name": "Dynamos FC",
+      "wiki": "Dynamos F.C.",
+      "sdb": "Dynamos FC",
+      "slug": "dynamos-fc"
+    },
+    {
+      "name": "CAPS United",
+      "wiki": "CAPS United F.C.",
+      "sdb": "CAPS United",
+      "slug": "caps-united"
+    },
+    {
+      "name": "Nkana FC",
+      "wiki": "Nkana F.C.",
+      "sdb": "Nkana FC",
+      "slug": "nkana-fc"
+    },
+    {
+      "name": "Coton Sport",
+      "wiki": "Coton Sport FC de Garoua",
+      "sdb": "Coton Sport",
+      "slug": "coton-sport"
+    },
+    {
+      "name": "Canon Yaoundé",
+      "wiki": "Canon Yaoundé",
+      "sdb": "Canon Yaounde",
+      "slug": "canon-yaounde"
+    },
+    {
+      "name": "CF Mounana",
+      "wiki": "CF Mounana",
+      "sdb": "CF Mounana",
+      "slug": "cf-mounana"
+    },
+    {
+      "name": "Stade Malien",
+      "wiki": "Stade Malien de Bamako",
+      "sdb": "Stade Malien",
+      "slug": "stade-malien"
+    },
+    {
+      "name": "ASFA Yennenga",
+      "wiki": "ASFA Yennenga",
+      "sdb": "ASFA Yennenga",
+      "slug": "asfa-yennenga"
+    },
+    {
+      "name": "East End Lions",
+      "wiki": "East End Lions F.C.",
+      "sdb": "East End Lions",
+      "slug": "east-end-lions"
+    },
+    {
+      "name": "LISCR FC",
+      "wiki": "LISCR F.C.",
+      "sdb": "LISCR FC",
+      "slug": "liscr-fc"
+    },
+    {
+      "name": "AS Togo-Port",
+      "wiki": "AS Togo-Port",
+      "sdb": "AS Togo-Port",
+      "slug": "as-togo-port"
+    },
+    {
+      "name": "Séwé Sport",
+      "wiki": "Séwé Sport FC",
+      "sdb": "Sewe Sport",
+      "slug": "sewe-sport"
+    },
+    {
+      "name": "Ferroviário Maputo",
+      "wiki": "Ferroviário de Maputo",
+      "sdb": "Ferroviario Maputo",
+      "slug": "ferroviario-maputo"
+    },
+    {
+      "name": "Saint George SC",
+      "wiki": "Saint George S.A.",
+      "sdb": "Saint George SA",
+      "slug": "saint-george-sc"
+    },
+    {
+      "name": "Al-Hilal Omdurman",
+      "wiki": "Al-Hilal Club (Sudan)",
+      "sdb": "Al-Hilal Omdurman",
+      "slug": "al-hilal-omdurman"
+    },
+    {
+      "name": "Al-Ahly Tripoli",
+      "wiki": "Al-Ahly Tripoli SC",
+      "sdb": "Al Ahly Tripoli",
+      "slug": "al-ahly-tripoli"
+    },
+    {
+      "name": "Diables Noirs",
+      "wiki": "Diables Noirs FC",
+      "sdb": "Diables Noirs",
+      "slug": "diables-noirs"
+    },
+    {
+      "name": "Zanaco FC",
+      "wiki": "Zanaco FC",
+      "sdb": "Zanaco FC",
+      "slug": "zanaco-fc"
+    },
+    {
+      "name": "Sydney FC",
+      "wiki": "Sydney FC",
+      "sdb": "Sydney FC",
+      "slug": "sydney-fc"
+    },
+    {
+      "name": "Melbourne City FC",
+      "wiki": "Melbourne City FC",
+      "sdb": "Melbourne City",
+      "slug": "melbourne-city-fc"
+    },
+    {
+      "name": "Western Sydney Wanderers",
+      "wiki": "Western Sydney Wanderers FC",
+      "sdb": "Western Sydney Wanderers",
+      "slug": "western-sydney-wanderers"
+    },
+    {
+      "name": "Melbourne Victory",
+      "wiki": "Melbourne Victory FC",
+      "sdb": "Melbourne Victory",
+      "slug": "melbourne-victory"
+    },
+    {
+      "name": "Wellington Phoenix",
+      "wiki": "Wellington Phoenix FC",
+      "sdb": "Wellington Phoenix",
+      "slug": "wellington-phoenix"
+    },
+    {
+      "name": "Hekari United",
+      "wiki": "Hekari United F.C.",
+      "sdb": "Hekari United",
+      "slug": "hekari-united"
+    },
+    {
+      "name": "Labasa FC",
+      "wiki": "Labasa FC",
+      "sdb": "Labasa FC",
+      "slug": "labasa-fc"
+    }
+  ],
+  "players": [
+    "Patrik Schick",
+    "Florian Wirtz",
+    "Kylian Mbappé",
+    "Pedri",
+    "Jude Bellingham",
+    "Gianluigi Donnarumma",
+    "Vinícius Júnior",
+    "Lionel Messi",
+    "Cristiano Ronaldo",
+    "Virgil van Dijk",
+    "Kevin De Bruyne",
+    "Luka Modrić",
+    "Robert Lewandowski",
+    "Alexander Isak",
+    "Christian Eriksen",
+    "Federico Valverde",
+    "Hakan Çalhanoğlu",
+    "Dominik Szoboszlai",
+    "Luis Díaz (footballer)",
+    "Erling Haaland",
+    "Dušan Vlahović",
+    "Mohamed Salah",
+    "Kaoru Mitoma",
+    "Hirving Lozano",
+    "Sadio Mané",
+    "Son Heung-min",
+    "Mehdi Taremi",
+    "Salem Al-Dawsari",
+    "Achraf Hakimi",
+    "Victor Osimhen",
+    "Samuel Eto'o",
+    "David Alaba",
+    "Granit Xhaka",
+    "Kostas Tsimikas",
+    "Gheorghe Hagi",
+    "Hristo Stoichkov",
+    "Marek Hamšík",
+    "Jan Oblak",
+    "Edin Džeko",
+    "Goran Pandev",
+    "Armando Broja",
+    "Stefan Savić",
+    "Vedat Muriqi",
+    "Radu Rebeja",
+    "Sergei Kornilenko",
+    "Andriy Shevchenko",
+    "Lev Yashin",
+    "Māris Verpakovskis",
+    "Edgaras Jankauskas",
+    "Ragnar Klavan",
+    "Gylfi Sigurðsson",
+    "Robbie Keane",
+    "Michalis Konstantinou",
+    "Gerson Rodrigues",
+    "Michael Mifsud",
+    "Jari Litmanen",
+    "Marc Vales",
+    "Mario Frick",
+    "Kenny Dalglish",
+    "Gareth Bale",
+    "Khvicha Kvaratskhelia",
+    "Henrikh Mkhitaryan",
+    "Mahir Emreli",
+    "Yuriy Logvinenko",
+    "Christian Pulisic",
+    "Alphonso Davies",
+    "Alexis Sánchez",
+    "Paolo Guerrero",
+    "Salomón Rondón",
+    "Enner Valencia",
+    "Marco Etcheverry",
+    "Roque Santa Cruz",
+    "Reynier Saborit",
+    "Leon Bailey",
+    "David Suazo",
+    "Carlos Ruiz (footballer)",
+    "Bryan Ruiz",
+    "Rommel Fernández",
+    "Jorge González (footballer, born 1966)",
+    "Douglas Martínez",
+    "Dwight Yorke",
+    "Duckens Nazon",
+    "Juan Peña",
+    "Vivian Davidson",
+    "Deon McCaulay",
+    "Carlos Bertrand",
+    "Sunil Chhetri",
+    "Wu Lei",
+    "Chanathip Songkrasin",
+    "Nguyễn Quang Hải",
+    "Egy Maulana Vikri",
+    "Phil Younghusband",
+    "Faris Ramli",
+    "Mohd Safiq Rahim",
+    "Yossi Benayoun",
+    "Omar Abdulrahman",
+    "Kaleemullah",
+    "Jamal Bhuyan",
+    "Younis Mahmoud",
+    "Hassan Maatouk",
+    "Ahmad Hayel",
+    "Eldor Shomurodov",
+    "Omar Khribin",
+    "Chen Po-liang",
+    "Jong Tae-se",
+    "Tserenbaatar Tumurbaatar",
+    "Bimal Gharti Magar",
+    "Sayed Redha Isa",
+    "Prak Mony Udom",
+    "Kyaw Zin Lwin",
+    "Ali Al-Habsi",
+    "Amr Zaki",
+    "Bader Al-Mutawa",
+    "Benni McCarthy",
+    "Asamoah Gyan",
+    "Wahbi Khazri",
+    "Riyad Mahrez",
+    "Didier Drogba",
+    "Moussa Sissoko",
+    "Bertrand Traoré",
+    "Naby Keïta",
+    "Kei Kamara",
+    "George Weah",
+    "Emmanuel Adebayor",
+    "Stéphane Sessègnon",
+    "Pierre-Emerick Aubameyang",
+    "Dieumerci Mbokani",
+    "Flávio Amado",
+    "Hélder Pereira",
+    "Freddie Mwila",
+    "Peter Ndlovu",
+    "Thomas Ulimwengu",
+    "Denis Onyango",
+    "Jacques Tuyisenge",
+    "McDonald Mariga",
+    "Getaneh Kebede",
+    "Nader Bakkar",
+    "Haitham Mustafa",
+    "Deeq Ibrahim",
+    "Ben Mouton",
+    "Frederic Mendy",
+    "Harry Kewell",
+    "Ryan Nelsen",
+    "Roy Krishna",
+    "Raymond Gunemba",
+    "Benjamin Totori",
+    "Brian Kaltak",
+    "Ramin Ott",
+    "Nicky Pulu",
+    "Teaonui Tehau",
+    "Adama Ba",
+    "Thievy Bifouma",
+    "Emilio Nsue",
+    "Atem William Zambasi",
+    "Valery Berezovsky"
+  ],
+  "flags": [
+    "cz",
+    "sk",
+    "de",
+    "fr",
+    "it",
+    "es",
+    "gb",
+    "pl",
+    "at",
+    "ch",
+    "pt",
+    "nl",
+    "be",
+    "se",
+    "no",
+    "dk",
+    "fi",
+    "gr",
+    "tr",
+    "ro",
+    "hu",
+    "bg",
+    "hr",
+    "ua",
+    "ru",
+    "is",
+    "ie",
+    "mt",
+    "cy",
+    "lu",
+    "al",
+    "rs",
+    "md",
+    "by",
+    "lv",
+    "lt",
+    "ee",
+    "si",
+    "ba",
+    "mk",
+    "ad",
+    "mc",
+    "sm",
+    "va",
+    "xk",
+    "me",
+    "li",
+    "jp",
+    "cn",
+    "in",
+    "kr",
+    "th",
+    "vn",
+    "id",
+    "ph",
+    "sg",
+    "my",
+    "il",
+    "sa",
+    "ae",
+    "qa",
+    "ir",
+    "pk",
+    "bd",
+    "kz",
+    "uz",
+    "am",
+    "ge",
+    "az",
+    "mn",
+    "np",
+    "kh",
+    "mm",
+    "jo",
+    "lb",
+    "om",
+    "ye",
+    "iq",
+    "kw",
+    "af",
+    "sy",
+    "kg",
+    "tj",
+    "tm",
+    "lk",
+    "la",
+    "bn",
+    "tl",
+    "mv",
+    "bt",
+    "bh",
+    "ps",
+    "tw",
+    "kp",
+    "us",
+    "ca",
+    "br",
+    "mx",
+    "ar",
+    "co",
+    "cl",
+    "pe",
+    "ve",
+    "cu",
+    "ec",
+    "bo",
+    "py",
+    "uy",
+    "jm",
+    "ht",
+    "gt",
+    "cr",
+    "pa",
+    "hn",
+    "ni",
+    "sv",
+    "bz",
+    "gy",
+    "sr",
+    "tt",
+    "bb",
+    "bs",
+    "do",
+    "dm",
+    "ag",
+    "kn",
+    "gd",
+    "lc",
+    "vc",
+    "za",
+    "eg",
+    "ng",
+    "ke",
+    "et",
+    "ma",
+    "tn",
+    "gh",
+    "sn",
+    "tz",
+    "ug",
+    "cm",
+    "dz",
+    "ly",
+    "sd",
+    "ci",
+    "ml",
+    "ne",
+    "bf",
+    "gn",
+    "gw",
+    "sl",
+    "lr",
+    "tg",
+    "bj",
+    "gq",
+    "ga",
+    "cg",
+    "cd",
+    "cf",
+    "td",
+    "so",
+    "dj",
+    "er",
+    "mz",
+    "zm",
+    "zw",
+    "mw",
+    "mg",
+    "mu",
+    "sc",
+    "km",
+    "rw",
+    "bi",
+    "ls",
+    "sz",
+    "na",
+    "bw",
+    "cv",
+    "st",
+    "ao",
+    "mr",
+    "ss",
+    "au",
+    "nz",
+    "fj",
+    "pg",
+    "vu",
+    "to",
+    "ws",
+    "ki",
+    "fm",
+    "mh",
+    "pw",
+    "nr",
+    "tv",
+    "sb"
+  ],
+  "cities": [
+    {
+      "name": "Česká republika",
+      "key": "Praha"
+    },
+    {
+      "name": "Slovensko",
+      "key": "Bratislava"
+    },
+    {
+      "name": "Německo",
+      "key": "Berlín"
+    },
+    {
+      "name": "Francie",
+      "key": "Paříž"
+    },
+    {
+      "name": "Itálie",
+      "key": "Řím"
+    },
+    {
+      "name": "Španělsko",
+      "key": "Madrid"
+    },
+    {
+      "name": "Velká Británie",
+      "key": "Londýn"
+    },
+    {
+      "name": "Polsko",
+      "key": "Varšava"
+    },
+    {
+      "name": "Rakousko",
+      "key": "Vídeň"
+    },
+    {
+      "name": "Švýcarsko",
+      "key": "Bern"
+    },
+    {
+      "name": "Portugalsko",
+      "key": "Lisabon"
+    },
+    {
+      "name": "Nizozemsko",
+      "key": "Amsterdam"
+    },
+    {
+      "name": "Belgie",
+      "key": "Brusel"
+    },
+    {
+      "name": "Švédsko",
+      "key": "Stockholm"
+    },
+    {
+      "name": "Norsko",
+      "key": "Oslo"
+    },
+    {
+      "name": "Dánsko",
+      "key": "Kodaň"
+    },
+    {
+      "name": "Finsko",
+      "key": "Helsinky"
+    },
+    {
+      "name": "Řecko",
+      "key": "Atény"
+    },
+    {
+      "name": "Turecko",
+      "key": "Ankara"
+    },
+    {
+      "name": "Rumunsko",
+      "key": "Bukurešť"
+    },
+    {
+      "name": "Maďarsko",
+      "key": "Budapešť"
+    },
+    {
+      "name": "Bulharsko",
+      "key": "Sofie"
+    },
+    {
+      "name": "Chorvatsko",
+      "key": "Záhřeb"
+    },
+    {
+      "name": "Ukrajina",
+      "key": "Kyjev"
+    },
+    {
+      "name": "Rusko",
+      "key": "Moskva"
+    },
+    {
+      "name": "Island",
+      "key": "Reykjavík"
+    },
+    {
+      "name": "Irsko",
+      "key": "Dublin"
+    },
+    {
+      "name": "Malta",
+      "key": "Valletta"
+    },
+    {
+      "name": "Kypr",
+      "key": "Nikósie"
+    },
+    {
+      "name": "Lucembursko",
+      "key": "Lucemburk"
+    },
+    {
+      "name": "Albánie",
+      "key": "Tirana"
+    },
+    {
+      "name": "Srbsko",
+      "key": "Bělehrad"
+    },
+    {
+      "name": "Moldavsko",
+      "key": "Kišiněv"
+    },
+    {
+      "name": "Bělorusko",
+      "key": "Minsk"
+    },
+    {
+      "name": "Lotyšsko",
+      "key": "Riga"
+    },
+    {
+      "name": "Litva",
+      "key": "Vilnius"
+    },
+    {
+      "name": "Estonsko",
+      "key": "Tallinn"
+    },
+    {
+      "name": "Slovinsko",
+      "key": "Lublaň"
+    },
+    {
+      "name": "Bosna a Hercegovina",
+      "key": "Sarajevo"
+    },
+    {
+      "name": "Severní Makedonie",
+      "key": "Skopje"
+    },
+    {
+      "name": "Andorra",
+      "key": "Andorra la Vella"
+    },
+    {
+      "name": "Monako",
+      "key": "Monako"
+    },
+    {
+      "name": "San Marino",
+      "key": "San Marino"
+    },
+    {
+      "name": "Vatikán",
+      "key": "Vatikán"
+    },
+    {
+      "name": "Kosovo",
+      "key": "Priština"
+    },
+    {
+      "name": "Černá Hora",
+      "key": "Podgorica"
+    },
+    {
+      "name": "Lichtenštejnsko",
+      "key": "Vaduz"
+    },
+    {
+      "name": "Japonsko",
+      "key": "Tokio"
+    },
+    {
+      "name": "Čína",
+      "key": "Peking"
+    },
+    {
+      "name": "Indie",
+      "key": "Nové Dillí"
+    },
+    {
+      "name": "Jižní Korea",
+      "key": "Soul"
+    },
+    {
+      "name": "Thajsko",
+      "key": "Bangkok"
+    },
+    {
+      "name": "Vietnam",
+      "key": "Hanoj"
+    },
+    {
+      "name": "Indonésie",
+      "key": "Jakarta"
+    },
+    {
+      "name": "Filipíny",
+      "key": "Manila"
+    },
+    {
+      "name": "Singapur",
+      "key": "Singapur"
+    },
+    {
+      "name": "Malajsie",
+      "key": "Kuala Lumpur"
+    },
+    {
+      "name": "Izrael",
+      "key": "Jeruzalém"
+    },
+    {
+      "name": "Saúdská Arábie",
+      "key": "Rijád"
+    },
+    {
+      "name": "Spoj. arab. emiráty",
+      "key": "Abú Dhabí"
+    },
+    {
+      "name": "Katar",
+      "key": "Dauhá"
+    },
+    {
+      "name": "Írán",
+      "key": "Teherán"
+    },
+    {
+      "name": "Pákistán",
+      "key": "Islámábád"
+    },
+    {
+      "name": "Bangladéš",
+      "key": "Dháka"
+    },
+    {
+      "name": "Kazachstán",
+      "key": "Astana"
+    },
+    {
+      "name": "Uzbekistán",
+      "key": "Taškent"
+    },
+    {
+      "name": "Arménie",
+      "key": "Jerevan"
+    },
+    {
+      "name": "Gruzie",
+      "key": "Tbilisi"
+    },
+    {
+      "name": "Ázerbájdžán",
+      "key": "Baku"
+    },
+    {
+      "name": "Mongolsko",
+      "key": "Ulánbátar"
+    },
+    {
+      "name": "Nepál",
+      "key": "Káthmándú"
+    },
+    {
+      "name": "Kambodža",
+      "key": "Phnom Pénh"
+    },
+    {
+      "name": "Myanmar",
+      "key": "Nepjida"
+    },
+    {
+      "name": "Jordánsko",
+      "key": "Ammán"
+    },
+    {
+      "name": "Libanon",
+      "key": "Bejrút"
+    },
+    {
+      "name": "Omán",
+      "key": "Maskat"
+    },
+    {
+      "name": "Jemen",
+      "key": "Saná"
+    },
+    {
+      "name": "Irák",
+      "key": "Bagdád"
+    },
+    {
+      "name": "Kuvajt",
+      "key": "Kuvajt"
+    },
+    {
+      "name": "Afghánistán",
+      "key": "Kábul"
+    },
+    {
+      "name": "Sýrie",
+      "key": "Damašek"
+    },
+    {
+      "name": "Kyrgyzstán",
+      "key": "Biškek"
+    },
+    {
+      "name": "Tádžikistán",
+      "key": "Dušanbe"
+    },
+    {
+      "name": "Turkmenistán",
+      "key": "Ašchabad"
+    },
+    {
+      "name": "Srí Lanka",
+      "key": "Šrí Džajavardenepura Kotte"
+    },
+    {
+      "name": "Laos",
+      "key": "Vientian"
+    },
+    {
+      "name": "Brunej",
+      "key": "Bandar Seri Begawan"
+    },
+    {
+      "name": "Východní Timor",
+      "key": "Dili"
+    },
+    {
+      "name": "Maledivy",
+      "key": "Malé"
+    },
+    {
+      "name": "Bhútán",
+      "key": "Thimphu"
+    },
+    {
+      "name": "Bahrajn",
+      "key": "Manáma"
+    },
+    {
+      "name": "Palestina",
+      "key": "Rámallah"
+    },
+    {
+      "name": "Tchaj-wan",
+      "key": "Tchaj-pej"
+    },
+    {
+      "name": "Severní Korea",
+      "key": "Pchjongjang"
+    },
+    {
+      "name": "USA",
+      "key": "Washington D.C."
+    },
+    {
+      "name": "Kanada",
+      "key": "Ottawa"
+    },
+    {
+      "name": "Brazílie",
+      "key": "Brasília"
+    },
+    {
+      "name": "Mexiko",
+      "key": "Mexico City"
+    },
+    {
+      "name": "Argentina",
+      "key": "Buenos Aires"
+    },
+    {
+      "name": "Kolumbie",
+      "key": "Bogotá"
+    },
+    {
+      "name": "Chile",
+      "key": "Santiago"
+    },
+    {
+      "name": "Peru",
+      "key": "Lima"
+    },
+    {
+      "name": "Venezuela",
+      "key": "Caracas"
+    },
+    {
+      "name": "Kuba",
+      "key": "Havana"
+    },
+    {
+      "name": "Ekvádor",
+      "key": "Quito"
+    },
+    {
+      "name": "Bolívie",
+      "key": "Sucre"
+    },
+    {
+      "name": "Paraguay",
+      "key": "Asunción"
+    },
+    {
+      "name": "Uruguay",
+      "key": "Montevideo"
+    },
+    {
+      "name": "Jamajka",
+      "key": "Kingston"
+    },
+    {
+      "name": "Haiti",
+      "key": "Port-au-Prince"
+    },
+    {
+      "name": "Guatemala",
+      "key": "Guatemala City"
+    },
+    {
+      "name": "Kostarika",
+      "key": "San José"
+    },
+    {
+      "name": "Panama",
+      "key": "Panama City"
+    },
+    {
+      "name": "Honduras",
+      "key": "Tegucigalpa"
+    },
+    {
+      "name": "Nikaragua",
+      "key": "Managua"
+    },
+    {
+      "name": "El Salvador",
+      "key": "San Salvador"
+    },
+    {
+      "name": "Belize",
+      "key": "Belmopan"
+    },
+    {
+      "name": "Guyana",
+      "key": "Georgetown"
+    },
+    {
+      "name": "Surinam",
+      "key": "Paramaribo"
+    },
+    {
+      "name": "Trinidad a Tobago",
+      "key": "Port of Spain"
+    },
+    {
+      "name": "Barbados",
+      "key": "Bridgetown"
+    },
+    {
+      "name": "Bahamy",
+      "key": "Nassau"
+    },
+    {
+      "name": "Dominikánská republika",
+      "key": "Santo Domingo"
+    },
+    {
+      "name": "Dominika",
+      "key": "Roseau"
+    },
+    {
+      "name": "Antigua a Barbuda",
+      "key": "Saint John's"
+    },
+    {
+      "name": "Sv. Kryštof a Nevis",
+      "key": "Basseterre"
+    },
+    {
+      "name": "Grenada",
+      "key": "St. George's"
+    },
+    {
+      "name": "Sv. Lucie",
+      "key": "Castries"
+    },
+    {
+      "name": "Sv. Vincenc a Grenadiny",
+      "key": "Kingstown"
+    },
+    {
+      "name": "Jižní Afrika",
+      "key": "Pretoria"
+    },
+    {
+      "name": "Egypt",
+      "key": "Káhira"
+    },
+    {
+      "name": "Nigérie",
+      "key": "Abuja"
+    },
+    {
+      "name": "Keňa",
+      "key": "Nairobi"
+    },
+    {
+      "name": "Etiopie",
+      "key": "Addis Abeba"
+    },
+    {
+      "name": "Maroko",
+      "key": "Rabat"
+    },
+    {
+      "name": "Tunisko",
+      "key": "Tunis"
+    },
+    {
+      "name": "Ghana",
+      "key": "Accra"
+    },
+    {
+      "name": "Senegal",
+      "key": "Dakar"
+    },
+    {
+      "name": "Tanzanie",
+      "key": "Dodoma"
+    },
+    {
+      "name": "Uganda",
+      "key": "Kampala"
+    },
+    {
+      "name": "Kamerun",
+      "key": "Yaoundé"
+    },
+    {
+      "name": "Alžírsko",
+      "key": "Alžír"
+    },
+    {
+      "name": "Libye",
+      "key": "Tripolis"
+    },
+    {
+      "name": "Súdán",
+      "key": "Chartúm"
+    },
+    {
+      "name": "Pobřeží slonoviny",
+      "key": "Yamoussoukro"
+    },
+    {
+      "name": "Mali",
+      "key": "Bamako"
+    },
+    {
+      "name": "Niger",
+      "key": "Niamey"
+    },
+    {
+      "name": "Burkina Faso",
+      "key": "Ouagadougou"
+    },
+    {
+      "name": "Guinea",
+      "key": "Conakry"
+    },
+    {
+      "name": "Guinea-Bissau",
+      "key": "Bissau"
+    },
+    {
+      "name": "Sierra Leone",
+      "key": "Freetown"
+    },
+    {
+      "name": "Libérie",
+      "key": "Monrovia"
+    },
+    {
+      "name": "Togo",
+      "key": "Lomé"
+    },
+    {
+      "name": "Benin",
+      "key": "Porto-Novo"
+    },
+    {
+      "name": "Rovníková Guinea",
+      "key": "Malabo"
+    },
+    {
+      "name": "Gabon",
+      "key": "Libreville"
+    },
+    {
+      "name": "Republika Kongo",
+      "key": "Brazzaville"
+    },
+    {
+      "name": "DR Kongo",
+      "key": "Kinshasa"
+    },
+    {
+      "name": "Středoafrická republika",
+      "key": "Bangui"
+    },
+    {
+      "name": "Čad",
+      "key": "N'Djamena"
+    },
+    {
+      "name": "Somálsko",
+      "key": "Mogadišo"
+    },
+    {
+      "name": "Džibuti",
+      "key": "Džibuti"
+    },
+    {
+      "name": "Eritrea",
+      "key": "Asmara"
+    },
+    {
+      "name": "Mosambik",
+      "key": "Maputo"
+    },
+    {
+      "name": "Zambie",
+      "key": "Lusaka"
+    },
+    {
+      "name": "Zimbabwe",
+      "key": "Harare"
+    },
+    {
+      "name": "Malawi",
+      "key": "Lilongwe"
+    },
+    {
+      "name": "Madagaskar",
+      "key": "Antananarivo"
+    },
+    {
+      "name": "Mauricius",
+      "key": "Port Louis"
+    },
+    {
+      "name": "Seychely",
+      "key": "Victoria"
+    },
+    {
+      "name": "Komory",
+      "key": "Moroni"
+    },
+    {
+      "name": "Rwanda",
+      "key": "Kigali"
+    },
+    {
+      "name": "Burundi",
+      "key": "Gitega"
+    },
+    {
+      "name": "Lesotho",
+      "key": "Maseru"
+    },
+    {
+      "name": "Eswatini",
+      "key": "Mbabane"
+    },
+    {
+      "name": "Namibie",
+      "key": "Windhoek"
+    },
+    {
+      "name": "Botswana",
+      "key": "Gaborone"
+    },
+    {
+      "name": "Kapverdy",
+      "key": "Praia"
+    },
+    {
+      "name": "Sv. Tomáš a Princův ostrov",
+      "key": "São Tomé"
+    },
+    {
+      "name": "Angola",
+      "key": "Luanda"
+    },
+    {
+      "name": "Mauritánie",
+      "key": "Nouakchott"
+    },
+    {
+      "name": "Jižní Súdán",
+      "key": "Juba"
+    },
+    {
+      "name": "Austrálie",
+      "key": "Canberra"
+    },
+    {
+      "name": "Nový Zéland",
+      "key": "Wellington"
+    },
+    {
+      "name": "Fidži",
+      "key": "Suva"
+    },
+    {
+      "name": "Papua Nová Guinea",
+      "key": "Port Moresby"
+    },
+    {
+      "name": "Vanuatu",
+      "key": "Port Vila"
+    },
+    {
+      "name": "Tonga",
+      "key": "Nukualofa"
+    },
+    {
+      "name": "Samoa",
+      "key": "Apia"
+    },
+    {
+      "name": "Kiribati",
+      "key": "Tarawa"
+    },
+    {
+      "name": "Mikronésie",
+      "key": "Palikir"
+    },
+    {
+      "name": "Marshallovy ostrovy",
+      "key": "Majuro"
+    },
+    {
+      "name": "Palau",
+      "key": "Ngerulmud"
+    },
+    {
+      "name": "Nauru",
+      "key": "Yaren"
+    },
+    {
+      "name": "Tuvalu",
+      "key": "Funafuti"
+    },
+    {
+      "name": "Šalamounovy ostrovy",
+      "key": "Honiara"
+    }
+  ]
+}
