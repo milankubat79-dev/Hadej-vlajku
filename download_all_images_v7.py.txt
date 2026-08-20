@@ -31,9 +31,17 @@ import json
 import os
 import re
 import sys
+import io
 import argparse
 from pathlib import Path
 from urllib.parse import quote
+
+# Windows cmd fix: force UTF-8 output so emoji don't crash the script
+if hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except Exception:
+        pass
 
 # ─── NASTAVENÍ ────────────────────────────────────────────────────────────────
 SCRIPT_DIR   = Path(__file__).parent
@@ -49,6 +57,11 @@ DATA_FILE    = SCRIPT_DIR / 'all_data.json'
 HEADERS = {
     'User-Agent': 'HadejVlajkuBot/1.0 (milan.kubat@marketup.cz; image downloader for game)',
     'Accept': 'image/*,*/*;q=0.8',
+}
+# Pro JSON API volání (Wikipedia, Commons) – jiný Accept header
+API_HEADERS = {
+    'User-Agent': 'HadejVlajkuBot/1.0 (milan.kubat@marketup.cz; image downloader for game)',
+    'Accept': 'application/json',
 }
 TIMEOUT    = aiohttp.ClientTimeout(total=30)
 CONCURRENT = 6   # max souběžných požadavků (buď hodný k API)
@@ -117,10 +130,10 @@ async def save_img(session, img_url: str, dest_no_ext: Path) -> str | None:
 async def wiki_summary_img(session, title: str) -> str:
     """Wikipedia REST summary → thumbnail/original image URL."""
     url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{quote(title)}"
-    async with session.get(url, headers=HEADERS) as r:
+    async with session.get(url, headers=API_HEADERS) as r:
         if r.status != 200:
             raise Exception(f"HTTP {r.status}")
-        d = await r.json()
+        d = await r.json(content_type=None)
         src = (d.get('thumbnail') or {}).get('source') or \
               (d.get('originalimage') or {}).get('source')
         if not src:
@@ -132,10 +145,10 @@ async def wiki_pageimages(session, title: str) -> str:
     url = (f"https://en.wikipedia.org/w/api.php?action=query"
            f"&titles={quote(title)}&prop=pageimages&format=json"
            f"&pithumbsize=800&pilicense=any&redirects=1&origin=*")
-    async with session.get(url, headers=HEADERS) as r:
+    async with session.get(url, headers=API_HEADERS) as r:
         if r.status != 200:
             raise Exception(f"HTTP {r.status}")
-        d    = await r.json()
+        d    = await r.json(content_type=None)
         page = list((d.get('query', {}).get('pages', {})).values())[0]
         src  = (page.get('thumbnail') or {}).get('source')
         if not src:
@@ -147,10 +160,10 @@ async def wiki_logo_scan(session, title: str) -> str:
     url = (f"https://en.wikipedia.org/w/api.php?action=query"
            f"&titles={quote(title)}&prop=images&imlimit=50"
            f"&format=json&redirects=1&origin=*")
-    async with session.get(url, headers=HEADERS) as r:
+    async with session.get(url, headers=API_HEADERS) as r:
         if r.status != 200:
             raise Exception(f"HTTP {r.status}")
-        d    = await r.json()
+        d    = await r.json(content_type=None)
         page = list((d.get('query', {}).get('pages', {})).values())[0]
         imgs = page.get('images', [])
     logo_re = re.compile(
@@ -162,8 +175,8 @@ async def wiki_logo_scan(session, title: str) -> str:
     url2 = (f"https://en.wikipedia.org/w/api.php?action=query"
             f"&titles={quote(found)}&prop=imageinfo&iiprop=url"
             f"&iiurlwidth=400&format=json&origin=*")
-    async with session.get(url2, headers=HEADERS) as r2:
-        d2  = await r2.json()
+    async with session.get(url2, headers=API_HEADERS) as r2:
+        d2  = await r2.json(content_type=None)
         p2  = list((d2.get('query', {}).get('pages', {})).values())[0]
         url_val = ((p2.get('imageinfo') or [{}])[0]).get('url')
         if not url_val:
@@ -173,10 +186,10 @@ async def wiki_logo_scan(session, title: str) -> str:
 async def sportsdb_logo(session, team_name: str) -> str:
     """TheSportsDB → badge URL (free tier)."""
     url = f"https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t={quote(team_name)}"
-    async with session.get(url, headers=HEADERS) as r:
+    async with session.get(url, headers=API_HEADERS) as r:
         if r.status != 200:
             raise Exception(f"HTTP {r.status}")
-        d = await r.json()
+        d = await r.json(content_type=None)
         badge = ((d.get('teams') or [{}])[0]).get('strBadge')
         if not badge:
             raise Exception("no badge in SportsDB")
@@ -184,18 +197,16 @@ async def sportsdb_logo(session, team_name: str) -> str:
 
 async def commons_logo(session, query: str) -> str:
     """Wikimedia Commons – hledá logo/badge soubor a vrátí jeho URL."""
-    # Nejdřív zkus přímý přístup na soubor
     search_url = (f"https://commons.wikimedia.org/w/api.php?action=query"
                   f"&list=search&srnamespace=6&srsearch={quote(query + ' logo')}"
                   f"&format=json&origin=*&srlimit=5")
-    async with session.get(search_url, headers=HEADERS) as r:
+    async with session.get(search_url, headers=API_HEADERS) as r:
         if r.status != 200:
             raise Exception(f"HTTP {r.status}")
-        d = await r.json()
+        d = await r.json(content_type=None)
         results = (d.get('query') or {}).get('search') or []
         if not results:
             raise Exception("no Commons results")
-        # Preferuj SVG nebo PNG s "logo" v názvu
         logo_re = re.compile(r'logo|badge|crest|emblem|shield', re.I)
         title = None
         for res in results:
@@ -204,12 +215,11 @@ async def commons_logo(session, query: str) -> str:
                 break
         if not title:
             title = results[0]['title']
-    # Získej URL souboru
     info_url = (f"https://commons.wikimedia.org/w/api.php?action=query"
                 f"&titles={quote(title)}&prop=imageinfo&iiprop=url"
                 f"&iiurlwidth=400&format=json&origin=*")
-    async with session.get(info_url, headers=HEADERS) as r2:
-        d2  = await r2.json()
+    async with session.get(info_url, headers=API_HEADERS) as r2:
+        d2  = await r2.json(content_type=None)
         p2  = list((d2.get('query', {}).get('pages', {})).values())[0]
         url_val = ((p2.get('imageinfo') or [{}])[0]).get('thumburl') or \
                   ((p2.get('imageinfo') or [{}])[0]).get('url')
@@ -220,10 +230,10 @@ async def commons_logo(session, query: str) -> str:
 async def sportsdb_player(session, player_name: str) -> str:
     """TheSportsDB → player photo URL."""
     url = f"https://www.thesportsdb.com/api/v1/json/3/searchplayers.php?p={quote(player_name)}"
-    async with session.get(url, headers=HEADERS) as r:
+    async with session.get(url, headers=API_HEADERS) as r:
         if r.status != 200:
             raise Exception(f"HTTP {r.status}")
-        d = await r.json()
+        d = await r.json(content_type=None)
         players = d.get('player') or []
         if not players:
             raise Exception("no player found in SportsDB")
@@ -236,10 +246,10 @@ async def wiki_search_summary(session, query: str) -> str:
     """Wikipedia search → najde správný anglický článek → vrátí URL obrázku."""
     search_url = (f"https://en.wikipedia.org/w/api.php?action=query&list=search"
                   f"&srsearch={quote(query)}&format=json&origin=*&srlimit=1")
-    async with session.get(search_url, headers=HEADERS) as r:
+    async with session.get(search_url, headers=API_HEADERS) as r:
         if r.status != 200:
             raise Exception(f"HTTP {r.status}")
-        d = await r.json()
+        d = await r.json(content_type=None)
         results = (d.get('query') or {}).get('search') or []
         if not results:
             raise Exception("no search results")
@@ -498,10 +508,10 @@ async def commons_city_photo(session, city_en: str) -> str:
         search_url = (f"https://commons.wikimedia.org/w/api.php?action=query"
                       f"&list=search&srnamespace=6&srsearch={quote(query)}"
                       f"&format=json&origin=*&srlimit=10")
-        async with session.get(search_url, headers=HEADERS) as r:
+        async with session.get(search_url, headers=API_HEADERS) as r:
             if r.status != 200:
                 continue
-            d = await r.json()
+            d = await r.json(content_type=None)
             results = (d.get('query') or {}).get('search') or []
         # Preferuj JPEG/PNG, ne SVG/logo/flag/coat/map
         skip_re = re.compile(r'logo|flag|coat|emblem|map|coa|seal|arms|locator', re.I)
@@ -516,8 +526,8 @@ async def commons_city_photo(session, city_en: str) -> str:
         info_url = (f"https://commons.wikimedia.org/w/api.php?action=query"
                     f"&titles={quote(title)}&prop=imageinfo&iiprop=url"
                     f"&iiurlwidth=800&format=json&origin=*")
-        async with session.get(info_url, headers=HEADERS) as r2:
-            d2  = await r2.json()
+        async with session.get(info_url, headers=API_HEADERS) as r2:
+            d2  = await r2.json(content_type=None)
             p2  = list((d2.get('query', {}).get('pages', {})).values())[0]
             url_val = ((p2.get('imageinfo') or [{}])[0]).get('thumburl') or \
                       ((p2.get('imageinfo') or [{}])[0]).get('url')

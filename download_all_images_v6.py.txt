@@ -31,9 +31,17 @@ import json
 import os
 import re
 import sys
+import io
 import argparse
 from pathlib import Path
 from urllib.parse import quote
+
+# Windows cmd fix: force UTF-8 output so emoji don't crash the script
+if hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except Exception:
+        pass
 
 # ─── NASTAVENÍ ────────────────────────────────────────────────────────────────
 SCRIPT_DIR   = Path(__file__).parent

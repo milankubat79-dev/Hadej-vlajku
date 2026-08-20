@@ -182,41 +182,6 @@ async def sportsdb_logo(session, team_name: str) -> str:
             raise Exception("no badge in SportsDB")
         return badge + '/preview'  # smaller version
 
-async def commons_logo(session, query: str) -> str:
-    """Wikimedia Commons – hledá logo/badge soubor a vrátí jeho URL."""
-    # Nejdřív zkus přímý přístup na soubor
-    search_url = (f"https://commons.wikimedia.org/w/api.php?action=query"
-                  f"&list=search&srnamespace=6&srsearch={quote(query + ' logo')}"
-                  f"&format=json&origin=*&srlimit=5")
-    async with session.get(search_url, headers=HEADERS) as r:
-        if r.status != 200:
-            raise Exception(f"HTTP {r.status}")
-        d = await r.json()
-        results = (d.get('query') or {}).get('search') or []
-        if not results:
-            raise Exception("no Commons results")
-        # Preferuj SVG nebo PNG s "logo" v názvu
-        logo_re = re.compile(r'logo|badge|crest|emblem|shield', re.I)
-        title = None
-        for res in results:
-            if logo_re.search(res['title']):
-                title = res['title']
-                break
-        if not title:
-            title = results[0]['title']
-    # Získej URL souboru
-    info_url = (f"https://commons.wikimedia.org/w/api.php?action=query"
-                f"&titles={quote(title)}&prop=imageinfo&iiprop=url"
-                f"&iiurlwidth=400&format=json&origin=*")
-    async with session.get(info_url, headers=HEADERS) as r2:
-        d2  = await r2.json()
-        p2  = list((d2.get('query', {}).get('pages', {})).values())[0]
-        url_val = ((p2.get('imageinfo') or [{}])[0]).get('thumburl') or \
-                  ((p2.get('imageinfo') or [{}])[0]).get('url')
-        if not url_val:
-            raise Exception("no URL from Commons imageinfo")
-        return url_val
-
 async def sportsdb_player(session, player_name: str) -> str:
     """TheSportsDB → player photo URL."""
     url = f"https://www.thesportsdb.com/api/v1/json/3/searchplayers.php?p={quote(player_name)}"
@@ -262,11 +227,9 @@ async def download_car(session, car: dict, redownload: bool):
     async with SEM:
         img_url = None
         for attempt in [
-            lambda: wiki_logo_scan(session, wiki),       # hledá logo/emblem v článku
-            lambda: commons_logo(session, name),          # Wikimedia Commons logo
-            lambda: commons_logo(session, wiki),          # Commons podle wiki názvu
-            lambda: wiki_summary_img(session, wiki),      # thumbnail z článku
-            lambda: wiki_pageimages(session, wiki),       # pageimages API
+            lambda: wiki_summary_img(session, wiki),
+            lambda: wiki_pageimages(session, wiki),
+            lambda: wiki_logo_scan(session, wiki),
         ]:
             try:
                 img_url = await attempt()
@@ -285,19 +248,6 @@ async def download_car(session, car: dict, redownload: bool):
         print(f"  {mark} {name} ({slug})", flush=True)
 
 
-def club_name_variants(name: str, sdb: str) -> list:
-    """Vrátí seznam variant jména klubu pro různé API."""
-    variants = list(dict.fromkeys([sdb, name]))  # deduplikace, zachování pořadí
-    # Odstraň běžné přípony jako FC, SC, AC, CF, RFC, ...
-    clean = re.sub(r'\b(FC|SC|AC|CF|RFC|AFC|BFC|FK|SK|SV|VfB|VfL|TSV|TuS|RCD|UD|SD|CA|CD|RC|AS|SS|US|SSC|BSC|CSC|HSC|PSG|PSV)\b', '', name).strip(' -')
-    if clean and clean != name:
-        variants.append(clean)
-    # Zkus verzi bez "City", "United", "Athletic", "Sporting" atd.
-    short = re.sub(r'\b(City|United|Athletic|Sporting|Wanderers|Rovers|Town|Villa|County|Rangers)\b', '', name).strip()
-    if short and short != name and len(short) > 2:
-        variants.append(short)
-    return [v for v in variants if v]
-
 async def download_club(session, club: dict, redownload: bool):
     name = club['name']
     wiki = club['wiki']
@@ -310,45 +260,19 @@ async def download_club(session, club: dict, redownload: bool):
             stats['skip'] += 1
             return
 
-    variants = club_name_variants(name, sdb)
-
     async with SEM:
         img_url = None
-        # 1) TheSportsDB – zkus všechny varianty jména
-        for v in variants:
+        for attempt in [
+            lambda: sportsdb_logo(session, sdb),
+            lambda: wiki_logo_scan(session, wiki),
+            lambda: wiki_summary_img(session, wiki),
+            lambda: wiki_pageimages(session, wiki),
+        ]:
             try:
-                img_url = await sportsdb_logo(session, v)
+                img_url = await attempt()
                 break
             except:
                 pass
-
-        # 2) Wikipedia logo scan
-        if not img_url:
-            try:
-                img_url = await wiki_logo_scan(session, wiki)
-            except:
-                pass
-
-        # 3) Wikimedia Commons
-        if not img_url:
-            for v in variants[:2]:
-                try:
-                    img_url = await commons_logo(session, v)
-                    break
-                except:
-                    pass
-
-        # 4) Wikipedia summary / pageimages
-        if not img_url:
-            for attempt in [
-                lambda: wiki_summary_img(session, wiki),
-                lambda: wiki_pageimages(session, wiki),
-            ]:
-                try:
-                    img_url = await attempt()
-                    break
-                except:
-                    pass
 
         if img_url:
             result = await save_img(session, img_url, CLUBS_DIR / slug)
@@ -410,121 +334,96 @@ async def download_flag(session, iso: str, redownload: bool):
 
 
 # ─── SLOVNÍK: ČESKY NÁZEV MĚSTA → ANGLICKÝ NÁZEV NA WIKIPEDII ───────────────
-# Klíče odpovídají přesně hodnotám city['key'] z all_data.json
 CITY_EN = {
     # Evropa
-    'Praha': 'Prague', 'Bratislava': 'Bratislava', 'Berlín': 'Berlin',
-    'Paříž': 'Paris', 'Řím': 'Rome', 'Madrid': 'Madrid', 'Londýn': 'London',
-    'Varšava': 'Warsaw', 'Vídeň': 'Vienna', 'Bern': 'Bern',
-    'Lisabon': 'Lisbon', 'Amsterdam': 'Amsterdam', 'Brusel': 'Brussels',
-    'Stockholm': 'Stockholm', 'Oslo': 'Oslo', 'Kodaň': 'Copenhagen',
-    'Helsinky': 'Helsinki', 'Atény': 'Athens', 'Ankara': 'Ankara',
-    'Bukurešť': 'Bucharest', 'Budapešť': 'Budapest', 'Sofie': 'Sofia',
-    'Záhřeb': 'Zagreb', 'Kyjev': 'Kyiv', 'Moskva': 'Moscow',
-    'Reykjavík': 'Reykjavik', 'Dublin': 'Dublin', 'Valletta': 'Valletta',
-    'Nikósie': 'Nicosia', 'Lucemburk': 'Luxembourg City', 'Tirana': 'Tirana',
-    'Bělehrad': 'Belgrade', 'Kišiněv': 'Chișinău', 'Minsk': 'Minsk',
-    'Riga': 'Riga', 'Vilnius': 'Vilnius', 'Tallinn': 'Tallinn',
-    'Lublaň': 'Ljubljana', 'Sarajevo': 'Sarajevo', 'Skopje': 'Skopje',
+    'Praha': 'Prague', 'Londýn': 'London', 'Paříž': 'Paris', 'Berlín': 'Berlin',
+    'Řím': 'Rome', 'Madrid': 'Madrid', 'Vídeň': 'Vienna', 'Varšava': 'Warsaw',
+    'Bukurešť': 'Bucharest', 'Brusel': 'Brussels', 'Amsterdam': 'Amsterdam',
+    'Lisabon': 'Lisbon', 'Atény': 'Athens', 'Stockholm': 'Stockholm',
+    'Kodaň': 'Copenhagen', 'Oslo': 'Oslo', 'Helsinki': 'Helsinki',
+    'Dublin': 'Dublin', 'Bern': 'Bern', 'Záhřeb': 'Zagreb',
+    'Sarajevo': 'Sarajevo', 'Bělehrad': 'Belgrade', 'Skopje': 'Skopje',
+    'Tirana': 'Tirana', 'Podgorica': 'Podgorica', 'Lublaň': 'Ljubljana',
+    'Bratislava': 'Bratislava', 'Budapešť': 'Budapest', 'Vatikán': 'Vatican City',
+    'Valletta': 'Valletta', 'Nikósie': 'Nicosia', 'Tallinn': 'Tallinn',
+    'Riga': 'Riga', 'Vilnius': 'Vilnius', 'Minsk': 'Minsk',
+    'Kyjev': 'Kyiv', 'Kišiněv': 'Chișinău', 'Reykjavík': 'Reykjavik',
     'Andorra la Vella': 'Andorra la Vella', 'Monako': 'Monaco',
-    'San Marino': 'San Marino', 'Vatikán': 'Vatican City', 'Priština': 'Pristina',
-    'Podgorica': 'Podgorica', 'Vaduz': 'Vaduz',
+    'San Marino': 'San Marino', 'Vaduz': 'Vaduz', 'Luxemburg': 'Luxembourg City',
+    'Sofie': 'Sofia', 'Tiraspol': 'Tiraspol', 'Pristina': 'Pristina',
     # Asie
-    'Tokio': 'Tokyo', 'Peking': 'Beijing', 'Nové Dillí': 'New Delhi',
-    'Soul': 'Seoul', 'Bangkok': 'Bangkok', 'Hanoj': 'Hanoi',
-    'Jakarta': 'Jakarta', 'Manila': 'Manila', 'Singapur': 'Singapore',
-    'Kuala Lumpur': 'Kuala Lumpur', 'Jeruzalém': 'Jerusalem',
-    'Rijád': 'Riyadh', 'Abú Dhabí': 'Abu Dhabi', 'Dauhá': 'Doha',
-    'Teherán': 'Tehran', 'Islámábád': 'Islamabad', 'Dháka': 'Dhaka',
-    'Astana': 'Astana', 'Taškent': 'Tashkent', 'Jerevan': 'Yerevan',
-    'Tbilisi': 'Tbilisi', 'Baku': 'Baku', 'Ulánbátar': 'Ulaanbaatar',
-    'Káthmándú': 'Kathmandu', 'Phnom Pénh': 'Phnom Penh',
-    'Nepjida': 'Naypyidaw', 'Ammán': 'Amman', 'Bejrút': 'Beirut',
-    'Maskat': 'Muscat', 'Saná': 'Sanaa', 'Bagdád': 'Baghdad',
-    'Kuvajt': 'Kuwait City', 'Kábul': 'Kabul', 'Damašek': 'Damascus',
-    'Biškek': 'Bishkek', 'Dušanbe': 'Dushanbe', 'Ašchabad': 'Ashgabat',
-    'Šrí Džajavardenepura Kotte': 'Sri Jayawardenepura Kotte',
-    'Vientian': 'Vientiane', 'Bandar Seri Begawan': 'Bandar Seri Begawan',
-    'Dili': 'Dili', 'Malé': 'Malé', 'Thimphu': 'Thimphu',
-    'Manáma': 'Manama', 'Rámallah': 'Ramallah', 'Tchaj-pej': 'Taipei',
-    'Pchjongjang': 'Pyongyang',
-    # Amerika
-    'Washington D.C.': 'Washington, D.C.', 'Ottawa': 'Ottawa',
-    'Brasília': 'Brasília', 'Mexico City': 'Mexico City',
-    'Buenos Aires': 'Buenos Aires', 'Bogotá': 'Bogotá', 'Santiago': 'Santiago',
-    'Lima': 'Lima', 'Caracas': 'Caracas', 'Havana': 'Havana',
-    'Quito': 'Quito', 'Sucre': 'Sucre', 'Asunción': 'Asunción',
-    'Montevideo': 'Montevideo', 'Kingston': 'Kingston',
-    'Port-au-Prince': 'Port-au-Prince', 'Guatemala City': 'Guatemala City',
-    'San José': 'San José, Costa Rica', 'Panama City': 'Panama City',
-    'Tegucigalpa': 'Tegucigalpa', 'Managua': 'Managua',
-    'San Salvador': 'San Salvador', 'Belmopan': 'Belmopan',
-    'Georgetown': 'Georgetown, Guyana', 'Paramaribo': 'Paramaribo',
-    'Port of Spain': 'Port of Spain', 'Bridgetown': 'Bridgetown',
-    'Nassau': 'Nassau', 'Santo Domingo': 'Santo Domingo',
-    'Roseau': 'Roseau', 'Saint John\'s': 'St. John\'s, Antigua and Barbuda',
-    'Basseterre': 'Basseterre', 'St. George\'s': 'St. George\'s, Grenada',
-    'Castries': 'Castries', 'Kingstown': 'Kingstown',
+    'Peking': 'Beijing', 'Tokio': 'Tokyo', 'Soul': 'Seoul',
+    'Pchjongjang': 'Pyongyang', 'Ulánbátar': 'Ulaanbaatar',
+    'Hanoj': 'Hanoi', 'Bangkok': 'Bangkok', 'Kuala Lumpur': 'Kuala Lumpur',
+    'Singapur': 'Singapore', 'Jakarta': 'Jakarta', 'Manila': 'Manila',
+    'Nové Dillí': 'New Delhi', 'Dillí': 'New Delhi',
+    'Islamábád': 'Islamabad', 'Kábul': 'Kabul', 'Teherán': 'Tehran',
+    'Bagdád': 'Baghdad', 'Rijád': 'Riyadh', 'Ankara': 'Ankara',
+    'Jeruzalém': 'Jerusalem', 'Tel Aviv': 'Tel Aviv', 'Ammán': 'Amman',
+    'Bejrút': 'Beirut', 'Damašek': 'Damascus', 'Abú Zabí': 'Abu Dhabi',
+    'Dubaj': 'Dubai', 'Maskat': 'Muscat', 'Kuvajt': 'Kuwait City',
+    'Manáma': 'Manama', 'Dohá': 'Doha', 'Taškent': 'Tashkent',
+    'Dušanbe': 'Dushanbe', 'Ašchabad': 'Ashgabat', 'Biškek': 'Bishkek',
+    'Astana': 'Astana', 'Nur-Sultan': 'Astana', 'Thimphu': 'Thimphu',
+    'Káthmándú': 'Kathmandu', 'Kolombo': 'Sri Jayawardenepura Kotte',
+    'Dháka': 'Dhaka', 'Naypyidaw': 'Naypyidaw', 'Vientiane': 'Vientiane',
+    'Phnompenh': 'Phnom Penh', 'Phnom Penh': 'Phnom Penh',
+    'Bandar Seri Begawan': 'Bandar Seri Begawan', 'Dili': 'Dili',
+    'Jerevan': 'Yerevan', 'Tbilisi': 'Tbilisi', 'Baku': 'Baku',
+    'Aden': 'Aden', 'Saná': 'Sanaa', 'Colombo': 'Colombo',
+    'Rangún': 'Yangon', 'Jangon': 'Yangon',
     # Afrika
-    'Pretoria': 'Pretoria', 'Káhira': 'Cairo', 'Abuja': 'Abuja',
-    'Nairobi': 'Nairobi', 'Addis Abeba': 'Addis Ababa', 'Rabat': 'Rabat',
-    'Tunis': 'Tunis', 'Accra': 'Accra', 'Dakar': 'Dakar', 'Dodoma': 'Dodoma',
-    'Kampala': 'Kampala', 'Yaoundé': 'Yaoundé', 'Alžír': 'Algiers',
-    'Tripolis': 'Tripoli', 'Chartúm': 'Khartoum', 'Yamoussoukro': 'Yamoussoukro',
-    'Bamako': 'Bamako', 'Niamey': 'Niamey', 'Ouagadougou': 'Ouagadougou',
+    'Káhira': 'Cairo', 'Addis Abeba': 'Addis Ababa', 'Nairobi': 'Nairobi',
+    'Lagos': 'Lagos', 'Abuja': 'Abuja', 'Kinshasa': 'Kinshasa',
+    'Alžír': 'Algiers', 'Tripolis': 'Tripoli', 'Tunis': 'Tunis',
+    'Rabat': 'Rabat', 'Kartúm': 'Khartoum', 'Kartum': 'Khartoum',
+    'Mogadišu': 'Mogadishu', 'Džibuti': 'Djibouti', 'Asmara': 'Asmara',
+    'Kampala': 'Kampala', 'Kigali': 'Kigali', 'Bujumbura': 'Bujumbura',
+    'Lusaka': 'Lusaka', 'Harare': 'Harare', 'Lilongwe': 'Lilongwe',
+    'Maputo': 'Maputo', 'Antananarivo': 'Antananarivo', 'Dakar': 'Dakar',
+    'Abidjan': 'Abidjan', 'Yamoussoukro': 'Yamoussoukro', 'Accra': 'Accra',
+    'Lomé': 'Lomé', 'Cotonou': 'Cotonou', 'Porto-Novo': 'Porto-Novo',
+    'Libreville': 'Libreville', 'Malabo': 'Malabo', 'Yaoundé': 'Yaoundé',
+    'Bangui': 'Bangui', 'Brazzaville': 'Brazzaville', 'Luanda': 'Luanda',
+    'Windhoek': 'Windhoek', 'Gaborone': 'Gaborone', 'Maseru': 'Maseru',
+    'Mbabane': 'Mbabane', 'Ndjamena': "N'Djamena", "N'Djamena": "N'Djamena",
+    'Niamey': 'Niamey', 'Bamako': 'Bamako', 'Ouagadougou': 'Ouagadougou',
     'Conakry': 'Conakry', 'Bissau': 'Bissau', 'Freetown': 'Freetown',
-    'Monrovia': 'Monrovia', 'Lomé': 'Lomé', 'Porto-Novo': 'Porto-Novo',
-    'Malabo': 'Malabo', 'Libreville': 'Libreville', 'Brazzaville': 'Brazzaville',
-    'Kinshasa': 'Kinshasa', 'Bangui': 'Bangui', "N'Djamena": "N'Djamena",
-    'Mogadišo': 'Mogadishu', 'Džibuti': 'Djibouti', 'Asmara': 'Asmara',
-    'Maputo': 'Maputo', 'Lusaka': 'Lusaka', 'Harare': 'Harare',
-    'Lilongwe': 'Lilongwe', 'Antananarivo': 'Antananarivo',
-    'Port Louis': 'Port Louis', 'Victoria': 'Victoria, Seychelles',
-    'Moroni': 'Moroni', 'Kigali': 'Kigali', 'Gitega': 'Gitega',
-    'Maseru': 'Maseru', 'Mbabane': 'Mbabane', 'Windhoek': 'Windhoek',
-    'Gaborone': 'Gaborone', 'Praia': 'Praia', 'São Tomé': 'São Tomé',
-    'Luanda': 'Luanda', 'Nouakchott': 'Nouakchott', 'Juba': 'Juba',
+    'Monrovia': 'Monrovia', 'Banjul': 'Banjul', 'Praia': 'Praia',
+    'Nouakchott': 'Nouakchott', 'Pretoria': 'Pretoria',
+    'Kapské Město': 'Cape Town', 'Johannesburg': 'Johannesburg',
+    'Dar es Salaam': 'Dar es Salaam', 'Dodoma': 'Dodoma',
+    'Juba': 'Juba', 'Malé': 'Malé', 'Džakarta': 'Jakarta',
+    'Port Louis': 'Port Louis', 'Moroni': 'Moroni',
+    'Victoria': 'Victoria, Seychelles', 'São Tomé': 'São Tomé',
+    'Lome': 'Lomé', 'Ndjamena': "N'Djamena",
+    # Amerika
+    'Washington': 'Washington, D.C.', 'Ottawa': 'Ottawa',
+    'Mexico City': 'Mexico City', 'Ciudad de México': 'Mexico City',
+    'Havana': 'Havana', 'Havanna': 'Havana',
+    'Buenos Aires': 'Buenos Aires', 'Santiago': 'Santiago',
+    'Bogotá': 'Bogotá', 'Bogota': 'Bogotá', 'Lima': 'Lima',
+    'Caracas': 'Caracas', 'Montevideo': 'Montevideo', 'Brasília': 'Brasília',
+    'Quito': 'Quito', 'La Paz': 'La Paz', 'Asunción': 'Asunción',
+    'Georgetown': 'Georgetown, Guyana', 'Paramaribo': 'Paramaribo',
+    'Cayenne': 'Cayenne', 'Kingston': 'Kingston', 'Port-au-Prince': 'Port-au-Prince',
+    'Santo Domingo': 'Santo Domingo', 'San José': 'San José, Costa Rica',
+    'Guatemala City': 'Guatemala City', 'Tegucigalpa': 'Tegucigalpa',
+    'Managua': 'Managua', 'Panama City': 'Panama City',
+    'Belmopan': 'Belmopan', 'Nassau': 'Nassau', 'Bridgetown': 'Bridgetown',
+    'Port of Spain': 'Port of Spain', 'Castries': 'Castries',
+    'Kingstown': 'Kingstown', "St. George's": "St. George's, Grenada",
+    'Roseau': 'Roseau', "St. John's": "St. John's, Antigua and Barbuda",
+    'Basseterre': 'Basseterre', 'Sucre': 'Sucre',
+    'San Salvador': 'San Salvador',
     # Oceánie
-    'Canberra': 'Canberra', 'Wellington': 'Wellington', 'Suva': 'Suva',
-    'Port Moresby': 'Port Moresby', 'Port Vila': 'Port Vila',
-    'Nukualofa': 'Nukuʻalofa', 'Apia': 'Apia', 'Tarawa': 'Tarawa',
-    'Palikir': 'Palikir', 'Majuro': 'Majuro', 'Ngerulmud': 'Ngerulmud',
-    'Yaren': 'Yaren', 'Funafuti': 'Funafuti', 'Honiara': 'Honiara',
+    'Canberra': 'Canberra', 'Wellington': 'Wellington',
+    'Port Moresby': 'Port Moresby', 'Suva': 'Suva', 'Honiara': 'Honiara',
+    'Port Vila': 'Port Vila', 'Nukualofa': "Nukuʻalofa", "Nuku'alofa": "Nukuʻalofa",
+    'Apia': 'Apia', 'Palikir': 'Palikir', 'Majuro': 'Majuro',
+    'Tarawa': 'Tarawa', 'Yaren': 'Yaren', 'Funafuti': 'Funafuti',
+    'Ngerulmud': 'Ngerulmud',
 }
-
-async def commons_city_photo(session, city_en: str) -> str:
-    """Wikimedia Commons – hledá panorama/skyline fotku města (JPEG/PNG, ne SVG)."""
-    for query in [city_en + ' panorama', city_en + ' skyline', city_en + ' aerial', city_en]:
-        search_url = (f"https://commons.wikimedia.org/w/api.php?action=query"
-                      f"&list=search&srnamespace=6&srsearch={quote(query)}"
-                      f"&format=json&origin=*&srlimit=10")
-        async with session.get(search_url, headers=HEADERS) as r:
-            if r.status != 200:
-                continue
-            d = await r.json()
-            results = (d.get('query') or {}).get('search') or []
-        # Preferuj JPEG/PNG, ne SVG/logo/flag/coat/map
-        skip_re = re.compile(r'logo|flag|coat|emblem|map|coa|seal|arms|locator', re.I)
-        prefer_re = re.compile(r'\.(jpg|jpeg|png)', re.I)
-        good = [r for r in results if prefer_re.search(r['title']) and not skip_re.search(r['title'])]
-        if not good and results:
-            good = [r for r in results if prefer_re.search(r['title'])]
-        if not good:
-            continue
-        title = good[0]['title']
-        # Získej přímou URL obrázku
-        info_url = (f"https://commons.wikimedia.org/w/api.php?action=query"
-                    f"&titles={quote(title)}&prop=imageinfo&iiprop=url"
-                    f"&iiurlwidth=800&format=json&origin=*")
-        async with session.get(info_url, headers=HEADERS) as r2:
-            d2  = await r2.json()
-            p2  = list((d2.get('query', {}).get('pages', {})).values())[0]
-            url_val = ((p2.get('imageinfo') or [{}])[0]).get('thumburl') or \
-                      ((p2.get('imageinfo') or [{}])[0]).get('url')
-            if url_val and not url_val.lower().endswith('.svg'):
-                return url_val
-    raise Exception("no Commons city photo found")
-
 
 async def download_city(session, city: dict, redownload: bool):
     key  = city['key']
@@ -536,33 +435,33 @@ async def download_city(session, city: dict, redownload: bool):
             stats['skip'] += 1
             return
 
-    # Získej anglický název pro Wikipedia/Commons
+    # Získej anglický název pro Wikipedia
     en_title = CITY_EN.get(key) or CITY_EN.get(name) or key
 
     async with SEM:
         img_url = None
-        errors = []
-        for label, attempt in [
-            ('wiki_summary',    lambda: wiki_summary_img(session, en_title)),
-            ('wiki_pageimages', lambda: wiki_pageimages(session, en_title)),
-            ('commons_photo',   lambda: commons_city_photo(session, en_title)),
-            ('wiki_search',     lambda: wiki_search_summary(session, en_title + ' capital')),
+        for attempt in [
+            lambda: wiki_summary_img(session, en_title),
+            lambda: wiki_pageimages(session, en_title),
+            lambda: wiki_search_summary(session, en_title + ' capital city'),
+            lambda: wiki_search_summary(session, key + ' city'),
+            lambda: wiki_search_summary(session, name),
         ]:
             try:
                 img_url = await attempt()
                 break
-            except Exception as e:
-                errors.append(f"{label}:{e}")
+            except:
+                pass
 
         if img_url:
             result = await save_img(session, img_url, CITIES_DIR / key)
-            status = '✓' if result else f'✗ (save failed)'
+            status = '✓' if result else '✗'
         else:
-            status = f'✗ ({"; ".join(errors[:2])})'
+            status = '✗ (no URL)'
             stats['fail'] += 1
 
         mark = '🟢' if status == '✓' else '🔴'
-        print(f"  {mark} {name} ({key}) [{en_title}] {status}", flush=True)
+        print(f"  {mark} {name} ({key}) → {en_title}", flush=True)
 
 
 # ─── MAIN ─────────────────────────────────────────────────────────────────────

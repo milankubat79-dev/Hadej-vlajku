@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="222.29488mm"
+   height="225.77777mm"
+   viewBox="0 0 787.65901 799.99996"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   style="enable-background:new"
+   sodipodi:docname="Autobianchi-Stemma.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35355339"
+     inkscape:cx="-246.2512"
+     inkscape:cy="314.94916"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer2"
+     showgrid="false"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1672"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Layer 2"
+     style="display:inline;opacity:1"
+     transform="translate(130.51135,-46.775744)">
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:70;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 263.86233,46.775744 C -67.162786,184.81907 -163.92328,498.12447 -120.89985,712.73595 131.05518,888.75658 396.75496,893.19633 647.8795,715.50121 707.58583,368.69034 467.04794,125.35931 263.86233,46.775744 Z m 0.65357,35.935845 c 0,0.0033 0.0165,0.0083 0.0231,0.01157 L 147.98614,283.36444 376.77085,690.06531 613.40897,690.69706 264.56828,82.734585 C 449.49093,154.28118 667.04649,376.45632 613.4387,690.73715 384.94593,852.41801 142.28184,848.88028 -86.975507,688.8242 L 295.0523,689.8465 107.17621,353.61171 -87.262377,688.3242 C -126.24758,492.99999 -36.597318,208.2813 264.51574,82.711803 Z"
+       id="path4184"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>

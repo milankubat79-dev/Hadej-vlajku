@@ -1,0 +1,66 @@
+"""
+Test skript 2 - diagnostika stahování samotného obrázku
+Spusť: py test_city2.py
+"""
+import asyncio
+import aiohttp
+import re
+import sys
+from urllib.parse import quote
+
+if hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except:
+        pass
+
+API_HEADERS = {
+    'User-Agent': 'HadejVlajkuBot/1.0 (milan.kubat@marketup.cz)',
+    'Accept': 'application/json',
+}
+IMG_HEADERS = {
+    'User-Agent': 'HadejVlajkuBot/1.0 (milan.kubat@marketup.cz)',
+    'Accept': 'image/*,*/*;q=0.8',
+}
+
+async def test():
+    timeout = aiohttp.ClientTimeout(total=60)
+    async with aiohttp.ClientSession(timeout=timeout) as session:
+
+        print("=== Test: Stahuj thumbnail obrázek pro London, Prague, Cairo ===\n")
+
+        for city in ['London', 'Prague', 'Cairo', 'Nairobi', 'Bangkok']:
+            # 1) Získej thumbnail URL ze Wikipedia REST API
+            url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{quote(city)}"
+            try:
+                async with session.get(url, headers=API_HEADERS) as r:
+                    d = await r.json(content_type=None)
+                    thumb_url = (d.get('thumbnail') or {}).get('source', '')
+                    if not thumb_url:
+                        print(f"{city}: NO THUMBNAIL URL\n")
+                        continue
+                    # Uprav na 800px
+                    img_url = re.sub(r'/\d{2,4}px-', '/800px-', thumb_url)
+                    print(f"{city}: thumbnail URL = {img_url[:100]}")
+            except Exception as e:
+                print(f"{city}: API error: {e}\n")
+                continue
+
+            # 2) Stáhni samotný obrázek
+            try:
+                async with session.get(img_url, headers=IMG_HEADERS, allow_redirects=True) as r2:
+                    ct = r2.headers.get('content-type', '')
+                    data = await r2.read()
+                    print(f"  -> HTTP {r2.status}, content-type={ct[:40]}, size={len(data)} bytes")
+                    if len(data) < 500:
+                        print(f"  -> PROBLEM: obrazek je prilis maly! ({len(data)} B)")
+                    elif 'html' in ct.lower():
+                        print(f"  -> PROBLEM: server vratil HTML misto obrazku!")
+                    else:
+                        print(f"  -> OK, obrazek je {len(data)//1024} KB")
+            except Exception as e:
+                print(f"  -> DOWNLOAD ERROR: {e}")
+
+            print()
+
+asyncio.run(test())

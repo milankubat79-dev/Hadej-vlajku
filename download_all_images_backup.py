@@ -492,40 +492,6 @@ CITY_EN = {
     'Yaren': 'Yaren', 'Funafuti': 'Funafuti', 'Honiara': 'Honiara',
 }
 
-async def commons_city_photo(session, city_en: str) -> str:
-    """Wikimedia Commons – hledá panorama/skyline fotku města (JPEG/PNG, ne SVG)."""
-    for query in [city_en + ' panorama', city_en + ' skyline', city_en + ' aerial', city_en]:
-        search_url = (f"https://commons.wikimedia.org/w/api.php?action=query"
-                      f"&list=search&srnamespace=6&srsearch={quote(query)}"
-                      f"&format=json&origin=*&srlimit=10")
-        async with session.get(search_url, headers=HEADERS) as r:
-            if r.status != 200:
-                continue
-            d = await r.json()
-            results = (d.get('query') or {}).get('search') or []
-        # Preferuj JPEG/PNG, ne SVG/logo/flag/coat/map
-        skip_re = re.compile(r'logo|flag|coat|emblem|map|coa|seal|arms|locator', re.I)
-        prefer_re = re.compile(r'\.(jpg|jpeg|png)', re.I)
-        good = [r for r in results if prefer_re.search(r['title']) and not skip_re.search(r['title'])]
-        if not good and results:
-            good = [r for r in results if prefer_re.search(r['title'])]
-        if not good:
-            continue
-        title = good[0]['title']
-        # Získej přímou URL obrázku
-        info_url = (f"https://commons.wikimedia.org/w/api.php?action=query"
-                    f"&titles={quote(title)}&prop=imageinfo&iiprop=url"
-                    f"&iiurlwidth=800&format=json&origin=*")
-        async with session.get(info_url, headers=HEADERS) as r2:
-            d2  = await r2.json()
-            p2  = list((d2.get('query', {}).get('pages', {})).values())[0]
-            url_val = ((p2.get('imageinfo') or [{}])[0]).get('thumburl') or \
-                      ((p2.get('imageinfo') or [{}])[0]).get('url')
-            if url_val and not url_val.lower().endswith('.svg'):
-                return url_val
-    raise Exception("no Commons city photo found")
-
-
 async def download_city(session, city: dict, redownload: bool):
     key  = city['key']
     name = city['name']
@@ -536,33 +502,33 @@ async def download_city(session, city: dict, redownload: bool):
             stats['skip'] += 1
             return
 
-    # Získej anglický název pro Wikipedia/Commons
+    # Získej anglický název pro Wikipedia
     en_title = CITY_EN.get(key) or CITY_EN.get(name) or key
 
     async with SEM:
         img_url = None
-        errors = []
-        for label, attempt in [
-            ('wiki_summary',    lambda: wiki_summary_img(session, en_title)),
-            ('wiki_pageimages', lambda: wiki_pageimages(session, en_title)),
-            ('commons_photo',   lambda: commons_city_photo(session, en_title)),
-            ('wiki_search',     lambda: wiki_search_summary(session, en_title + ' capital')),
+        for attempt in [
+            lambda: wiki_summary_img(session, en_title),
+            lambda: wiki_pageimages(session, en_title),
+            lambda: wiki_search_summary(session, en_title + ' capital city'),
+            lambda: wiki_search_summary(session, key + ' city'),
+            lambda: wiki_search_summary(session, name),
         ]:
             try:
                 img_url = await attempt()
                 break
-            except Exception as e:
-                errors.append(f"{label}:{e}")
+            except:
+                pass
 
         if img_url:
             result = await save_img(session, img_url, CITIES_DIR / key)
-            status = '✓' if result else f'✗ (save failed)'
+            status = '✓' if result else '✗'
         else:
-            status = f'✗ ({"; ".join(errors[:2])})'
+            status = '✗ (no URL)'
             stats['fail'] += 1
 
         mark = '🟢' if status == '✓' else '🔴'
-        print(f"  {mark} {name} ({key}) [{en_title}] {status}", flush=True)
+        print(f"  {mark} {name} ({key}) → {en_title}", flush=True)
 
 
 # ─── MAIN ─────────────────────────────────────────────────────────────────────
