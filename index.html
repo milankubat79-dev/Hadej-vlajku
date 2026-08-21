@@ -2854,8 +2854,26 @@ function onPlayerAns(ok,q){
 /* ═══════════════════════════════
    CAR LOGO PHASE (logocar mode)
 ═══════════════════════════════ */
+function fetchCarLogoFromCommons(brandName){
+  const q=encodeURIComponent((brandName||'').replace(/_/g,' ')+' logo');
+  return fetch('https://commons.wikimedia.org/w/api.php?action=query&list=search&srnamespace=6&srsearch='+q+'&format=json&origin=*&srlimit=8')
+    .then(r=>r.json())
+    .then(data=>{
+      const results=(data&&data.query&&data.query.search)||[];
+      const logoFile=results.find(r=>/logo/i.test(r.title)&&!/photo|building|hq|headquarter/i.test(r.title));
+      if(!logoFile)throw new Error('no commons logo');
+      return fetch('https://commons.wikimedia.org/w/api.php?action=query&titles='+encodeURIComponent(logoFile.title)+'&prop=imageinfo&iiprop=url&iiurlwidth=300&format=json&origin=*')
+        .then(r=>r.json())
+        .then(d=>{
+          const pg=Object.values((d.query&&d.query.pages)||{})[0];
+          const url=pg&&pg.imageinfo&&pg.imageinfo[0]&&pg.imageinfo[0].url;
+          if(!url)throw new Error('no url');
+          return url;
+        });
+    });
+}
 function fetchCarLogo(slug, wikiTitle){
-  const base = window.location.href.replace(/\/index\.html$/, '').replace(/\/$/, '');
+  const base = (window.location.origin + window.location.pathname).replace(/\/index\.html$/, '').replace(/\/$/, '');
   const tryLocal = (exts) => {
     if(!exts.length) return Promise.reject(new Error('no local file'));
     const [ext, ...rest] = exts;
@@ -2865,6 +2883,7 @@ function fetchCarLogo(slug, wikiTitle){
   };
   return tryLocal(['png','jpg','webp','svg'])
     .catch(() => fetchWikiClubLogo(wikiTitle))
+    .catch(() => fetchCarLogoFromCommons(wikiTitle))
     .catch(() => fetchWikiImg('en', wikiTitle));
 }
 const _carLogoCache = {};
