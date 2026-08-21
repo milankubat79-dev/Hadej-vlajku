@@ -3198,6 +3198,14 @@ function showSummary(){
   document.getElementById('sum-nick').textContent=S.nickname;
   const correct=S.round.length-wrongList.length;
   document.getElementById('sum-score').textContent=`${correct} / ${S.round.length} ${(S.mode==='logoclub'||S.mode==='logocar')?'log':'vlajek'} správně`;
+  // Update summary title dynamically based on mode
+  const sumTitleEl=document.querySelector('.sum-title');
+  if(sumTitleEl){
+    if(S.mode==='logocar') sumTitleEl.textContent='🚗 Přehled log aut';
+    else if(S.mode==='logoclub') sumTitleEl.textContent='🏆 Přehled log klubů';
+    else if(S.mode==='football') sumTitleEl.textContent='⚽ Přehled otázek';
+    else sumTitleEl.textContent='📊 Přehled vlajek';
+  }
   const trainBtn=document.getElementById('sum-train-btn');
   const retrainBtn=document.getElementById('sum-retrain-btn');
   if(wrongList.length>0&&S.mode!=='training'){
