@@ -3069,6 +3069,7 @@ function startTimer(sec){
         else if(S.phase==='cap') onCapAns(false,S.round[S.qIdx]);
         else if(S.phase==='club') onClubAns(false,S.round[S.qIdx]);
         else if(S.phase==='logoclub') onLogoClubAns(false,S.round[S.qIdx]);
+        else if(S.phase==='logocar') onLogoCarAns(false,S.round[S.qIdx]);
         else onPlayerAns(false,S.round[S.qIdx]);
       }
     }
@@ -3174,13 +3175,14 @@ function showSummary(){
     const ok=!!S.resultMap[q.n];
     const cell=document.createElement('div');
     cell.className='sum-cell '+(ok?'ok':'ng');
+    const flagIcon=S.mode==='logocar'?'🚗':(q.f||'🏳️');
     if(ok){
-      cell.innerHTML=`<div class="sum-flag">${q.f}</div><div class="sum-name">${q.n}</div><div class="sum-badge">✅</div>`;
+      cell.innerHTML=`<div class="sum-flag">${flagIcon}</div><div class="sum-name">${q.n}</div><div class="sum-badge">✅</div>`;
     } else {
       const guessed=S.wrongAns[q.n];
       const wrongLine=guessed?`<div class="sum-wrong-ans">✗ ${guessed}</div>`:'';
       const rightLine=`<div class="sum-correct-ans">✓ ${q.n}</div>`;
-      cell.innerHTML=`<div class="sum-flag">${q.f}</div>${wrongLine}${rightLine}<div class="sum-badge">❌</div>`;
+      cell.innerHTML=`<div class="sum-flag">${flagIcon}</div>${wrongLine}${rightLine}<div class="sum-badge">❌</div>`;
     }
     grid.appendChild(cell);
   });
@@ -3239,8 +3241,8 @@ function saveScore(){
     if(S.blitzEnabled){
       const rows=JSON.parse(localStorage.getItem('fgv2_blitz')||'[]');
       const prevBest=rows.length?rows[0].sc:0;
-      const modeLabel=S.mode==='football'?'⚽ Fotbal':S.mode==='logoclub'?'🏆 Loga':'🌍 Vlajky';
-      const cor=S.mode==='football'?S.corrFl:S.mode==='logoclub'?S.corrCl:S.corrCnt;
+      const modeLabel=S.mode==='football'?'⚽ Fotbal':S.mode==='logoclub'?'🏆 Loga':S.mode==='logocar'?'🚗 Auta':'🌍 Vlajky';
+      const cor=S.mode==='football'?S.corrFl:(S.mode==='logoclub'||S.mode==='logocar')?S.corrCl:S.corrCnt;
       rows.push({nm:S.nickname,av:S.avatar,sc:S.score,cor,mode:S.mode,modeLabel,mins:S.blitzMins,dt:new Date().toLocaleDateString('cs')});
       rows.sort((a,b)=>b.sc-a.sc);
       localStorage.setItem('fgv2_blitz',JSON.stringify(rows.slice(0,20)));
@@ -3251,7 +3253,7 @@ function saveScore(){
     const prevBest=rows.length?rows[0].sc:0;
     if(S.mode==='football'){
       rows.push({nm:S.nickname,av:S.avatar,sc:S.score,fl:S.corrFl,cl:S.corrCl,pl:S.corrPl,tot:S.round.length,diff:S.diff,dt:new Date().toLocaleDateString('cs')});
-    } else if(S.mode==='logoclub'){
+    } else if(S.mode==='logoclub'||S.mode==='logocar'){
       rows.push({nm:S.nickname,av:S.avatar,sc:S.score,cl:S.corrCl,tot:S.round.length,cont:S.cont,diff:S.diff,dt:new Date().toLocaleDateString('cs')});
     } else {
       rows.push({nm:S.nickname,av:S.avatar,sc:S.score,cor:S.corrCnt,tot:S.round.length,cont:S.cont,diff:S.diff,dt:new Date().toLocaleDateString('cs')});
@@ -3266,11 +3268,12 @@ async function goLB(mode){
   // Default: blitz if just played blitz, otherwise current game mode
   const m=mode||(S.blitzEnabled?'blitz':S.mode)||'flag';
   showScreen('slb');
-  // Highlight active tab
+  // Highlight active tab (logocar shares the logoclub tab)
+  const mTab=m==='logocar'?'logoclub':m;
   ['flag','football','logoclub','blitz'].forEach(t=>{
     const el=document.getElementById('lb-tab-'+t);
     if(el){
-      el.classList.toggle('sel',t===m);
+      el.classList.toggle('sel',t===mTab);
       if(t==='blitz'){
         el.style.background=t===m?'rgba(245,158,11,.3)':'rgba(245,158,11,.1)';
         el.style.borderColor=t===m?'#f59e0b':'rgba(245,158,11,.25)';
@@ -3978,7 +3981,7 @@ function useFiftyFifty(){
   // before answer, none are marked correct — find correct by elimination from answer data
   // We'll find wrong ones: opts without the correct answer (stored in S.round[S.qIdx])
   const q=S.round[S.qIdx];
-  const correctKey=(S.phase==='flag'||S.phase==='logoclub')?q.n:(S.phase==='cap')?q.k:(S.phase==='club')?q.club:q.player;
+  const correctKey=(S.phase==='flag'||S.phase==='logoclub'||S.phase==='logocar')?q.n:(S.phase==='cap')?q.k:(S.phase==='club')?q.club:q.player;
   const wrongOpts=opts.filter(b=>b.dataset.v!==correctKey);
   shuffle(wrongOpts).slice(0,2).forEach(b=>{b.style.visibility='hidden';});
 }
