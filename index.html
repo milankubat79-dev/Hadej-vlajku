@@ -581,12 +581,20 @@ const FB_CFG = {
   projectId: "hadej-vlajku",
 };
 let _db = null;
+let _persistenceReady = false;
 function fbDb() {
   if (!FB_CFG.apiKey || FB_CFG.apiKey === 'YOUR_API_KEY') return null;
   if (!_db && typeof firebase !== 'undefined') {
     try {
       if (!firebase.apps.length) firebase.initializeApp(FB_CFG);
       _db = firebase.firestore();
+      if (!_persistenceReady) {
+        _persistenceReady = true;
+        _db.enablePersistence({synchronizeTabs: false}).catch(e => {
+          if (e.code === 'failed-precondition') { /* multiple tabs */ }
+          else if (e.code === 'unimplemented') { /* browser unsupported */ }
+        });
+      }
     } catch(e) { _db = null; }
   }
   return _db;
@@ -712,7 +720,7 @@ async function fbSaveGame(gameData) {
     // Sync passport visited flags
     const visArr=[..._visitedFlags];
     if(visArr.length>0) upd.visitedFlags=firebase.firestore.FieldValue.arrayUnion(...visArr);
-    await ref.update(upd);
+    await ref.set(upd, {merge: true});
   } catch(e) { console.warn('fbSaveGame error', e); }
 }
 
@@ -730,7 +738,8 @@ function fmtDate(ts){
 function modeLabel(g){
   if(g.blitz) return '⏱️ Časovka';
   if(g.mode==='football') return '⚽ Fotbal';
-  if(g.mode==='logoclub') return '🏆 Loga';
+  if(g.mode==='logoclub') return '🏆 Loga klubů';
+  if(g.mode==='logocar') return '🚗 Loga aut';
   return '🌍 Vlajky';
 }
 
@@ -2854,15 +2863,23 @@ function onPlayerAns(ok,q){
 /* ═══════════════════════════════
    CAR LOGO PHASE (logocar mode)
 ═══════════════════════════════ */
+// Fetch with timeout — aborts after ms milliseconds to avoid hanging on slow connections
+function fetchWithTimeout(url, opts, ms=5000){
+  const ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  const tid = ctrl ? setTimeout(()=>ctrl.abort(), ms) : null;
+  return fetch(url, {...opts, signal: ctrl?.signal})
+    .then(r=>{if(tid)clearTimeout(tid);return r;})
+    .catch(e=>{if(tid)clearTimeout(tid);throw e;});
+}
 function fetchCarLogoFromCommons(brandName){
   const q=encodeURIComponent((brandName||'').replace(/_/g,' ')+' logo');
-  return fetch('https://commons.wikimedia.org/w/api.php?action=query&list=search&srnamespace=6&srsearch='+q+'&format=json&origin=*&srlimit=8')
+  return fetchWithTimeout('https://commons.wikimedia.org/w/api.php?action=query&list=search&srnamespace=6&srsearch='+q+'&format=json&origin=*&srlimit=8', {}, 6000)
     .then(r=>r.json())
     .then(data=>{
       const results=(data&&data.query&&data.query.search)||[];
       const logoFile=results.find(r=>/logo/i.test(r.title)&&!/photo|photo|building|hq|headquarter/i.test(r.title));
       if(!logoFile)throw new Error('no commons logo');
-      return fetch('https://commons.wikimedia.org/w/api.php?action=query&titles='+encodeURIComponent(logoFile.title)+'&prop=imageinfo&iiprop=url&iiurlwidth=300&format=json&origin=*')
+      return fetchWithTimeout('https://commons.wikimedia.org/w/api.php?action=query&titles='+encodeURIComponent(logoFile.title)+'&prop=imageinfo&iiprop=url&iiurlwidth=300&format=json&origin=*', {}, 6000)
         .then(r=>r.json())
         .then(d=>{
           const pg=Object.values((d.query&&d.query.pages)||{})[0];
@@ -2877,7 +2894,7 @@ function fetchCarLogo(slug, wikiTitle){
   const tryLocal = (exts) => {
     if(!exts.length) return Promise.reject(new Error('no local file'));
     const [ext, ...rest] = exts;
-    return fetch(base+'/logos/cars/'+slug+'.'+ext, {method:'HEAD'})
+    return fetchWithTimeout(base+'/logos/cars/'+slug+'.'+ext, {method:'HEAD'}, 4000)
       .then(r => r.ok ? base+'/logos/cars/'+slug+'.'+ext : tryLocal(rest))
       .catch(() => tryLocal(rest));
   };
@@ -3411,7 +3428,7 @@ function _preload(url){
 }
 function preloadWikiImg(lang,title){
   if(!title)return Promise.resolve();
-  return fetch(`https://${lang}.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=pageimages&format=json&pithumbsize=800&pilicense=any&redirects=1&origin=*`)
+  return fetchWithTimeout(`https://${lang}.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=pageimages&format=json&pithumbsize=800&pilicense=any&redirects=1&origin=*`, {}, 6000)
     .then(r=>r.json()).then(data=>{
       const src=Object.values(data.query?.pages||{})[0]?.thumbnail?.source;
       if(src)_preload(src);
@@ -3628,7 +3645,7 @@ function fetchSDBLogo(teamName){
 // Fetch club badge by scanning the Wikipedia article's image list for logo/badge/crest files,
 // then resolving each to a usable thumbnail URL via the Wikimedia imageinfo API.
 function fetchWikiClubLogo(wikiTitle){
-  return fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(wikiTitle)}&prop=images&imlimit=20&format=json&redirects=1&origin=*`)
+  return fetchWithTimeout(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(wikiTitle)}&prop=images&imlimit=20&format=json&redirects=1&origin=*`, {}, 6000)
     .then(r=>r.json())
     .then(data=>{
       const page=Object.values(data.query?.pages||{})[0];
@@ -3638,7 +3655,7 @@ function fetchWikiClubLogo(wikiTitle){
       const found=imgs.find(i=>logoRe.test(i.title));
       if(!found)throw new Error('no logo file');
       const filename=found.title; // e.g. "File:FC_Barcelona.svg"
-      return fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(filename)}&prop=imageinfo&iiprop=url&iiurlwidth=400&format=json&origin=*`)
+      return fetchWithTimeout(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(filename)}&prop=imageinfo&iiprop=url&iiurlwidth=400&format=json&origin=*`, {}, 6000)
         .then(r=>r.json())
         .then(d2=>{
           const p=Object.values(d2.query?.pages||{})[0];
