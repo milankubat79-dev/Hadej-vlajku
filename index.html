@@ -3111,7 +3111,8 @@ function endGame(){
   else if(pct>=.3){trophy='🥉';stars='⭐';}
   else{trophy='😊';stars='💪 Trénuj dál!';}
   document.getElementById('e-trophy').textContent=trophy;
-  document.getElementById('e-nick').textContent=S.nickname;
+  // NOTE: do NOT set e-nick separately — e-title.textContent below overwrites it anyway,
+  // and e-nick is destroyed after the first endGame call. The personalized message is in _endMsg.
   document.getElementById('e-score').textContent=S.score.toLocaleString('cs');
   document.getElementById('e-stars').textContent=stars;
   // Personalized end-game title with vocative declension
@@ -3134,11 +3135,11 @@ function endGame(){
     document.getElementById('s-stat3').textContent=S.score.toLocaleString('cs');
     document.getElementById('s-lbl3').textContent='⭐ Bodů';
   } else if(S.mode==='football'){
-    document.getElementById('s-stat1').textContent=S.corrFl;
+    document.getElementById('s-stat1').textContent=`${S.corrFl}/${S.round.length}`;
     document.getElementById('s-lbl1').textContent='🚩 Vlajky';
-    document.getElementById('s-stat2').textContent=S.corrCl;
+    document.getElementById('s-stat2').textContent=`${S.corrCl}/${S.round.length}`;
     document.getElementById('s-lbl2').textContent='🏟️ Kluby';
-    document.getElementById('s-stat3').textContent=S.corrPl;
+    document.getElementById('s-stat3').textContent=`${S.corrPl}/${S.round.length}`;
     document.getElementById('s-lbl3').textContent='⭐ Hráči';
   } else {
     document.getElementById('s-stat1').textContent=`${S.corrCnt}/${tot}`;
