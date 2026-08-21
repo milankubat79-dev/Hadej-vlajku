@@ -589,11 +589,12 @@ function fbDb() {
     try {
       if (!firebase.apps.length) firebase.initializeApp(FB_CFG);
       _db = firebase.firestore();
+      // Enable offline persistence so saves queue up on slow/no network and sync later
       if (!_persistenceReady) {
         _persistenceReady = true;
         _db.enablePersistence({synchronizeTabs: false}).catch(e => {
-          if (e.code === 'failed-precondition') { /* multiple tabs */ }
-          else if (e.code === 'unimplemented') { /* browser unsupported */ }
+          if (e.code === 'failed-precondition') { /* multiple tabs — ok */ }
+          else if (e.code === 'unimplemented') { /* browser doesn't support — ok */ }
         });
       }
     } catch(e) { _db = null; }
@@ -2864,14 +2865,6 @@ function onPlayerAns(ok,q){
 /* ═══════════════════════════════
    CAR LOGO PHASE (logocar mode)
 ═══════════════════════════════ */
-// Fetch with timeout — aborts after ms milliseconds to avoid hanging on slow connections
-function fetchWithTimeout(url, opts, ms=5000){
-  const ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
-  const tid = ctrl ? setTimeout(()=>ctrl.abort(), ms) : null;
-  return fetch(url, {...opts, signal: ctrl?.signal})
-    .then(r=>{if(tid)clearTimeout(tid);return r;})
-    .catch(e=>{if(tid)clearTimeout(tid);throw e;});
-}
 function fetchCarLogoFromCommons(brandName){
   const q=encodeURIComponent((brandName||'').replace(/_/g,' ')+' logo');
   return fetchWithTimeout('https://commons.wikimedia.org/w/api.php?action=query&list=search&srnamespace=6&srsearch='+q+'&format=json&origin=*&srlimit=8', {}, 6000)
@@ -2889,6 +2882,14 @@ function fetchCarLogoFromCommons(brandName){
           return url;
         });
     });
+}
+// Fetch with timeout — aborts after ms milliseconds to avoid hanging on slow connections
+function fetchWithTimeout(url, opts, ms=5000){
+  const ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  const tid = ctrl ? setTimeout(()=>ctrl.abort(), ms) : null;
+  return fetch(url, {...opts, signal: ctrl?.signal})
+    .then(r=>{if(tid)clearTimeout(tid);return r;})
+    .catch(e=>{if(tid)clearTimeout(tid);throw e;});
 }
 function fetchCarLogo(slug, wikiTitle){
   const base = (window.location.origin + window.location.pathname).replace(/\/index\.html$/, '').replace(/\/$/, '');
@@ -3429,7 +3430,7 @@ function _preload(url){
 }
 function preloadWikiImg(lang,title){
   if(!title)return Promise.resolve();
-  return fetchWithTimeout(`https://${lang}.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=pageimages&format=json&pithumbsize=800&pilicense=any&redirects=1&origin=*`, {}, 6000)
+  return fetch(`https://${lang}.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=pageimages&format=json&pithumbsize=800&pilicense=any&redirects=1&origin=*`)
     .then(r=>r.json()).then(data=>{
       const src=Object.values(data.query?.pages||{})[0]?.thumbnail?.source;
       if(src)_preload(src);
@@ -3602,7 +3603,7 @@ function checkRecordTracker(){
 
 function fetchWikiImg(lang,title){
   // pilicense=any returns thumbnails for non-free content too (logos, player portraits)
-  return fetch(`https://${lang}.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=pageimages&format=json&pithumbsize=800&pilicense=any&redirects=1&origin=*`)
+  return fetchWithTimeout(`https://${lang}.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=pageimages&format=json&pithumbsize=800&pilicense=any&redirects=1&origin=*`, {}, 6000)
     .then(r=>r.json())
     .then(data=>{
       const page=Object.values(data.query?.pages||{})[0];
@@ -3667,9 +3668,37 @@ function fetchWikiClubLogo(wikiTitle){
     });
 }
 
-// Club logos: 1) TheSportsDB badge (purpose-built for clubs),
+// Club logos: 0) local /logos/clubs/{slug}.png (fastest, offline-friendly),
+//             1) TheSportsDB badge (purpose-built for clubs),
 //             2) Wikipedia image-list scan (logo/badge/crest file),
 //             3) pageimages thumbnail fallback
+function clubSlug(name){
+  if(!name)return'';
+  // Strip common diacritics
+  const map={'á':'a','à':'a','ä':'a','â':'a','ã':'a','å':'a','ā':'a','ă':'a','ą':'a',
+             'é':'e','è':'e','ë':'e','ê':'e','ě':'e','ē':'e','ę':'e',
+             'í':'i','ì':'i','ï':'i','î':'i','ī':'i','ı':'i',
+             'ó':'o','ò':'o','ö':'o','ô':'o','õ':'o','ő':'o','ø':'o','ō':'o',
+             'ú':'u','ù':'u','ü':'u','û':'u','ů':'u','ū':'u',
+             'ý':'y','ÿ':'y',
+             'ñ':'n','ń':'n','ň':'n',
+             'ç':'c','č':'c','ć':'c',
+             'š':'s','ś':'s','ş':'s',
+             'ž':'z','ź':'z','ż':'z',
+             'ř':'r','ŕ':'r',
+             'ľ':'l','ł':'l','ļ':'l',
+             'ď':'d','đ':'d',
+             'ť':'t','ţ':'t',
+             'ğ':'g','ģ':'g',
+             'ķ':'k','ħ':'h','ß':'ss',
+             'æ':'ae','œ':'oe'};
+  return name.toLowerCase()
+    .replace(/[^ -~]/g,c=>map[c]||'')
+    .replace(/[^a-z0-9\s\-]/g,'')
+    .trim()
+    .replace(/[\s_]+/g,'-')
+    .replace(/-+/g,'-');
+}
 function loadWikiPhoto(wikiTitle,caption,flagEmoji,fallbackEmoji,style,sdbName){
   const isLogo=style==='logo';
   const els=_wikiSetup(caption,flagEmoji,fallbackEmoji,isLogo,isLogo/*hideLabel for logo mode*/);
@@ -3685,7 +3714,18 @@ function loadWikiPhoto(wikiTitle,caption,flagEmoji,fallbackEmoji,style,sdbName){
       return;
     }
     const searchName=sdbName||caption||wikiTitle;
-    fetchSDBLogo(searchName)
+    const base=(window.location.origin+window.location.pathname).replace(/\/index\.html$/,'').replace(/\/$/,'');
+    const slug=clubSlug(cacheKey);
+    const tryClubLocal=(exts)=>{
+      if(!exts.length)return Promise.reject(new Error('no local club file'));
+      const[ext,...rest]=exts;
+      const url=base+'/logos/clubs/'+slug+'.'+ext;
+      return fetchWithTimeout(url,{method:'HEAD'},3000)
+        .then(r=>{if(!r.ok)throw new Error('not found');return url;})
+        .catch(()=>tryClubLocal(rest));
+    };
+    tryClubLocal(['png','svg','jpg','webp'])
+      .catch(()=>fetchSDBLogo(searchName))
       .catch(()=>fetchWikiClubLogo(wikiTitle))
       .catch(()=>fetchWikiImg('en',wikiTitle))
       .then(src=>{
