@@ -2860,7 +2860,7 @@ function fetchCarLogoFromCommons(brandName){
     .then(r=>r.json())
     .then(data=>{
       const results=(data&&data.query&&data.query.search)||[];
-      const logoFile=results.find(r=>/logo/i.test(r.title)&&!/photo|building|hq|headquarter/i.test(r.title));
+      const logoFile=results.find(r=>/logo/i.test(r.title)&&!/photo|photo|building|hq|headquarter/i.test(r.title));
       if(!logoFile)throw new Error('no commons logo');
       return fetch('https://commons.wikimedia.org/w/api.php?action=query&titles='+encodeURIComponent(logoFile.title)+'&prop=imageinfo&iiprop=url&iiurlwidth=300&format=json&origin=*')
         .then(r=>r.json())
@@ -3119,7 +3119,14 @@ function endGame(){
   const _endPool=pct>=.6?WIN_END:LOSE_END;
   const _endMsg=_endPool[Math.floor(Math.random()*_endPool.length)](_voc);
   document.getElementById('e-title').textContent=_endMsg;
-  if(S.mode==='logoclub'){
+  if(S.mode==='logocar'){
+    document.getElementById('s-stat1').textContent=`${S.corrCl}/${S.round.length}`;
+    document.getElementById('s-lbl1').textContent='🚗 Loga aut';
+    document.getElementById('s-stat2').textContent=S.maxStr;
+    document.getElementById('s-lbl2').textContent='🔥 Max série';
+    document.getElementById('s-stat3').textContent=S.score.toLocaleString('cs');
+    document.getElementById('s-lbl3').textContent='⭐ Bodů';
+  } else if(S.mode==='logoclub'){
     document.getElementById('s-stat1').textContent=`${S.corrCl}/${S.round.length}`;
     document.getElementById('s-lbl1').textContent='🏆 Loga';
     document.getElementById('s-stat2').textContent=S.maxStr;
@@ -3210,7 +3217,7 @@ function showSummary(){
 
 function showResultsFromSummary(){
   showScreen('se');
-  const pct=S.mode==='football'?(S.corrFl+S.corrCl+S.corrPl)/(S.round.length*3):S.mode==='logoclub'?S.corrCl/S.round.length:S.corrCnt/S.round.length;
+  const pct=S.mode==='football'?(S.corrFl+S.corrCl+S.corrPl)/(S.round.length*3):(S.mode==='logoclub'||S.mode==='logocar')?S.corrCl/S.round.length:S.corrCnt/S.round.length;
   if(pct>=.6){snd('fanfare');launchConfetti(160);}else snd('correct');
   const _isPerfect=S.round.length>0&&S.round.every(q=>S.resultMap[q.n]===true);
   if(S.isRecord){
@@ -3226,7 +3233,7 @@ function showResultsFromSummary(){
   }
   // Personalized spoken end-game message (after trophy/record voice settles)
   const _eVoc=vocative(S.nickname)||S.nickname;
-  const _ePct=S.mode==='football'?(S.corrFl+S.corrCl+S.corrPl)/(S.round.length*3):S.mode==='logoclub'?S.corrCl/S.round.length:S.corrCnt/S.round.length;
+  const _ePct=S.mode==='football'?(S.corrFl+S.corrCl+S.corrPl)/(S.round.length*3):(S.mode==='logoclub'||S.mode==='logocar')?S.corrCl/S.round.length:S.corrCnt/S.round.length;
   const _ePool=_ePct>=.6?WIN_END:LOSE_END;
   const _eMsg=_ePool[Math.floor(Math.random()*_ePool.length)](_eVoc);
   speakText(_eMsg, S.isRecord||_isPerfect?2200:900);
@@ -3788,6 +3795,7 @@ let _czVoice=null;
 function _initVoice(){
   const vs=speechSynthesis.getVoices();
   const czVs=vs.filter(v=>v.lang.startsWith('cs')||v.lang.startsWith('sk'));
+  // prefer female voice (Zuzana on Windows/Mac, or any voice with "female"/"woman" in name)
   _czVoice=czVs.find(v=>/zuzana|female|woman|iveta|lucie|jana|hana/i.test(v.name))
     ||czVs.find(v=>!/male|man\b/i.test(v.name))
     ||czVs[0]
