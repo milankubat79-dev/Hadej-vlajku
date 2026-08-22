@@ -2300,6 +2300,12 @@ function showFlag(){
   S.phase='flag';S.answered=false;S.fiftyUsedThisQ=false;updatePowerupUI();
   if(S.mode==='logoclub'){showLogoClub();return;}
   if(S.mode==='logocar'){showLogoCar();return;}
+  // Training mode: dispatch to the correct question type based on item structure
+  if(S.mode==='training'){
+    const tq=S.round[S.qIdx];
+    if(tq&&tq.clubWiki!==undefined){showLogoClub();return;}  // LCD item (logoclub wrong answer)
+    if(tq&&tq.slug!==undefined&&tq.iso===undefined){showLogoCar();return;}  // car logo item
+  }
   document.getElementById('g-flag-card').style.display='';
   document.getElementById('g-city-photo').style.display='none';
   document.getElementById('g-city-cap').textContent='';
