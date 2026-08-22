@@ -1,5 +1,5 @@
-// Service Worker — Hádej Vlajku! v2
-const CACHE = 'hadej-vlajku-v2';
+// Service Worker — Hádej Vlajku! v3
+const CACHE = 'hadej-vlajku-v3';
 const OFFLINE_URLS = [
   '/Hadej-vlajku/',
   '/Hadej-vlajku/index.html',
@@ -24,16 +24,28 @@ self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
   if(url.origin !== location.origin) return;
 
-  e.respondWith(
-    caches.match(e.request).then(cached => {
-      if(cached) return cached;
-      return fetch(e.request).then(resp => {
-        if(resp && resp.status === 200 && (url.pathname.endsWith('/') || url.pathname.endsWith('.html'))){
+  const isHTML = url.pathname.endsWith('/') || url.pathname.endsWith('.html');
+
+  if(isHTML) {
+    // Network-first pro HTML: vždy stáhne nejnovější verzi, cache jen jako záloha offline
+    e.respondWith(
+      fetch(e.request).then(resp => {
+        if(resp && resp.status === 200) {
           const clone = resp.clone();
           caches.open(CACHE).then(c => c.put(e.request, clone));
         }
         return resp;
-      }).catch(() => cached || new Response('Offline', {status: 503}));
-    })
-  );
+      }).catch(() => caches.match(e.request))
+    );
+  } else {
+    // Cache-first pro ostatní assety (loga, obrázky, ikony…)
+    e.respondWith(
+      caches.match(e.request).then(cached => {
+        if(cached) return cached;
+        return fetch(e.request).then(resp => {
+          return resp;
+        }).catch(() => new Response('Offline', {status: 503}));
+      })
+    );
+  }
 });
