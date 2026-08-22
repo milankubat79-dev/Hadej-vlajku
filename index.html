@@ -3635,8 +3635,8 @@ function fetchWikiSummary(title){
     .then(data=>{
       const src=data?.thumbnail?.source||data?.originalimage?.source;
       if(!src)throw new Error('no img');
-      // Bump resolution: replace /NNNpx- with /800px- when the URL allows
-      return src.replace(/\/\d{2,4}px-/,'/800px-');
+      // Use 640px if original is smaller — 640 is reliably in Wikimedia's allowed set
+      return src.replace(/\/(\d{2,3})px-/,(m,n)=>parseInt(n)<640?'/640px-':m);
     });
 }
 function fetchWikiImgSearch(playerName){
