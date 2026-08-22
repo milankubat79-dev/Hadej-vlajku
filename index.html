@@ -716,7 +716,12 @@ async function fbSaveGame(gameData) {
     const ref = db.collection('players').doc(key);
     const snap = await ref.get();
     const upd = { totalGames: firebase.firestore.FieldValue.increment(1), totalScore: firebase.firestore.FieldValue.increment(gameData.score), totalPlaySec: firebase.firestore.FieldValue.increment(gameData.elapsedSec||0), lastPlayed: firebase.firestore.FieldValue.serverTimestamp(), nickname: gameData.nickname, avatar: gameData.avatar||'🦁' };
-    if (!snap.exists || (snap.data()[modeField]||0) < gameData.score) upd[modeField] = gameData.score;
+    if (!snap.exists || (snap.data()[modeField]||0) < gameData.score) {
+      upd[modeField] = gameData.score;
+      upd[modeField+'Diff'] = gameData.diff||'';
+      upd[modeField+'Cont'] = gameData.cont||'';
+      upd[modeField+'Date'] = firebase.firestore.FieldValue.serverTimestamp();
+    }
     const prevStreak = snap.exists ? (snap.data().maxStreakEver||0) : 0;
     if ((gameData.maxStreak||0) > prevStreak) upd.maxStreakEver = gameData.maxStreak;
     // Sync passport visited flags
@@ -3355,10 +3360,16 @@ async function goLB(mode){
   if(fbRows.length>0){
     list.innerHTML='';
     const modeField=m==='football'?'bestScoreFootball':(m==='logoclub'||m==='logocar')?'bestScoreLogo':'bestScoreFlag';
+    const diffL={easy:'Začátečník',med:'Pokročilý',hard:'Expert'};
+    const contL={all:'🌐 Vše',eu:'🏰 Evropa',as:'🐉 Asie',am:'🗽 Amerika',af:'🦁 Afrika',oc:'🌊 Oceánie'};
     fbRows.forEach((r,i)=>{
       const row=document.createElement('div');row.className='lb-row';
       const sc=r[modeField]||0;
-      row.innerHTML=`<div class="lb-rank">${medals[i]||i+1+'.'}</div><div class="lb-av">${esc(r.avatar||'🦁')}</div><div class="lb-inf"><div class="lb-nm">${esc(r.nickname||'')}</div><div class="lb-meta">celkem ${r.totalGames||0} her</div></div><div class="lb-sc">${sc.toLocaleString('cs')}</div>`;
+      const rDiff=diffL[r[modeField+'Diff']]||'';
+      const rCont=contL[r[modeField+'Cont']]||'';
+      const rDate=r[modeField+'Date']?r[modeField+'Date'].toDate().toLocaleDateString('cs-CZ',{day:'numeric',month:'short',year:'numeric'}):'';
+      const meta=[rDiff,rCont,rDate].filter(Boolean).join(' · ')||`celkem ${r.totalGames||0} her`;
+      row.innerHTML=`<div class="lb-rank">${medals[i]||i+1+'.'}</div><div class="lb-av">${esc(r.avatar||'🦁')}</div><div class="lb-inf"><div class="lb-nm">${esc(r.nickname||'')}</div><div class="lb-meta">${esc(meta)}</div></div><div class="lb-sc">${sc.toLocaleString('cs')}</div>`;
       list.appendChild(row);
     });
     return;
