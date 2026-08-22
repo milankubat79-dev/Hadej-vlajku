@@ -715,7 +715,7 @@ async function fbSaveGame(gameData) {
     const modeField = gameData.blitz?'bestScoreBlitz':gameData.mode==='football'?'bestScoreFootball':(gameData.mode==='logoclub'||gameData.mode==='logocar')?'bestScoreLogo':'bestScoreFlag';
     const ref = db.collection('players').doc(key);
     const snap = await ref.get();
-    const upd = { totalGames: firebase.firestore.FieldValue.increment(1), totalScore: firebase.firestore.FieldValue.increment(gameData.score), totalPlaySec: firebase.firestore.FieldValue.increment(gameData.elapsedSec||0), lastPlayed: firebase.firestore.FieldValue.serverTimestamp() };
+    const upd = { totalGames: firebase.firestore.FieldValue.increment(1), totalScore: firebase.firestore.FieldValue.increment(gameData.score), totalPlaySec: firebase.firestore.FieldValue.increment(gameData.elapsedSec||0), lastPlayed: firebase.firestore.FieldValue.serverTimestamp(), nickname: gameData.nickname, avatar: gameData.avatar||'🦁' };
     if (!snap.exists || (snap.data()[modeField]||0) < gameData.score) upd[modeField] = gameData.score;
     const prevStreak = snap.exists ? (snap.data().maxStreakEver||0) : 0;
     if ((gameData.maxStreak||0) > prevStreak) upd.maxStreakEver = gameData.maxStreak;
