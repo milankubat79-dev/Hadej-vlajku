@@ -1,5 +1,5 @@
-// Service Worker — Hádej Vlajku! v7
-const CACHE = 'hadej-vlajku-v7';
+// Service Worker — Hádej Vlajku! v10
+const CACHE = 'hadej-vlajku-v10';
 const OFFLINE_URLS = [
   '/Hadej-vlajku/',
   '/Hadej-vlajku/index.html',

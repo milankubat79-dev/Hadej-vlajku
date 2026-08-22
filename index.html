@@ -32,7 +32,7 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#1a1a2e,#
 .nick-input{width:100%;padding:15px 20px;border-radius:50px;border:3px solid rgba(255,255,255,.2);background:rgba(255,255,255,.12);color:#fff;font-size:1.15rem;font-weight:700;font-family:'Nunito',sans-serif;outline:none;transition:border-color .2s;}
 .nick-input::placeholder{color:rgba(255,255,255,.35);}
 .nick-input:focus{border-color:#ffd700;}
-.av-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;}
+.av-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
 .av-btn{font-size:1.5rem;padding:5px;border-radius:10px;border:3px solid transparent;background:rgba(255,255,255,.1);cursor:pointer;transition:all .15s;aspect-ratio:1;display:flex;align-items:center;justify-content:center;}
 .av-btn:hover{background:rgba(255,255,255,.2);transform:scale(1.12);}
 .av-btn.sel{border-color:#ffd700;background:rgba(255,215,0,.2);transform:scale(1.15);}
@@ -867,10 +867,11 @@ async function showPassport(){
 
 async function fbLeaderboard(mode) {
   const db = fbDb(); if (!db) return [];
-  const modeField = mode==='football'?'bestScoreFootball':(mode==='logoclub'||mode==='logocar')?'bestScoreLogo':'bestScoreFlag';
+  const modeGroup = (mode==='logoclub'||mode==='logocar') ? ['logoclub','logocar'] : (mode==='football' ? ['football'] : ['flag']);
   try {
-    const snap = await db.collection('players').orderBy(modeField,'desc').limit(10).get();
-    return snap.docs.map(d => ({ ...d.data(), _key: d.id }));
+    const snap = await db.collection('games').orderBy('score','desc').limit(200).get();
+    const all = snap.docs.map(d => ({ ...d.data(), _id: d.id }));
+    return all.filter(r => !r.blitz && modeGroup.includes(r.mode)).slice(0,20);
   } catch(e) { return []; }
 }
 
@@ -1933,7 +1934,7 @@ const EXTRA_CITIES = [
 /* ═══════════════════════════════
    CONSTANTS & MESSAGES
 ═══════════════════════════════ */
-const AVATARS=['🦁','🐯','🐸','🦊','🐧','🦄','🐬','🦋','🐉','🦀','🦖','🐣','🐺','🦓','🐙','🦅','🐻','🐼','🦒','🐘','🌟','🚀','🎮','🎨'];
+const AVATARS=['🦁','🐯','🐸','🦊','🐧','🦄','🐬','🦋','🐉','🦀','🦖','🐣','🐺','🦓','🐙','🦅','🐻','🐼','🦒','🐘','🌟'];
 const CONTS=[{k:'all',l:'🌐 Vše'},{k:'eu',l:'🏰 Evropa'},{k:'as',l:'🐉 Asie'},{k:'am',l:'🗽 Amerika'},{k:'af',l:'🦁 Afrika'},{k:'oc',l:'🌊 Oceánie'}];
 const DIFFS=[{k:'easy',l:'😊 Začátečník'},{k:'med',l:'🤔 Pokročilý'},{k:'hard',l:'🔥 Expert'}];
 const SHAPES=['1','2','3','4'];
@@ -3359,16 +3360,17 @@ async function goLB(mode){
   const fbRows=await fbLeaderboard(m);
   if(fbRows.length>0){
     list.innerHTML='';
-    const modeField=m==='football'?'bestScoreFootball':(m==='logoclub'||m==='logocar')?'bestScoreLogo':'bestScoreFlag';
     const diffL={easy:'Začátečník',med:'Pokročilý',hard:'Expert'};
     const contL={all:'🌐 Vše',eu:'🏰 Evropa',as:'🐉 Asie',am:'🗽 Amerika',af:'🦁 Afrika',oc:'🌊 Oceánie'};
     fbRows.forEach((r,i)=>{
       const row=document.createElement('div');row.className='lb-row';
-      const sc=r[modeField]||0;
-      const rDiff=diffL[r[modeField+'Diff']]||'';
-      const rCont=contL[r[modeField+'Cont']]||'';
-      const rDate=r[modeField+'Date']?r[modeField+'Date'].toDate().toLocaleDateString('cs-CZ',{day:'numeric',month:'short',year:'numeric'}):'';
-      const meta=[rDiff,rCont,rDate].filter(Boolean).join(' · ')||`celkem ${r.totalGames||0} her`;
+      const sc=r.score||0;
+      const rDiff=diffL[r.difficulty]||'';
+      const rCont=contL[r.continent]||'';
+      const rDate=r.playedAt?r.playedAt.toDate().toLocaleDateString('cs-CZ',{day:'numeric',month:'short',year:'numeric'}):'';
+      const rMode=modeLabel(r)||'';
+      const rTime=r.elapsedSec?fmtTime(r.elapsedSec):'';
+      const meta=[rMode,rDiff,rCont,rTime,rDate].filter(Boolean).join(' · ')||'';
       row.innerHTML=`<div class="lb-rank">${medals[i]||i+1+'.'}</div><div class="lb-av">${esc(r.avatar||'🦁')}</div><div class="lb-inf"><div class="lb-nm">${esc(r.nickname||'')}</div><div class="lb-meta">${esc(meta)}</div></div><div class="lb-sc">${sc.toLocaleString('cs')}</div>`;
       list.appendChild(row);
     });
