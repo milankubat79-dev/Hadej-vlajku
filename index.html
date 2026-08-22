@@ -163,7 +163,8 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#1a1a2e,#
 .e-title{font-size:1.7rem;font-weight:900;text-align:center;}
 .e-nick{color:#ffd700;}
 .e-score{font-size:3.5rem;font-weight:900;color:#ffd700;}
-.e-lbl{font-size:.85rem;color:rgba(255,255,255,.5);margin-bottom:6px;}
+.e-lbl{font-size:.85rem;color:rgba(255,255,255,.5);margin-bottom:2px;}
+.e-bonus{font-size:1.05rem;font-weight:800;color:#4ade80;letter-spacing:.4px;margin-bottom:6px;}
 .e-stars{font-size:2rem;}
 .record-banner{background:linear-gradient(135deg,#f59e0b,#d97706);border-radius:18px;padding:14px 20px;width:100%;box-shadow:0 6px 24px rgba(245,158,11,.4);animation:recordPop .5s cubic-bezier(.34,1.56,.64,1);}
 @keyframes recordPop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
@@ -229,6 +230,9 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#1a1a2e,#
 @keyframes emojiPop{0%{transform:translate(-50%,-50%) scale(0);opacity:1}55%{transform:translate(-50%,-50%) scale(1.5);opacity:1}100%{transform:translate(-50%,-50%) scale(2.2);opacity:0}}
 /* ── COMBO banner ── */
 @keyframes comboPop{0%{transform:translate(-50%,-50%) scale(0) rotate(-6deg);opacity:0}28%{transform:translate(-50%,-50%) scale(1.35) rotate(2deg);opacity:1}55%{transform:translate(-50%,-50%) scale(.95) rotate(-1deg);opacity:1}75%{transform:translate(-50%,-50%) scale(1.05) rotate(0);opacity:1}100%{transform:translate(-50%,-50%) scale(1.2) rotate(0);opacity:0}}
+@keyframes comboPop2{0%{transform:translate(-50%,-50%) scale(0) rotate(-10deg);opacity:0}15%{transform:translate(-50%,-50%) scale(1.55) rotate(4deg);opacity:1}32%{transform:translate(-50%,-50%) scale(1.0) rotate(-2deg);opacity:1}52%{transform:translate(-50%,-50%) scale(1.18) rotate(0);opacity:1}72%{transform:translate(-50%,-50%) scale(1.13) rotate(0);opacity:1}100%{transform:translate(-50%,-80%) scale(1.25) rotate(0);opacity:0}}
+@keyframes comboRipple{0%{width:20px;height:20px;margin:-10px 0 0 -10px;opacity:.5}100%{width:260px;height:260px;margin:-130px 0 0 -130px;opacity:0}}
+@keyframes comboIconSpin{0%{transform:rotate(-15deg) scale(.8)}40%{transform:rotate(10deg) scale(1.2)}70%{transform:rotate(-5deg) scale(1.05)}100%{transform:rotate(0deg) scale(1)}}
 /* ── Answer screen flash ── */
 @keyframes flashFade{0%{opacity:.32}100%{opacity:0}}
 /* ── Live Record Tracker ── */
@@ -476,6 +480,7 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#1a1a2e,#
   <div class="e-title" id="e-title">Skvělá hra, <span class="e-nick" id="e-nick">hráči</span>!</div>
   <div class="e-score" id="e-score">0</div>
   <div class="e-lbl">bodů celkem</div>
+  <div class="e-bonus" id="e-bonus" style="display:none"></div>
   <div class="e-stars" id="e-stars">⭐⭐⭐</div>
   <div class="record-banner" id="record-banner" style="display:none">
     <div class="record-inner">
@@ -508,7 +513,8 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#1a1a2e,#
     <div style="display:flex;gap:8px;">
       <button class="sel-btn sel" id="lb-tab-flag"     style="flex:1;padding:11px 6px;border-radius:14px;font-size:.82rem;" onclick="goLB('flag')">🌍 Vlajky</button>
       <button class="sel-btn"     id="lb-tab-football" style="flex:1;padding:11px 6px;border-radius:14px;font-size:.82rem;" onclick="goLB('football')">⚽ Fotbal</button>
-      <button class="sel-btn"     id="lb-tab-logoclub" style="flex:1;padding:11px 6px;border-radius:14px;font-size:.82rem;" onclick="goLB('logoclub')">🏆 Loga</button>
+      <button class="sel-btn"     id="lb-tab-logoclub" style="flex:1;padding:11px 6px;border-radius:14px;font-size:.82rem;" onclick="goLB('logoclub')">🏆 Kluby</button>
+      <button class="sel-btn"     id="lb-tab-logocar"  style="flex:1;padding:11px 6px;border-radius:14px;font-size:.82rem;" onclick="goLB('logocar')">🚗 Auta</button>
     </div>
     <button class="sel-btn" id="lb-tab-blitz" style="width:100%;padding:11px 6px;border-radius:14px;font-size:.82rem;background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.25);color:#fbbf24;" onclick="goLB('blitz')">⏱️ Časovka — nejlepší výsledky na čas</button>
   </div>
@@ -867,7 +873,7 @@ async function showPassport(){
 
 async function fbLeaderboard(mode) {
   const db = fbDb(); if (!db) return [];
-  const modeGroup = (mode==='logoclub'||mode==='logocar') ? ['logoclub','logocar'] : (mode==='football' ? ['football'] : ['flag']);
+  const modeGroup = mode==='logocar' ? ['logocar'] : mode==='logoclub' ? ['logoclub'] : mode==='football' ? ['football'] : ['flag'];
   try {
     const snap = await db.collection('games').orderBy('score','desc').limit(200).get();
     const all = snap.docs.map(d => ({ ...d.data(), _id: d.id }));
@@ -2013,10 +2019,11 @@ let S={
     const b=document.createElement('button');
     b.className='av-btn'+(i===0?' sel':'');
     b.textContent=a;
-    b.onclick=()=>{document.querySelectorAll('.av-btn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');S.avatar=a;};
+    b.onclick=()=>{document.querySelectorAll('.av-btn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');S.avatar=a;playMenuMusic();};
     ag.appendChild(b);
   });
   document.getElementById('nick').addEventListener('input',e=>{
+    playMenuMusic();
     S.nickname=e.target.value.trim();
     document.getElementById('start-btn').disabled=S.nickname.length<1;
   });
@@ -2236,6 +2243,7 @@ async function prefetchAll(){
    GAME START
 ═══════════════════════════════ */
 function startGame(){
+  stopMenuMusic();
   if(typeof speechSynthesis!=='undefined')speechSynthesis.cancel();
   updateStreakAura();
   S.score=0;S.streak=0;S.maxStr=0;S.qIdx=0;
@@ -3154,6 +3162,19 @@ function endGame(){
   document.getElementById('e-trophy').textContent=trophy;
   // NOTE: do NOT set e-nick separately — e-title.textContent below overwrites it anyway,
   // and e-nick is destroyed after the first endGame call. The personalized message is in _endMsg.
+  // Difficulty bonus (Variant B): Easy +0, Pokročilý +2 000, Expert +5 000
+  const _diffBonus = S.mode!=='training' ? (S.diff==='hard' ? 5000 : S.diff==='med' ? 2000 : 0) : 0;
+  if(_diffBonus > 0){ S.score += _diffBonus; }
+  const bonusEl = document.getElementById('e-bonus');
+  if(bonusEl){
+    if(_diffBonus > 0){
+      const _diffName = S.diff==='hard' ? 'Expert' : 'Pokročilý';
+      bonusEl.textContent = `+${_diffBonus.toLocaleString('cs')} bonus za ${_diffName}`;
+      bonusEl.style.display = '';
+    } else {
+      bonusEl.style.display = 'none';
+    }
+  }
   document.getElementById('e-score').textContent=S.score.toLocaleString('cs');
   document.getElementById('e-stars').textContent=stars;
   // Personalized end-game title with vocative declension
@@ -3275,7 +3296,7 @@ function showResultsFromSummary(){
     setTimeout(()=>snd('applause'),400);
     setTimeout(()=>{
       document.getElementById('record-banner').style.display='block';
-      launchConfetti(250);
+      launchConfettiRecord();
     },900);
     speak('record',1200);
   } else if(_isPerfect){
@@ -3325,12 +3346,11 @@ async function goLB(mode){
   // Default: blitz if just played blitz, otherwise current game mode
   const m=mode||(S.blitzEnabled?'blitz':S.mode)||'flag';
   showScreen('slb');
-  // Highlight active tab (logocar shares the logoclub tab)
-  const mTab=m==='logocar'?'logoclub':m;
-  ['flag','football','logoclub','blitz'].forEach(t=>{
+  // Highlight active tab
+  ['flag','football','logoclub','logocar','blitz'].forEach(t=>{
     const el=document.getElementById('lb-tab-'+t);
     if(el){
-      el.classList.toggle('sel',t===mTab);
+      el.classList.toggle('sel',t===m);
       if(t==='blitz'){
         el.style.background=t===m?'rgba(245,158,11,.3)':'rgba(245,158,11,.1)';
         el.style.borderColor=t===m?'#f59e0b':'rgba(245,158,11,.25)';
@@ -3354,7 +3374,7 @@ async function goLB(mode){
     }catch(e){list.innerHTML='<div style="color:rgba(255,255,255,.4);text-align:center;padding:20px">Síň slávy nedostupná.</div>';}
     return;
   }
-  const lbKey=m==='football'?'fgv2_fotbal':(m==='logoclub'||m==='logocar')?'fgv2_logo':'fgv2';
+  const lbKey=m==='football'?'fgv2_fotbal':m==='logoclub'?'fgv2_logo':m==='logocar'?'fgv2_logocar':'fgv2';
   const medals=['🥇','🥈','🥉'];
   // Try Firebase first
   const fbRows=await fbLeaderboard(m);
@@ -3444,10 +3464,23 @@ function _wikiSetup(caption,flagEmoji,fallbackEmoji,isLogo,hideLabel){
   }
   return {wrap,loading,img,cap};
 }
-function _wikiApply(els,src,fallbackEmoji){
-  const {loading,img}=els;
-  img.onload=()=>{loading.style.display='none';img.style.display='block';};
-  img.onerror=()=>{loading.textContent=fallbackEmoji||'📸';};
+function _wikiApply(els,src,fallbackEmoji,onFail){
+  const{loading,img}=els;
+  const _fail=onFail||function(){loading.textContent=fallbackEmoji||'📸';};
+  img.onload=()=>{
+    if(img.naturalWidth<5||img.naturalHeight<5){_fail();return;}
+    // Canvas blank-image check: if nearly all pixels are white/transparent, treat as failed
+    try{
+      const cv=document.createElement('canvas');cv.width=cv.height=16;
+      const ctx=cv.getContext('2d');ctx.drawImage(img,0,0,16,16);
+      const d=ctx.getImageData(0,0,16,16).data;
+      let vis=0;
+      for(let i=0;i<d.length;i+=4){if(d[i+3]>20&&!(d[i]>245&&d[i+1]>245&&d[i+2]>245))vis++;}
+      if(vis<4){_fail();return;}
+    }catch(e){} // CORS blocked → assume visible, show it
+    loading.style.display='none';img.style.display='block';
+  };
+  img.onerror=_fail;
   img.src=src;
 }
 /* ── Preloading ── */
@@ -3624,10 +3657,37 @@ function _getLocalBest(mode){
 function checkRecordTracker(){
   const el=document.getElementById('g-record-tracker');
   if(!el)return;
-  if(S.targetRecord>0&&S.score>S.targetRecord){
-    el.classList.add('active');
-  }
   updatePowerupUI();
+  const hide=()=>{el.classList.remove('active');el.style.cssText='';};
+  if(!S.targetRecord||S.mode==='training'){hide();return;}
+  const target=S.targetRecord;
+  // State 1: already beating the record right now
+  if(S.score>target){
+    el.innerHTML='👑 Rekord překonán! +'+( S.score-target).toLocaleString('cs');
+    el.style.cssText='background:linear-gradient(135deg,rgba(255,215,0,.28),rgba(255,180,0,.12));border-color:rgba(255,215,0,.65);color:#ffd700;';
+    el.classList.add('active');return;
+  }
+  // Blitz: no question-count extrapolation possible
+  if(S.blitzEnabled){hide();return;}
+  const N=S.round.length,done=S.qIdx;
+  if(done<3){hide();return;}
+  // Predict final score: linear extrapolation of current pace + pending difficulty bonus
+  const bonus=S.diff==='hard'?5000:S.diff==='med'?2000:0;
+  const predicted=Math.round(S.score/done*N)+bonus;
+  const diff=predicted-target;
+  if(diff>=0){
+    // State 2: on pace for a new record
+    el.innerHTML='🎯 Tempo na rekord! +'+diff.toLocaleString('cs');
+    el.style.cssText='background:linear-gradient(135deg,rgba(74,222,128,.18),rgba(0,200,80,.07));border-color:rgba(74,222,128,.5);color:#4ade80;';
+    el.classList.add('active');
+  } else if(-diff<=target*0.13){
+    // State 3: close but slightly behind (within ~13%)
+    el.innerHTML='⚡ Blízko rekordu ('+diff.toLocaleString('cs')+')';
+    el.style.cssText='background:linear-gradient(135deg,rgba(255,180,0,.15),rgba(255,100,0,.06));border-color:rgba(255,150,0,.45);color:#ffa947;';
+    el.classList.add('active');
+  } else {
+    hide();
+  }
 }
 
 function fetchWikiImg(lang,title){
@@ -3733,11 +3793,6 @@ function loadWikiPhoto(wikiTitle,caption,flagEmoji,fallbackEmoji,style,sdbName){
   const els=_wikiSetup(caption,flagEmoji,fallbackEmoji,isLogo,isLogo/*hideLabel for logo mode*/);
   if(isLogo){
     const cacheKey=sdbName||wikiTitle;
-    const cached=_badgeCache[cacheKey];
-    if(cached){
-      _wikiApply(els,cached,fallbackEmoji);
-      return;
-    }
     const searchName=sdbName||caption||wikiTitle;
     const base=(window.location.origin+window.location.pathname).replace(/\/index\.html$/,'').replace(/\/$/,'');
     const slug=clubSlug(cacheKey);
@@ -3749,18 +3804,38 @@ function loadWikiPhoto(wikiTitle,caption,flagEmoji,fallbackEmoji,style,sdbName){
         .then(r=>{if(!r.ok)throw new Error('not found');return url;})
         .catch(()=>tryClubLocal(rest));
     };
-    // Priority: 0) local file, 1) LOGO_OVERRIDES (hardcoded), 2) TheSportsDB, 3) Wikipedia
-    tryClubLocal(['png','svg','jpg','webp'])
-      .catch(()=>LOGO_OVERRIDES[cacheKey]?Promise.resolve(LOGO_OVERRIDES[cacheKey]):Promise.reject(new Error('no override')))
-      .catch(()=>fetchSDBLogo(searchName))
-      .catch(()=>fetchWikiClubLogo(wikiTitle))
-      .catch(()=>fetchWikiImg('en',wikiTitle))
-      .then(src=>{
-        _badgeCache[cacheKey]=src;
-        _saveBadgeCache();
-        _wikiApply(els,src,fallbackEmoji);
-      })
-      .catch(()=>{els.loading.textContent=fallbackEmoji||'🏆';});
+    // Retry chain: each source is tried in order; if an image URL is fetched but then
+    // renders blank/white (canvas check) or onerror fires, the next source is tried.
+    const sources=[
+      ()=>tryClubLocal(['png','svg','jpg','webp']),
+      ()=>LOGO_OVERRIDES[cacheKey]?Promise.resolve(LOGO_OVERRIDES[cacheKey]):Promise.reject(new Error('no override')),
+      ()=>fetchSDBLogo(searchName),
+      ()=>fetchWikiClubLogo(wikiTitle),
+      ()=>fetchWikiImg('en',wikiTitle),
+    ];
+    function tryNext(i){
+      if(i>=sources.length){els.loading.textContent=fallbackEmoji||'🏆';return;}
+      sources[i]()
+        .then(src=>{
+          _badgeCache[cacheKey]=src;_saveBadgeCache();
+          _wikiApply(els,src,fallbackEmoji,()=>{
+            // Image failed visually (blank or onerror) — clear cache, try next source
+            delete _badgeCache[cacheKey];_saveBadgeCache();
+            tryNext(i+1);
+          });
+        })
+        .catch(()=>tryNext(i+1));
+    }
+    // Check cache; on cached-URL failure clear it and restart chain
+    const cached=_badgeCache[cacheKey];
+    if(cached){
+      _wikiApply(els,cached,fallbackEmoji,()=>{
+        delete _badgeCache[cacheKey];_saveBadgeCache();
+        tryNext(0);
+      });
+      return;
+    }
+    tryNext(0);
   } else {
     fetchWikiImg('en',wikiTitle)
       .then(src=>_wikiApply(els,src,fallbackEmoji))
@@ -3817,6 +3892,59 @@ function retrainFromEnd(){
 /* ═══════════════════════════════
    AUDIO
 ═══════════════════════════════ */
+
+/* ── Menu background music ── */
+let _mmCtx=null,_mmStop=false,_mmTid=null;
+function playMenuMusic(){
+  if(S.muted||_mmCtx)return;
+  try{
+    _mmStop=false;
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    _mmCtx=ctx;
+    // Upbeat travel melody — C major, ~116 BPM
+    const q=0.155,h=q*2,dh=q*3;
+    const mel=[
+      [523,q],[659,q],[784,q],[880,q],
+      [784,q],[659,q],[523,h],
+      [587,q],[659,q],[784,q],[659,q],
+      [523,dh],
+      [440,q],[523,q],[659,q],[784,q],
+      [880,q],[784,q],[659,h],
+      [587,q],[523,q],[440,q],[392,q],
+      [523,dh],
+    ];
+    const bass=[
+      [131,h],[165,h],[131,h],[165,h],
+      [147,h],[131,h],[131,dh],
+      [110,h],[131,h],[110,h],[131,h],
+      [98,h],[110,h],[131,dh],
+    ];
+    const total=mel.reduce((s,[,d])=>s+d,0);
+    const note=(ctx,f,d,t,v,type)=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.type=type;o.connect(g);g.connect(ctx.destination);
+      o.frequency.value=f;
+      g.gain.setValueAtTime(v,t);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+d*0.82);
+      o.start(t);o.stop(t+d);
+    };
+    const loop=(start)=>{
+      if(_mmStop)return;
+      let t=start;
+      mel.forEach(([f,d])=>{note(ctx,f,d,t,0.09,'triangle');t+=d;});
+      t=start;
+      bass.forEach(([f,d])=>{note(ctx,f,d,t,0.05,'sine');t+=d;});
+      _mmTid=setTimeout(()=>loop(ctx.currentTime+0.08),(total-0.15)*1000);
+    };
+    loop(ctx.currentTime+0.08);
+  }catch(e){}
+}
+function stopMenuMusic(){
+  _mmStop=true;
+  if(_mmTid){clearTimeout(_mmTid);_mmTid=null;}
+  if(_mmCtx){try{_mmCtx.close();}catch(e){}_mmCtx=null;}
+}
+
 function snd(t){
   if(S.muted)return;
   try{
@@ -4018,15 +4146,27 @@ function tryEasterEgg(name,delay=1600){
    COMBO BANNER
 ═══════════════════════════════ */
 function showComboBanner(n){
-  document.querySelectorAll('.combo-banner').forEach(e=>e.remove());
-  const tiers={3:{col:'#ff6b35',glow:'rgba(255,107,53,.7)',sz:'3rem'},5:{col:'#ef4444',glow:'rgba(239,68,68,.8)',sz:'3.8rem'},7:{col:'#a855f7',glow:'rgba(168,85,247,.8)',sz:'3.6rem'},10:{col:'#ffd700',glow:'rgba(255,215,0,.9)',sz:'4.8rem'}};
-  const tier=tiers[n]||tiers[n>=10?10:n>=7?7:n>=5?5:3];
+  document.querySelectorAll('.combo-banner,.combo-ripple').forEach(e=>e.remove());
+  const tiers={
+    3:{icon:'🔥',label:'SÉRIE!',     col:'#ff7043',glow:'rgba(255,112,67,.85)', sz:'2.9rem'},
+    5:{icon:'⚡',label:'ŠÍLENEC!',   col:'#c084fc',glow:'rgba(192,132,252,.9)', sz:'3.6rem'},
+    7:{icon:'💎',label:'HVĚZDA!',    col:'#38bdf8',glow:'rgba(56,189,248,.9)',  sz:'3.4rem'},
+   10:{icon:'🌟',label:'LEGENDA!',   col:'#ffd700',glow:'rgba(255,215,0,1)',    sz:'4.6rem'}
+  };
+  const t=tiers[n]||tiers[n>=10?10:n>=7?7:n>=5?5:3];
+  // Ripple
+  const rip=document.createElement('div');
+  rip.className='combo-ripple';
+  rip.style.cssText=`position:fixed;top:42%;left:50%;border-radius:50%;background:${t.col};z-index:10001;pointer-events:none;animation:comboRipple .65s ease-out forwards;`;
+  document.body.appendChild(rip);
+  setTimeout(()=>rip.remove(),700);
+  // Banner
   const el=document.createElement('div');
   el.className='combo-banner';
-  el.textContent=`COMBO ×${n}!`;
-  el.style.cssText=`position:fixed;top:42%;left:50%;transform:translate(-50%,-50%) scale(0);font-size:${tier.sz};font-weight:900;color:${tier.col};text-shadow:0 0 40px ${tier.glow},0 0 80px ${tier.glow},0 4px 12px rgba(0,0,0,.9);z-index:10002;pointer-events:none;white-space:nowrap;letter-spacing:.04em;animation:comboPop 1.25s cubic-bezier(.34,1.56,.64,1) forwards;`;
+  el.innerHTML=`<span style="display:inline-block;animation:comboIconSpin .6s ease-out forwards">${t.icon}</span>&thinsp;${n}×&thinsp;<span style="font-size:.68em;letter-spacing:.06em">${t.label}</span>`;
+  el.style.cssText=`position:fixed;top:42%;left:50%;display:flex;align-items:center;gap:.1em;transform:translate(-50%,-50%) scale(0);font-size:${t.sz};font-weight:900;color:${t.col};text-shadow:0 0 35px ${t.glow},0 0 70px ${t.glow},0 4px 14px rgba(0,0,0,.85);z-index:10002;pointer-events:none;white-space:nowrap;animation:comboPop2 1.45s ease forwards;`;
   document.body.appendChild(el);
-  setTimeout(()=>el.remove(),1350);
+  setTimeout(()=>el.remove(),1500);
 }
 
 /* ═══════════════════════════════
@@ -4039,6 +4179,45 @@ function launchConfetti(n=100){
   const cols=['#FF6B6B','#FFE66D','#6BCB77','#4D96FF','#FF6B9D','#C77DFF','#FF9F43','#4ECDC4'];
   const pts=Array.from({length:n},()=>({x:Math.random()*cv.width,y:-20,w:Math.random()*12+5,h:Math.random()*6+4,c:cols[Math.floor(Math.random()*cols.length)],rot:Math.random()*360,rs:(Math.random()-.5)*8,vx:(Math.random()-.5)*5,vy:Math.random()*4+2}));
   let f=0;(function draw(){ctx.clearRect(0,0,cv.width,cv.height);pts.forEach(p=>{ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.c;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();p.x+=p.vx;p.y+=p.vy;p.rot+=p.rs;p.vy+=.07;});if(++f<100)requestAnimationFrame(draw);else ctx.clearRect(0,0,cv.width,cv.height);})();
+}
+
+function launchConfettiRecord(){
+  const cv=document.getElementById('cvs');
+  cv.width=window.innerWidth;cv.height=window.innerHeight;
+  const ctx=cv.getContext('2d');
+  const cols=['#FFD700','#FFF176','#FF6B6B','#FF6B9D','#C77DFF','#4D96FF','#6BCB77','#FF9F43','#ffffff','#FFD700'];
+  function makePt(fromBottom){
+    const spread=cv.width*0.7;
+    const x=cv.width/2+(Math.random()-.5)*spread;
+    const vy=fromBottom?-(Math.random()*22+10):(Math.random()*3+1);
+    return{x,y:fromBottom?cv.height+10:-10,
+      w:Math.random()*16+6,h:Math.random()*8+4,
+      c:cols[Math.floor(Math.random()*cols.length)],
+      rot:Math.random()*360,rs:(Math.random()-.5)*12,
+      vx:(Math.random()-.5)*10,vy,
+      shape:Math.random()<.35?'circle':'rect',
+      g:fromBottom?.45:.06,alpha:1};
+  }
+  const pts=Array.from({length:180},()=>makePt(true));
+  setTimeout(()=>pts.push(...Array.from({length:120},()=>makePt(false))),600);
+  setTimeout(()=>pts.push(...Array.from({length:100},()=>makePt(true))),1400);
+  let f=0;
+  (function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    pts.forEach(p=>{
+      if(p.y>cv.height+20||p.alpha<=0)return;
+      ctx.save();ctx.globalAlpha=Math.max(0,p.alpha);
+      ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.c;
+      if(p.shape==='circle'){ctx.beginPath();ctx.arc(0,0,p.w/2,0,Math.PI*2);ctx.fill();}
+      else{ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);}
+      ctx.restore();
+      p.x+=p.vx;p.y+=p.vy;p.rot+=p.rs;p.vy+=p.g;p.vx*=.98;
+      if(f>160)p.alpha-=.025;
+    });
+    if(++f<240)requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,cv.width,cv.height);
+  })();
 }
 
 /* ═══════════════════════════════
@@ -4158,6 +4337,8 @@ function tickBlitz(){
 function toggleMute(){
   S.muted=!S.muted;
   document.getElementById('mute-btn').textContent=S.muted?'🔇':'🔊';
+  if(S.muted) stopMenuMusic();
+  else { const scr=document.querySelector('.screen.active'); if(scr&&scr.id==='sw') playMenuMusic(); }
 }
 
 function showFinalToast(){
@@ -4255,7 +4436,7 @@ function flashScreen(){
   setTimeout(()=>el.remove(),1300);
 }
 
-function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');if(id==='sw')playMenuMusic();else if(id==='sg')stopMenuMusic();}
 
 /* ── Auto-restore session on load ── */
 (function restoreSession(){
