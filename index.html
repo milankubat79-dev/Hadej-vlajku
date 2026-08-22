@@ -2723,7 +2723,17 @@ function fetchCityPhoto(capitalCz,countryName,flagEmoji){
   //               3) city name via pageimages API,
   //               4) Wikipedia search fallback
   const landmark=LANDMARKS[capitalCz];
-  let chain=Promise.reject(new Error('start'));
+  const _cBase=(window.location.origin+window.location.pathname).replace(/\/index\.html$/,'').replace(/\/$/,'');
+  const _cSlug=clubSlug(capitalCz);
+  const tryLocalCity=(exts)=>{
+    if(!exts.length)return Promise.reject(new Error('no local city file'));
+    const[ext,...rest]=exts;
+    const url=_cBase+'/cities/'+_cSlug+'.'+ext;
+    return fetchWithTimeout(url,{method:'HEAD'},3000)
+      .then(r=>{if(!r.ok)throw new Error('not found');return url;})
+      .catch(()=>tryLocalCity(rest));
+  };
+  let chain=tryLocalCity(['jpg','jpeg','png','webp']);
   if(landmark) chain=chain.catch(()=>fetchWikiSummary(landmark));
   chain=chain.catch(()=>fetchWikiSummary(capitalCz));
   chain=chain.catch(()=>fetchWikiImg('en',capitalCz));
@@ -3693,7 +3703,7 @@ function clubSlug(name){
              'ķ':'k','ħ':'h','ß':'ss',
              'æ':'ae','œ':'oe'};
   return name.toLowerCase()
-    .replace(/[^ -~]/g,c=>map[c]||'')
+    .replace(/[^ -~]/g,c=>map[c]||'')
     .replace(/[^a-z0-9\s\-]/g,'')
     .trim()
     .replace(/[\s_]+/g,'-')
@@ -3745,8 +3755,18 @@ function loadPlayerPhoto(plWiki,playerName,flagEmoji,plLang){
   const els=_wikiSetup(playerName,flagEmoji,'⭐',false,true/*hideLabel*/);
   const cacheKey=plWiki||playerName;
   if(_playerCache[cacheKey]){_wikiApply(els,_playerCache[cacheKey],'⭐');return;}
-  // Try: 1) native language Wikipedia, 2) English Wikipedia, 3) Wikipedia search fallback
-  let chain=Promise.reject(new Error('start'));
+  // Try: 0) local file, 1) native language Wikipedia, 2) English Wikipedia, 3) Wikipedia search fallback
+  const _pBase=(window.location.origin+window.location.pathname).replace(/\/index\.html$/,'').replace(/\/$/,'');
+  const _pSlug=clubSlug(playerName||plWiki);
+  const tryPlayerLocal=(exts)=>{
+    if(!exts.length)return Promise.reject(new Error('no local player file'));
+    const[ext,...rest]=exts;
+    const url=_pBase+'/players/'+_pSlug+'.'+ext;
+    return fetchWithTimeout(url,{method:'HEAD'},3000)
+      .then(r=>{if(!r.ok)throw new Error('not found');return url;})
+      .catch(()=>tryPlayerLocal(rest));
+  };
+  let chain=tryPlayerLocal(['jpg','jpeg','png','webp']);
   if(plLang&&plLang!=='en') chain=chain.catch(()=>fetchWikiImg(plLang,plWiki));
   chain=chain.catch(()=>fetchWikiImg('en',plWiki));
   chain=chain.catch(()=>fetchWikiImgSearch(playerName));
